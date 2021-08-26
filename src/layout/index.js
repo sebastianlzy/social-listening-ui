@@ -11,12 +11,10 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import {mainListItems, secondaryListItems} from './listItems';
-import Chart from './chart';
-import Deposits from './sentimentScore';
-import Orders from './recentMentions';
-import Copyright from './Copyright'
 import AppBar from "./AppBar";
+import {AmplifySignOut} from '@aws-amplify/ui-react';
 import clsx from "clsx";
+
 
 const drawerWidth = 240;
 
@@ -99,7 +97,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Dashboard() {
+
+export default function Layout(props) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
     const handleDrawerOpen = () => {
@@ -108,7 +107,7 @@ export default function Dashboard() {
     const handleDrawerClose = () => {
         setOpen(false);
     };
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
 
     return (
         <div className={classes.root}>
@@ -130,34 +129,12 @@ export default function Dashboard() {
                 <List>{mainListItems}</List>
                 <Divider />
                 <List>{secondaryListItems}</List>
+                <Divider />
+                <AmplifySignOut />
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" className={classes.container}>
-                    <Grid container spacing={3}>
-                         {/*Chart*/}
-                        <Grid item xs={12} md={8} lg={9}>
-                            <Paper className={fixedHeightPaper}>
-                                <Chart />
-                            </Paper>
-                        </Grid>
-                         {/*Overall sentiment*/}
-                        <Grid item xs={12} md={4} lg={3}>
-                            <Paper className={fixedHeightPaper}>
-                                <Deposits />
-                            </Paper>
-                        </Grid>
-                         {/*Sentiments*/}
-                        <Grid item xs={12}>
-                            <Paper className={classes.paper}>
-                                <Orders />
-                            </Paper>
-                        </Grid>
-                    </Grid>
-                    <Box pt={4}>
-                        <Copyright />
-                    </Box>
-                </Container>
+                {props.children}
             </main>
         </div>
     );
