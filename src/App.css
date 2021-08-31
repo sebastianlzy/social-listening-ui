@@ -1,0 +1,7 @@
+:root {
+    --amplify-primary-color: #C2012F;
+    --amplify-primary-tint: #ff7359;
+    --amplify-primary-shade: #e0573e;
+}
+
+/*https://docs.amplify.aws/ui/customization/theming/q/framework/react/#for-typography*/

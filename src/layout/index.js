@@ -10,7 +10,7 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import {mainListItems, secondaryListItems} from './listItems';
+import {MainListItems, SecondaryListItems} from './listItems';
 import AppBar from "./AppBar";
 import {AmplifySignOut} from '@aws-amplify/ui-react';
 import clsx from "clsx";
@@ -126,9 +126,9 @@ export default function Layout(props) {
                     </IconButton>
                 </div>
                 <Divider />
-                <List>{mainListItems}</List>
+                <List>{MainListItems()}</List>
                 <Divider />
-                <List>{secondaryListItems}</List>
+                <List>{SecondaryListItems()}</List>
                 <Divider />
                 <AmplifySignOut />
             </Drawer>

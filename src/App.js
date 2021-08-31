@@ -4,7 +4,7 @@ import awsconfig from './aws-exports';
 import Dashboard from './components/Dashboard'
 import Facebook from './components/Facebook'
 import Layout from "./layout";
-import Twitter from './components/Twitter'
+import Twitter from './components/twitter'
 import {
     BrowserRouter as Router,
     Switch,
@@ -12,6 +12,7 @@ import {
     Link
 } from "react-router-dom";
 import {withAuthenticator} from '@aws-amplify/ui-react';
+
 
 Amplify.configure(awsconfig);
 
