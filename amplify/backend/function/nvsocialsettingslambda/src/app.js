@@ -7,6 +7,8 @@ See the License for the specific language governing permissions and limitations 
 */
 
 
+import getRecentMentions from "./recentMentionsAPI/getRecentMentions";
+
 const express = require('express')
 const bodyParser = require('body-parser')
 const get = require('lodash/get')
@@ -38,7 +40,16 @@ app.get('/settings/:ssn', function (req, res) {
     res.json({success: 'get call succeed!', url: req.url});
 });
 
-app.get('/settings/:ssn/*', function (req, res) {
+app.get('/settings/:ssn/recentMentions', function (req, res) {
+    // Add your code here
+    res.json({
+        success: 'get call succeed!',
+        url: req.url,
+        body: getRecentMentions()
+    });
+});
+
+app.get('/settings/:ssn/rules', function (req, res) {
 
     return getTwitterRules()
         .then((resp) => {
@@ -65,7 +76,7 @@ app.post('/settings/:ssn', function (req, res) {
     res.json({success: 'post call succeed!', url: req.url, body: req.body})
 });
 
-app.post('/settings/:ssn/*', function (req, res) {
+app.post('/settings/:ssn/rules', function (req, res) {
     const value = get(req, 'body.value')
     const tag = get(req, 'body.tag')
 
@@ -109,7 +120,7 @@ app.delete('/settings/:ssn', function (req, res) {
     res.json({success: 'delete call succeed!', url: req.url});
 });
 
-app.delete('/settings/:ssn/*', function (req, res) {
+app.delete('/settings/:ssn/rules', function (req, res) {
     const ids = get(req, 'body')
 
     return deleteTwitterRules(ids).then(
