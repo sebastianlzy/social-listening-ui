@@ -51,11 +51,12 @@ const useStyles = makeStyles((theme) => ({
 export default function SimpleModal(props) {
     const classes = useStyles();
     const [modalStyle] = React.useState(getModalStyle);
-    const {handleCloseAddRuleModal, openAddRuleModal, fetchTwitterRules} = props
+    const {handleCloseAddRuleModal, openAddRuleModal, fetchTwitterRules, setIsBackdropShown} = props
     const [errorMsg, setErrorMsg] = useState("");
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        setIsBackdropShown(true)
 
         const value = get(event, 'target.0.value')
         const tag = get(event, 'target.1.value')
@@ -75,6 +76,7 @@ export default function SimpleModal(props) {
                 event.preventDefault();
                 setErrorMsg(JSON.stringify(e))
             })
+            .then(() => setIsBackdropShown(false))
 
     }
 

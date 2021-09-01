@@ -8,6 +8,8 @@ import deleteTwitterRules from './deleteTwitterRules'
 import EnhancedTableToolbar from '../enhanceTable/EnhancedTableToolbar'
 import EnhancedTableHead from '../enhanceTable/EnhancedTableHead'
 import EnhancedTableBody from '../enhanceTable/EnhancedTableBody'
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -31,6 +33,10 @@ const useStyles = makeStyles((theme) => ({
         top: 20,
         width: 1,
     },
+    backdrop: {
+        zIndex: theme.zIndex.modal + 1,
+        color: '#fff',
+    },
 }));
 
 const headCells = [
@@ -44,6 +50,7 @@ export default function TwitterRules(props) {
     const classes = useStyles();
     const [selected, setSelected] = React.useState([]);
     const [openAddRuleModal, setOpenAddRuleModal] = React.useState(false);
+    const [isBackdropShown, setIsBackdropShown] = React.useState(false);
 
     const handleOpenAddRuleModal = () => {
         setOpenAddRuleModal(true);
@@ -85,11 +92,12 @@ export default function TwitterRules(props) {
     const isSelected = (name) => selected.indexOf(name) !== -1;
 
     const handleDeleteTwitterRules = () => {
+        setIsBackdropShown(true)
         return deleteTwitterRules(selected)
+            .then(() => setSelected([]))
             .then(() => fetchTwitterRules())
-            .catch((err) => {
-                console.log(err)
-            })
+            .catch((err) => console.log(err))
+            .then(() => setIsBackdropShown(false))
     };
 
     return (
@@ -100,6 +108,9 @@ export default function TwitterRules(props) {
                     handleAdd={handleOpenAddRuleModal}
                     handleDelete={handleDeleteTwitterRules}
                 />
+                <Backdrop className={classes.backdrop} open={isBackdropShown} onClick={() => setIsBackdropShown(false)}>
+                    <CircularProgress color="inherit" />
+                </Backdrop>
                 <TableContainer>
                     <Table
                         className={classes.table}
@@ -127,6 +138,7 @@ export default function TwitterRules(props) {
                 handleCloseAddRuleModal={handleCloseAddRuleModal}
                 openAddRuleModal={openAddRuleModal}
                 fetchTwitterRules={fetchTwitterRules}
+                setIsBackdropShown={setIsBackdropShown}
             />
         </div>
     );
