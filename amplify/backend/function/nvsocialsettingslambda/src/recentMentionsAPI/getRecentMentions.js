@@ -17,7 +17,9 @@ const rows = [
     createData(4, '15 Mar, 2019', 'Twitter', 'My #ninjavanph story! So I have been waiting for these guys since friday. I waited from 9am-5pm and no one came. Then when I tracked the package this photo came up. Now, why would I reschedule when I was at the address waiting for them the whole time for 2 days!', 'en', -20),
 ];
 
-export default function getRecentMentions() {
+const getRecentMentions = () => {
 
     return rows
 }
+
+module.exports = getRecentMentions

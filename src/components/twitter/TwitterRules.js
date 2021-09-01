@@ -46,11 +46,11 @@ const headCells = [
 ];
 
 export default function TwitterRules(props) {
-    const {rows, fetchTwitterRules} = props
+    const {rows, fetchTwitterRules, isBackdropShown, setIsBackdropShown} = props
     const classes = useStyles();
     const [selected, setSelected] = React.useState([]);
     const [openAddRuleModal, setOpenAddRuleModal] = React.useState(false);
-    const [isBackdropShown, setIsBackdropShown] = React.useState(false);
+
 
     const handleOpenAddRuleModal = () => {
         setOpenAddRuleModal(true);

@@ -7,7 +7,7 @@ See the License for the specific language governing permissions and limitations 
 */
 
 
-import getRecentMentions from "./recentMentionsAPI/getRecentMentions";
+;
 
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -16,6 +16,7 @@ const awsServerlessExpressMiddleware = require('aws-serverless-express/middlewar
 const getTwitterRules = require('./twitterRulesAPI/getTwitterRules')
 const addTwitterRule = require('./twitterRulesAPI/addTwitterRule')
 const deleteTwitterRules = require('./twitterRulesAPI/deleteTwitterRules')
+const getRecentMentions = require("./recentMentionsAPI/getRecentMentions")
 
 // declare a new express app
 const app = express()

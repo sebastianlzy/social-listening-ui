@@ -27,13 +27,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Twitter(){
+export default function Twitter() {
 
     const [twitterRules, setTwitterRules] = useState([]);
-
-    useEffect(() => {
-        fetchTwitterRules()
-    })
+    const [isBackdropShown, setIsBackdropShown] = React.useState(true);
 
     const fetchTwitterRules = () => {
         return getTwitterRules()
@@ -43,10 +40,16 @@ export default function Twitter(){
                     setTwitterRules(newRules)
                 }
             })
-            .catch((err) => {
-                console.log(err)
-            })
+            .catch((err) => console.log(err))
     }
+
+    useEffect(() => {
+        fetchTwitterRules()
+            .then(() => {
+                setIsBackdropShown(false)
+            })
+    }, [])
+
 
     const classes = useStyles();
 
@@ -58,6 +61,8 @@ export default function Twitter(){
                         <TwitterRules
                             rows={twitterRules}
                             fetchTwitterRules={fetchTwitterRules}
+                            isBackdropShown={isBackdropShown}
+                            setIsBackdropShown={setIsBackdropShown}
                         />
                     </Grid>
                 </Grid>
