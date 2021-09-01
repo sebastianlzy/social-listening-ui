@@ -9,20 +9,17 @@ See the License for the specific language governing permissions and limitations 
 
 const express = require('express')
 const bodyParser = require('body-parser')
-const axios = require('axios')
 const get = require('lodash/get')
 const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
-const getTwitterRules = require('./getTwitterRules')
+const getTwitterRules = require('./twitterRulesAPI/getTwitterRules')
+const addTwitterRule = require('./twitterRulesAPI/addTwitterRule')
+const deleteTwitterRules = require('./twitterRulesAPI/deleteTwitterRules')
 
 // declare a new express app
 const app = express()
 app.use(bodyParser.json())
 app.use(awsServerlessExpressMiddleware.eventContext())
 
-const apiURL = {
-    streamRules: "https://api.twitter.com/2/tweets/search/stream/rules",
-    bearerToken: process.env.TW_BEARER_TOKEN
-}
 
 // Enable CORS for all methods
 app.use(function (req, res, next) {
@@ -43,12 +40,8 @@ app.get('/settings/:ssn', function (req, res) {
 
 app.get('/settings/:ssn/*', function (req, res) {
 
-    const value = get(req, 'body.value')
-    const tag = get(req, 'body.tag')
-
-    getTwitterRules(value, tag)
+    return getTwitterRules()
         .then((resp) => {
-            console.log(resp)
             res.json({
                 msg: 'get call succeed!',
                 url: req.url,
@@ -56,10 +49,10 @@ app.get('/settings/:ssn/*', function (req, res) {
             })
         })
         .catch((err) => {
-          res.status(500).json({
-            msg: 'get call failed!',
-            body: err
-          })
+            res.status(500).json({
+                msg: 'get call failed!',
+                body: err
+            })
         })
 });
 
@@ -68,26 +61,29 @@ app.get('/settings/:ssn/*', function (req, res) {
  ****************************/
 
 app.post('/settings/:ssn', function (req, res) {
-    const bearerToken = process.env.TW_BEARER_TOKEN
 
-    return axios({
-        url: apiURL.streamRules,
-        headers: {'Authorization': `Bearer ${bearerToken}`},
-        method: "POST"
-    }).then((resp) => {
-        console.log(get(resp, 'data'))
-        res.json({
-            success: 'put call succeed!',
-            url: req.url,
-            body: get(resp, 'data.data'),
-        })
-    })
-
+    res.json({success: 'post call succeed!', url: req.url, body: req.body})
 });
 
 app.post('/settings/:ssn/*', function (req, res) {
-    // Add your code here
-    res.json({success: 'post call succeed!', url: req.url, body: req.body})
+    const value = get(req, 'body.value')
+    const tag = get(req, 'body.tag')
+
+    return addTwitterRule(value, tag).then(
+        (resp) => {
+            res.json({
+                msg: 'post call succeed!',
+                url: req.url,
+                body: get(resp, 'data.data'),
+            })
+        })
+        .catch((err) => {
+            res.status(500).json({
+                msg: 'post call failed!',
+                body: err
+            })
+        })
+
 });
 
 /****************************
@@ -114,8 +110,22 @@ app.delete('/settings/:ssn', function (req, res) {
 });
 
 app.delete('/settings/:ssn/*', function (req, res) {
-    // Add your code here
-    res.json({success: 'delete call succeed!', url: req.url});
+    const ids = get(req, 'body')
+
+    return deleteTwitterRules(ids).then(
+        (resp) => {
+            res.json({
+                msg: 'delete call succeed!',
+                url: req.url,
+                body: get(resp, 'data.data'),
+            })
+        })
+        .catch((err) => {
+            res.status(500).json({
+                msg: 'delete call failed!',
+                body: err
+            })
+        })
 });
 
 app.listen(3000, function () {

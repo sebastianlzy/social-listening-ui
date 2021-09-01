@@ -11,7 +11,9 @@
     "lodash": "^4.17.21"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:getTwitterRules": "amplify mock function --event 'src/twitterRulesApi/getTwitterRulesEvent.json'",
+    "test:addTwitterRule": "amplify mock function --event 'src/twitterRulesApi/addTwitterRuleEvent.json'",
+    "test:deleteTwitterRules": "amplify mock function --event 'src/twitterRulesApi/deleteTwitterRulesEvent.json'"
   },
   "author": "",
   "license": "ISC"

@@ -6,14 +6,19 @@ const apiURL = {
     bearerToken: process.env.TW_BEARER_TOKEN
 }
 
-const getTwitterRules = () => {
+const deleteTwitterRules = (ids) => {
 
     return axios({
         url: apiURL.streamRules,
         headers: {'Authorization': `Bearer ${apiURL.bearerToken}`},
+        method: "POST",
+        data: {
+            delete: {
+                ids: [...ids]
+            }
+        }
     })
 
 }
 
-module.exports = getTwitterRules
-
+module.exports = deleteTwitterRules

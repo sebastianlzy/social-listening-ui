@@ -6,14 +6,17 @@ const apiURL = {
     bearerToken: process.env.TW_BEARER_TOKEN
 }
 
-const getTwitterRules = () => {
+const addTwitterRule = (value, tag) => {
 
     return axios({
         url: apiURL.streamRules,
         headers: {'Authorization': `Bearer ${apiURL.bearerToken}`},
+        method: "POST",
+        data: {
+            add: [{value, tag}]
+        }
     })
 
 }
 
-module.exports = getTwitterRules
-
+module.exports = addTwitterRule
