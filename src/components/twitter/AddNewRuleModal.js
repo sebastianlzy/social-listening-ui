@@ -51,23 +51,26 @@ const useStyles = makeStyles((theme) => ({
 export default function SimpleModal(props) {
     const classes = useStyles();
     const [modalStyle] = React.useState(getModalStyle);
-    const {handleCloseAddRuleModal, openAddRuleModal} = props
+    const {handleCloseAddRuleModal, openAddRuleModal, fetchTwitterRules} = props
     const [errorMsg, setErrorMsg] = useState("");
 
     const handleSubmit = (event) => {
-
+        event.preventDefault();
 
         const value = get(event, 'target.0.value')
         const tag = get(event, 'target.1.value')
 
         if (isEmpty(value) || isEmpty(tag)) {
-            event.preventDefault();
+
             setErrorMsg("Value or Tag cannot be empty")
             return
         }
 
         addTwitterRule(value, tag)
-            .then((resp) => handleCloseAddRuleModal())
+            .then((resp) => {
+                fetchTwitterRules()
+                handleCloseAddRuleModal()
+            })
             .catch((e) => {
                 event.preventDefault();
                 setErrorMsg(JSON.stringify(e))

@@ -29,17 +29,24 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Twitter(){
 
-    const [rules, setRules] = useState([]);
+    const [twitterRules, setTwitterRules] = useState([]);
 
     useEffect(() => {
-        getTwitterRules()
+        fetchTwitterRules()
+    })
+
+    const fetchTwitterRules = () => {
+        return getTwitterRules()
             .then((resp) => {
                 let newRules = get(resp, 'data.body')
-                if (!isEqual(newRules, rules)) {
-                    setRules(newRules)
+                if (!isEqual(newRules, twitterRules)) {
+                    setTwitterRules(newRules)
                 }
             })
-    },)
+            .catch((err) => {
+                console.log(err)
+            })
+    }
 
     const classes = useStyles();
 
@@ -48,7 +55,10 @@ export default function Twitter(){
             <Container maxWidth="lg" className={classes.container}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={12} lg={12}>
-                        <TwitterRules rules={rules}/>
+                        <TwitterRules
+                            rows={twitterRules}
+                            fetchTwitterRules={fetchTwitterRules}
+                        />
                     </Grid>
                 </Grid>
             </Container>
