@@ -20,6 +20,12 @@
       },
       "auth": {
         "nvsociallisteninguia7866996": {}
+      },
+      "function": {
+        "nvsocialsettingslambda": {
+          "deploymentBucketName": "amplify-nvsociallisteningui-dev-174705-deployment",
+          "s3Key": "amplify-builds/nvsocialsettingslambda-33534167646546566830-build.zip"
+        }
       }
     }
   }

@@ -1,16 +1,11 @@
 import './App.css';
-import Amplify, {Auth} from 'aws-amplify';
+import Amplify from 'aws-amplify';
 import awsconfig from './aws-exports';
 import Dashboard from './components/Dashboard'
 import Facebook from './components/Facebook'
 import Layout from "./layout";
 import Twitter from './components/twitter'
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch,} from "react-router-dom";
 import {withAuthenticator} from '@aws-amplify/ui-react';
 
 

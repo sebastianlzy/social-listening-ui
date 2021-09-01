@@ -1,23 +1,57 @@
+import React, {useEffect, useState} from 'react';
+import {makeStyles} from '@material-ui/core/styles';
 
-import React, { useState, useEffect } from 'react';
-// import getTwitterRules from "./getTwitterRules";
+import getTwitterRules from "./getTwitterRules";
+import get from 'lodash/get'
+import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
+import isEqual from "lodash/isEqual"
 
+import TwitterRules from './TwitterRules'
 
-export default () => {
+const useStyles = makeStyles((theme) => ({
+    title: {
+        padding: theme.spacing(2)
+    },
+    fixedHeight: {
+        height: 240,
+    },
+    container: {
+        padding: theme.spacing(2)
+    },
+    paper: {
+        padding: theme.spacing(2),
+        display: 'flex',
+        overflow: 'auto',
+        flexDirection: 'column',
+    },
+}));
+
+export default function Twitter(){
 
     const [rules, setRules] = useState([]);
 
     useEffect(() => {
-        // Update the document title using the browser API
-        // getTwitterRules().then((rules) => {
-        //     console.log(rules)
-        //     setRules(rules)
-        // })
-    });
+        getTwitterRules()
+            .then((resp) => {
+                let newRules = get(resp, 'data.body')
+                if (!isEqual(newRules, rules)) {
+                    setRules(newRules)
+                }
+            })
+    },)
+
+    const classes = useStyles();
 
     return (
-        <div>Twitter settings
-            <div>{rules}</div>
+        <div>
+            <Container maxWidth="lg" className={classes.container}>
+                <Grid container spacing={3}>
+                    <Grid item xs={12} md={12} lg={12}>
+                        <TwitterRules rules={rules}/>
+                    </Grid>
+                </Grid>
+            </Container>
         </div>
     )
 }

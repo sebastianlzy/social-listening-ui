@@ -6,8 +6,6 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import FacebookIcon from '@material-ui/icons/Facebook';
-
-import ReactDOM from "react-dom"
 import {useLocation} from 'react-router-dom'
 import {matchPath} from "react-router";
 

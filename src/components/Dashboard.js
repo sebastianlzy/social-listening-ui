@@ -1,22 +1,16 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
 import Box from '@material-ui/core/Box';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Chart from './chart';
 import SentimentScore from './sentimentScore';
 import RecentMentions from './recentMentions';
 import Copyright from './Copyright'
 import clsx from "clsx";
 
-export default () => {
+export default function Dashboard() {
     const useDashboardStyles = makeStyles((theme) => ({
         paper: {
             padding: theme.spacing(2),
@@ -27,6 +21,9 @@ export default () => {
         fixedHeight: {
             height: 240,
         },
+        container: {
+            padding: theme.spacing(2)
+        }
     }))
     const classes = useDashboardStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);

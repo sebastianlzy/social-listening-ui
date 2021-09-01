@@ -10,8 +10,6 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 
 import React from "react";
 
-import App from "../App";
-
 
 const AppBarComponent = ({classes, handleDrawerOpen, open}) => (
     <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
