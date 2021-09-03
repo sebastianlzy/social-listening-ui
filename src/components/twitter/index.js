@@ -37,7 +37,7 @@ export default function Twitter() {
             .then((resp) => {
                 let newRules = get(resp, 'data.body')
                 if (!isEqual(newRules, twitterRules)) {
-                    setTwitterRules(newRules)
+                    setTwitterRules(newRules || [])
                 }
             })
             .catch((err) => console.log(err))
