@@ -42,12 +42,23 @@ app.get('/settings/:ssn', function (req, res) {
 });
 
 app.get('/settings/:ssn/recentMentions', function (req, res) {
-    // Add your code here
-    res.json({
-        success: 'get call succeed!',
-        url: req.url,
-        body: getRecentMentions()
-    });
+
+    getRecentMentions()
+        .then((recentMentions) => {
+            res.json({
+                success: 'get call succeed!',
+                url: req.url,
+                body: recentMentions
+            });
+        })
+        .catch((err) => {
+            res.status(500).json({
+                msg: 'get call failed!',
+                body: err
+            })
+        })
+
+
 });
 
 app.get('/settings/:ssn/rules', function (req, res) {

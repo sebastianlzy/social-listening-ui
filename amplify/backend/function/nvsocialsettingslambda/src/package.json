@@ -4,11 +4,13 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.28.0",
     "aws-serverless-express": "^3.3.5",
     "axios": "^0.21.1",
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "moment": "^2.29.1"
   },
   "scripts": {
     "test:getTwitterRules": "amplify mock function --event 'src/twitterRulesApi/getTwitterRulesEvent.json'",
