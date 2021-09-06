@@ -28,9 +28,6 @@ const useStyles = makeStyles({
 const countSentiments = (recentMentions) => {
 
     return recentMentions.reduce((acc, recentMention) => {
-        console.log("--------------------20--toLower(recentMention.sentiment)---------------------------")
-        console.log(toLower(recentMention.sentiment))
-        console.log("--------------------20--toLower(recentMention.sentiment)--------------------------")
         acc[toLower(recentMention.sentiment)] = acc[toLower(recentMention.sentiment)] + 1
 
         return acc
