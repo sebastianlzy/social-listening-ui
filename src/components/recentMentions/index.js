@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import Link from '@material-ui/core/Link';
+import moment from "moment"
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -34,6 +34,7 @@ export default function Orders() {
     const fetchRecentMentions = () => {
         return getRecentMentions()
             .then((resp) => {
+
                 let newRecentMentions = get(resp, 'data.body')
                 if (!isEqual(newRecentMentions, recentMentions)) {
                     setRecentMentions(newRecentMentions)
@@ -50,30 +51,27 @@ export default function Orders() {
             <Table size="small">
                 <TableHead>
                     <TableRow>
+                        <TableCell>#</TableCell>
                         <TableCell>Date</TableCell>
                         <TableCell>Source</TableCell>
                         <TableCell>Text</TableCell>
                         <TableCell>Language</TableCell>
-                        <TableCell >Score</TableCell>
+                        <TableCell>Sentiment</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {recentMentions.map((row) => (
+                    {recentMentions.map((row, idx) => (
                         <TableRow key={row.id}>
-                            <TableCell>{row.date}</TableCell>
+                            <TableCell>{idx + 1}</TableCell>
+                            <TableCell>{moment(row.created_at).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
                             <TableCell>{row.source}</TableCell>
-                            <TableCell>{row.text}</TableCell>
+                            <TableCell>{row.originaltext}</TableCell>
                             <TableCell>{row.language}</TableCell>
-                            <TableCell>{row.score}</TableCell>
+                            <TableCell>{row.sentiment}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
-            <div className={classes.seeMore}>
-                <Link color="primary" href="#" onClick={preventDefault}>
-                    See more mentions
-                </Link>
-            </div>
         </React.Fragment>
     );
 }

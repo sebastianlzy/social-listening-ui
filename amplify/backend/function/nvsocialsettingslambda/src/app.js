@@ -46,14 +46,14 @@ app.get('/settings/:ssn/recentMentions', function (req, res) {
     getRecentMentions()
         .then((recentMentions) => {
             res.json({
-                success: 'get call succeed!',
+                success: 'get call /settings/:ssn/recentMentions succeed!',
                 url: req.url,
                 body: recentMentions
             });
         })
         .catch((err) => {
             res.status(500).json({
-                msg: 'get call failed!',
+                msg: 'get call /settings/:ssn/recentMentions failed!',
                 body: err
             })
         })

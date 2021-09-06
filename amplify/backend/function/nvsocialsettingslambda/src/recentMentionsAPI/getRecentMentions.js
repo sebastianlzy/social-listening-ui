@@ -100,7 +100,7 @@ const getRecentMentions = async () => {
             const texts = await executeCommand(command, async (resp) => parseBody(await streamToString(resp.Body)))
             return [
                 ...acc,
-                ...texts.filter((text) => text.sentiment !== undefined)
+                ...texts.filter((text) => text.sentiment !== undefined).map((text) => ({...text, source: "Twitter"}))
             ]
         }, Promise.resolve([]))
 
