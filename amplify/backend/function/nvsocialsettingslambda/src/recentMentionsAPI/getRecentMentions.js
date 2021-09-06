@@ -81,7 +81,7 @@ const filterByCurrMonth = (contents) => {
     return contents
         .filter((res) => {
             return moment().diff(moment(res.LastModified), 'months') === 0
-        }).slice(contents.length - 50)
+        })
 }
 
 const getRecentMentions = async () => {

@@ -1,49 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import moment from "moment"
-import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Title from '../Title';
-import get from "lodash/get";
-import isEqual from "lodash/isEqual";
-import getRecentMentions from "./getRecentMentions";
 
 
-function preventDefault(event) {
-    event.preventDefault();
-}
+export default function RecentMentions(props) {
 
-const useStyles = makeStyles((theme) => ({
-    seeMore: {
-        marginTop: theme.spacing(3),
-    },
-}));
-
-export default function Orders() {
-    const classes = useStyles();
-
-    const [recentMentions, setRecentMentions] = useState([]);
-
-    useEffect(() => {
-        fetchRecentMentions()
-    })
-
-    const fetchRecentMentions = () => {
-        return getRecentMentions()
-            .then((resp) => {
-
-                let newRecentMentions = get(resp, 'data.body')
-                if (!isEqual(newRecentMentions, recentMentions)) {
-                    setRecentMentions(newRecentMentions)
-                }
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-    }
+    const {recentMentions} = props
 
     return (
         <React.Fragment>
@@ -61,7 +28,7 @@ export default function Orders() {
                 </TableHead>
                 <TableBody>
                     {recentMentions.map((row, idx) => (
-                        <TableRow key={row.id}>
+                        <TableRow key={`recentMentions-${idx}`}>
                             <TableCell>{idx + 1}</TableCell>
                             <TableCell>{moment(row.created_at).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
                             <TableCell>{row.source}</TableCell>

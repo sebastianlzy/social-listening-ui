@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
@@ -9,8 +9,32 @@ import SentimentScore from './sentimentScore';
 import RecentMentions from './recentMentions';
 import Copyright from './Copyright'
 import clsx from "clsx";
+import getRecentMentions from "./recentMentions/getRecentMentions";
+import get from "lodash/get";
+import isEqual from "lodash/isEqual";
 
 export default function Dashboard() {
+
+    const [recentMentions, setRecentMentions] = useState([]);
+
+    useEffect(() => {
+        fetchRecentMentions()
+    })
+
+    const fetchRecentMentions = () => {
+        return getRecentMentions()
+            .then((resp) => {
+
+                let newRecentMentions = get(resp, 'data.body')
+                if (!isEqual(newRecentMentions, recentMentions)) {
+                    setRecentMentions(newRecentMentions)
+                }
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
     const useDashboardStyles = makeStyles((theme) => ({
         paper: {
             padding: theme.spacing(2),
@@ -39,13 +63,17 @@ export default function Dashboard() {
                 {/*Overall sentiment*/}
                 <Grid item xs={12} md={4} lg={3}>
                     <Paper className={fixedHeightPaper}>
-                        <SentimentScore />
+                        <SentimentScore
+                            recentMentions={recentMentions}
+                        />
                     </Paper>
                 </Grid>
                 {/*Sentiments*/}
                 <Grid item xs={12}>
                     <Paper className={classes.paper}>
-                        <RecentMentions />
+                        <RecentMentions
+                            recentMentions={recentMentions}
+                        />
                     </Paper>
                 </Grid>
             </Grid>

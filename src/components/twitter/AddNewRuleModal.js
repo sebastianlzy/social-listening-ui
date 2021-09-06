@@ -64,6 +64,7 @@ export default function SimpleModal(props) {
         if (isEmpty(value) || isEmpty(tag)) {
 
             setErrorMsg("Value or Tag cannot be empty")
+            setIsBackdropShown(false)
             return
         }
 
