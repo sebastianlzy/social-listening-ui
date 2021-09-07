@@ -19,7 +19,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         fetchRecentMentions()
-    })
+    }, [])
 
     const fetchRecentMentions = () => {
         return getRecentMentions()
