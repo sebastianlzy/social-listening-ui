@@ -9,17 +9,26 @@ export default function Facebook() {
     const [accessToken, setAccessToken] = useState([]);
 
     useEffect(() => {
-        FB.getLoginStatus(async function(response) {
-            console.log("--------------------response-----------------------------")
-            console.log(response)
-            console.log("--------------------response----------------------------")
-            if (response.status === 'connected') {
-                const accessToken = response.authResponse.accessToken;
-                console.log(accessToken)
-                setAccessToken(accessToken)
-                await setAccessTokenToLambda(accessToken)
-            }
-        } );
+        window.fbAsyncInit = function () {
+            FB.init({
+              appId            : '579539346533486', //TODO: Change this to take from variable if possible
+              autoLogAppEvents : true,
+              xfbml            : true,
+              version          : 'v11.0'
+            });
+            
+            FB.getLoginStatus(async function(response) {
+                console.log("--------------------response-----------------------------")
+                console.log(response)
+                console.log("--------------------response----------------------------")
+                if (response.status === 'connected') {
+                    const accessToken = response.authResponse.accessToken;
+                    console.log(accessToken)
+                    setAccessToken(accessToken)
+                    await setAccessTokenToLambda(accessToken)
+                }
+            } );
+        }
     }, [])
 
     const setAccessTokenToLambda = () => {
@@ -37,6 +46,7 @@ export default function Facebook() {
         <div>
             Facebook settings
             <div>{accessToken}</div>
+            <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
         </div>
     )
 }
