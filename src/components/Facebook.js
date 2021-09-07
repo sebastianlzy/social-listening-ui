@@ -14,6 +14,7 @@ export default function Facebook() {
         FB.getLoginStatus(async function(response) {
             if (response.status === 'connected') {
                 const userAccessToken = response.authResponse.accessToken;
+                console.log(response.authResponse)
                 console.log(userAccessToken)
                 setUserAccessToken(userAccessToken)
                 await postUserAccessTokenToLambda(userAccessToken)
@@ -39,7 +40,7 @@ export default function Facebook() {
         <div style={{padding: "30px"}}>
 
             <div className="fb-login-button" data-width="" data-size="medium" data-button-type="continue_with"
-                 data-layout="default" data-auto-logout-link="false" data-use-continue-as="false">
+                 data-layout="default" data-auto-logout-link="false" data-use-continue-as="false" data-scope="pages_manage_metadata">
 
             </div>
             <Button variant="contained" color="primary" onClick={getUserAccessToken}>
