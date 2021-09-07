@@ -80,7 +80,7 @@ const executeCommand = async (command, callback=async (resp)=> resp ) => {
 const filterByCurrMonth = (contents) => {
     return contents
         .filter((res) => {
-            return moment().diff(moment(res.LastModified), 'days') < 7
+            return moment().diff(moment(res.LastModified), 'days') < 2
         })
 }
 
