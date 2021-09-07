@@ -61,13 +61,6 @@ app.get('/settings/:ssn/recentMentions', function (req, res) {
 
 });
 
-app.get('/settings/:ssn/accesstoken', function (req, res) {
-
-   //Yudho code here
-    console.log(req.body)
-
-});
-
 app.get('/settings/:ssn/rules', function (req, res) {
 
     return getTwitterRules()
@@ -113,6 +106,13 @@ app.post('/settings/:ssn/rules', function (req, res) {
                 body: err
             })
         })
+
+});
+
+app.post('/settings/:ssn/accesstoken', function (req, res) {
+
+    //Yudho code here
+    console.log(req.body)
 
 });
 
