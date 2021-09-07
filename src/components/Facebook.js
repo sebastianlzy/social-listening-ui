@@ -14,21 +14,22 @@ export default function Facebook() {
         FB.getLoginStatus(async function(response) {
             if (response.status === 'connected') {
                 const userAccessToken = response.authResponse.accessToken;
+                const userID = response.authResponse.userID
                 console.log(response.authResponse)
-                console.log(userAccessToken)
                 setUserAccessToken(userAccessToken)
-                await postUserAccessTokenToLambda(userAccessToken)
+                await postUserAccessTokenToLambda(userID, userAccessToken)
             }
         } );
 
     }
-    const postUserAccessTokenToLambda = () => {
+    const postUserAccessTokenToLambda = (userID, userAccessToken) => {
         const apiName = 'nvsocial';
-        const path = '/settings/facebook/accesstoken';
+        const path = '/settings/facebook/subscribeWebhook';
         const config = {
             response: true,
             body: {
-                userAccessToken
+                userID: userID,
+                userAccessToken: userAccessToken
             }
         };
 
