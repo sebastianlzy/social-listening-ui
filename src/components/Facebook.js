@@ -1,52 +1,51 @@
 
 /*global FB, a*/
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {API} from "aws-amplify";
+import Button from '@material-ui/core/Button';
 
 export default function Facebook() {
 
 
-    const [accessToken, setAccessToken] = useState([]);
+    const [userAccessToken, setUserAccessToken] = useState([]);
 
-    useEffect(() => {
-        window.fbAsyncInit = function () {
-            FB.init({
-              appId            : '579539346533486', //TODO: Change this to take from variable if possible
-              autoLogAppEvents : true,
-              xfbml            : true,
-              version          : 'v11.0'
-            });
-            
-            FB.getLoginStatus(async function(response) {
-                console.log("--------------------response-----------------------------")
-                console.log(response)
-                console.log("--------------------response----------------------------")
-                if (response.status === 'connected') {
-                    const accessToken = response.authResponse.accessToken;
-                    console.log(accessToken)
-                    setAccessToken(accessToken)
-                    await setAccessTokenToLambda(accessToken)
-                }
-            } );
-        }
-    }, [])
+    const getUserAccessToken = (e) => {
+        e.preventDefault()
+        FB.getLoginStatus(async function(response) {
+            if (response.status === 'connected') {
+                const userAccessToken = response.authResponse.accessToken;
+                console.log(userAccessToken)
+                setUserAccessToken(userAccessToken)
+                await postUserAccessTokenToLambda(userAccessToken)
+            }
+        } );
 
-    const setAccessTokenToLambda = () => {
+    }
+    const postUserAccessTokenToLambda = () => {
         const apiName = 'nvsocial';
         const path = '/settings/facebook/accesstoken';
         const config = {
             response: true,
+            body: {
+                userAccessToken
+            }
         };
 
-        return API.get(apiName, path, config)
+        return API.post(apiName, path, config)
     }
 
 
     return (
-        <div>
-            Facebook settings
-            <div>{accessToken}</div>
-            <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+        <div style={{padding: "30px"}}>
+
+            <div className="fb-login-button" data-width="" data-size="medium" data-button-type="continue_with"
+                 data-layout="default" data-auto-logout-link="false" data-use-continue-as="false">
+
+            </div>
+            <Button variant="contained" color="primary" onClick={getUserAccessToken}>
+                get access token
+            </Button>
+            <div>{userAccessToken}</div>
         </div>
     )
 }
