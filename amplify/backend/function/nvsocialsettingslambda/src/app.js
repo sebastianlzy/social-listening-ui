@@ -118,9 +118,8 @@ app.post('/settings/:ssn/subscribeWebhook', function (req, res) {
         .then((resp) => { return installApp(resp) })
         .then((resp) => {
             res.json({
-                success: 'Facebook webhook subscription succeed!',
                 url: req.url,
-                body: "success"
+                body: "Facebook webhook subscription succeed!"
             });
         })
         .catch((err) => {
