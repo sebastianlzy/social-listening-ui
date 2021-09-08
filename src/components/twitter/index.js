@@ -54,19 +54,17 @@ export default function Twitter() {
     const classes = useStyles();
 
     return (
-        <div>
-            <Container maxWidth="lg" className={classes.container}>
-                <Grid container spacing={3}>
-                    <Grid item xs={12} md={12} lg={12}>
-                        <TwitterRules
-                            rows={twitterRules}
-                            fetchTwitterRules={fetchTwitterRules}
-                            isBackdropShown={isBackdropShown}
-                            setIsBackdropShown={setIsBackdropShown}
-                        />
-                    </Grid>
+        <Container maxWidth="lg" className={classes.container}>
+            <Grid container spacing={3}>
+                <Grid item xs={12} md={12} lg={12}>
+                    <TwitterRules
+                        rows={twitterRules}
+                        fetchTwitterRules={fetchTwitterRules}
+                        isBackdropShown={isBackdropShown}
+                        setIsBackdropShown={setIsBackdropShown}
+                    />
                 </Grid>
-            </Container>
-        </div>
+            </Grid>
+        </Container>
     )
 }
