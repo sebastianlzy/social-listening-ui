@@ -112,18 +112,15 @@ app.post('/settings/:ssn/rules', function (req, res) {
 });
 
 app.post('/settings/:ssn/subscribeWebhook', function (req, res) {
-
-    //Yudho code here
-    console.log(req.body)
     const userID = req.body.userID;
     const userAccessToken = req.body.userAccessToken;
-    getPageAccessToken()
-        .then(installApp)
+    return getPageAccessToken(userID, userAccessToken)
+        .then((resp) => { return installApp(resp) })
         .then((resp) => {
             res.json({
                 success: 'Facebook webhook subscription succeed!',
                 url: req.url,
-                body: {resp}
+                body: "success"
             });
         })
         .catch((err) => {
@@ -131,7 +128,7 @@ app.post('/settings/:ssn/subscribeWebhook', function (req, res) {
                 msg: 'Facebook webhook subscription failed!',
                 body: err
             })
-        })
+        })    
 
 });
 
