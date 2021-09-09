@@ -41,6 +41,7 @@ export default function Facebook() {
     useEffect(() => {
 
         setTimeout(() => {
+            initFb()
             FB.getLoginStatus(async function (response) {
                 if (response.status === 'connected') {
                     setIsFBLogin(true)
@@ -55,9 +56,11 @@ export default function Facebook() {
         FB.getLoginStatus(async function (response) {
             if (response.status === 'connected') {
                 const userAccessToken = response.authResponse.accessToken;
+                setUserAccessToken(userAccessToken)
                 const userID = response.authResponse.userID
                 const webhookSubscriptionResponse = await postUserAccessTokenToLambda(userID, userAccessToken)
                 setWebhookSubscriptionResult(webhookSubscriptionResponse.data.body)
+                setOpenSnackbar(true)
             }
         });
 
@@ -76,37 +79,51 @@ export default function Facebook() {
         return API.post(apiName, path, config)
     }
 
-    const copyToClipboard = () => {
-        setOpenSnackbar(true)
-        navigator.clipboard.writeText(userAccessToken)
-    }
+    // const copyToClipboard = () => {
+    //     setOpenSnackbar(true)
+    //     navigator.clipboard.writeText(userAccessToken)
+    // }
 
     const renderGetAccessToken = () => {
         return (
             <div className={classes.getUserAccessTokenBtn}>
                 <div>
                     <Button variant="contained" color="primary" onClick={getUserAccessToken}>
-                        Get user access token
+                        Subscribe to FB webhook
                     </Button>
                 </div>
-                <div className={classes.userAccessTokenText}>
-                    {userAccessToken !== "" ? (
-                        <TextField
-                            onClick={copyToClipboard}
-                            fullWidth disabled
-                            value={userAccessToken}
-                        />
-                    ) : null}
-                </div>
+                {/*<div className={classes.userAccessTokenText}>*/}
+                    {/*{userAccessToken !== "" ? (*/}
+                    {/*    <TextField*/}
+                    {/*        onClick={copyToClipboard}*/}
+                    {/*        fullWidth disabled*/}
+                    {/*        value={userAccessToken}*/}
+                    {/*    />*/}
+                    {/*) : null}*/}
+                {/*</div>*/}
             </div>
         )
     }
 
+    const initFb = () => {
+
+        const appId = "579539346533486"
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId            : appId, //TODO: Change this to take from variable if possible
+                autoLogAppEvents : true,
+                xfbml            : true,
+                version          : 'v11.0'
+            });
+        };
+    }
 
     const classes = useStyles();
     return (
 
         <Container maxWidth="lg" className={classes.container}>
+
+
             <Grid container spacing={3}>
                 <Grid item xs={12} md={12} lg={12}>
 
@@ -120,7 +137,7 @@ export default function Facebook() {
                             open={openSnackbar}
                             autoHideDuration={6000}
                             onClose={() => setOpenSnackbar(false)}
-                            message={"Copied"}
+                            message={webhookSubscriptionResult}
                         />
                     </Paper>
                 </Grid>
