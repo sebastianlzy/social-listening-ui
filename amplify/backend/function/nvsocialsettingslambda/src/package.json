@@ -16,7 +16,7 @@
     "test:getTwitterRules": "amplify mock function --event 'src/twitterRulesApi/getTwitterRulesEvent.json'",
     "test:addTwitterRule": "amplify mock function --event 'src/twitterRulesApi/addTwitterRuleEvent.json'",
     "test:deleteTwitterRules": "amplify mock function --event 'src/twitterRulesApi/deleteTwitterRulesEvent.json'",
-    "test:getRecentMentions": "amplify mock function --event 'src/recentMentionsAPI/getRecentMentionsEvent.json'"
+    "test:getRecentMentions": "amplify mock function --event 'src/recentMentionsAPI/getRecentMentionsEvent.json' --timeout 30"
   },
   "author": "",
   "license": "ISC"

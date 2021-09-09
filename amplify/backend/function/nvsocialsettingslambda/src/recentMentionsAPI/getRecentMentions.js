@@ -34,7 +34,8 @@ const CSVtoArray = (text) => {
 
 const parseBody = (bodyContents) => {
     let headers = []
-    return bodyContents.split(/\r?\n/)
+
+    const contents = bodyContents.split(/\r?\n/)
         .map((content, idx) => {
             try {
                 const contentInArray = CSVtoArray(content)
@@ -57,12 +58,15 @@ const parseBody = (bodyContents) => {
                 return undefined
             }
         }).filter((content) => content !== undefined)
+
+    return contents
 }
 
 const listObjectCommand = (bucketName) => {
     return new ListObjectsV2Command({
         Bucket: bucketName,
-    });
+        Prefix: "sentiment/"
+    })
 }
 
 const getObjectCommand = (bucketName, key) => {
@@ -80,7 +84,7 @@ const executeCommand = async (command, callback=async (resp)=> resp ) => {
 const filterByCurrMonth = (contents) => {
     return contents
         .filter((res) => {
-            return moment().diff(moment(res.LastModified), 'days') < 2
+            return moment().diff(moment(res.LastModified), 'days') < 3
         })
 }
 
