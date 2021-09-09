@@ -84,7 +84,7 @@ const executeCommand = async (command, callback=async (resp)=> resp ) => {
 const filterByCurrMonth = (contents) => {
     return contents
         .filter((res) => {
-            return moment().diff(moment(res.LastModified), 'days') < 3
+            return moment().diff(moment(res.LastModified), 'days') < 7
         })
 }
 
@@ -96,7 +96,7 @@ const getRecentMentions = async () => {
 
     try {
 
-        const fileNames = await executeCommand(command, async (resp) => filterByCurrMonth(resp.Contents))
+        const fileNames = await executeCommand(command, async (resp) => filterByCurrMonth(resp.Contents).slice(5))
         
         const messages = await fileNames.reduce(async (accPromise, fileName) =>  {
             const acc = await accPromise
