@@ -6,9 +6,6 @@ or in the "license" file accompanying this file. This file is distributed on an 
 See the License for the specific language governing permissions and limitations under the License.
 */
 
-
-;
-
 const express = require('express')
 const bodyParser = require('body-parser')
 const get = require('lodash/get')
@@ -19,9 +16,15 @@ const deleteTwitterRules = require('./twitterRulesAPI/deleteTwitterRules')
 const getRecentMentions = require("./recentMentionsAPI/getRecentMentions")
 const getPageAccessToken = require("./facebookSubscribeWebhookAPI/getPageAccessToken")
 const installApp = require("./facebookSubscribeWebhookAPI/installApp")
+const { SecretsManagerClient, PutSecretValueCommand } = require("@aws-sdk/client-secrets-manager");
 
 // declare a new express app
 const app = express()
+const SecretManagerClient = new SecretsManagerClient({
+    region: "ap-southeast-1"
+});
+
+
 app.use(bodyParser.json())
 app.use(awsServerlessExpressMiddleware.eventContext())
 
@@ -129,6 +132,23 @@ app.post('/settings/:ssn/subscribeWebhook', function (req, res) {
             })
         })    
 
+});
+
+app.post('/settings/:ssn/twitterKey', async function (req, res) {
+    const secretString = req.body.apiKey;
+
+
+    const command = new PutSecretValueCommand({
+        SecretId: "TwitterBearerTokenSecretManagerSecret",
+        SecretString: secretString
+    });
+    const response = await SecretManagerClient.send(command);
+
+
+    res.json({
+        url: req.url,
+        body: "Updated secret for Twitter API"
+    });
 });
 
 /****************************

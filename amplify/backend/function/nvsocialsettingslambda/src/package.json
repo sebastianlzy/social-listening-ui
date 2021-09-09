@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.28.0",
+    "@aws-sdk/client-secrets-manager": "^3.30.0",
     "aws-serverless-express": "^3.3.5",
     "axios": "^0.21.1",
     "body-parser": "^1.17.1",
@@ -16,7 +17,8 @@
     "test:getTwitterRules": "amplify mock function --event 'src/twitterRulesApi/getTwitterRulesEvent.json'",
     "test:addTwitterRule": "amplify mock function --event 'src/twitterRulesApi/addTwitterRuleEvent.json'",
     "test:deleteTwitterRules": "amplify mock function --event 'src/twitterRulesApi/deleteTwitterRulesEvent.json'",
-    "test:getRecentMentions": "amplify mock function --event 'src/recentMentionsAPI/getRecentMentionsEvent.json' --timeout 30"
+    "test:getRecentMentions": "amplify mock function --event 'src/recentMentionsAPI/getRecentMentionsEvent.json' --timeout 30",
+    "test:addTwitterKey": "amplify mock function --event 'src/twitterKeyAPI/addTwitterKeyEvent.json'"
   },
   "author": "",
   "license": "ISC"
