@@ -31,9 +31,11 @@ const useStyles = makeStyles((theme) => ({
 export default function Facebook() {
 
 
+
     const [userAccessToken, setUserAccessToken] = useState("");
     const [isFBLogin, setIsFBLogin] = useState(false);
     const [openSnackbar, setOpenSnackbar] = React.useState(false);
+    const [webhookSubscriptionResult, setWebhookSubscriptionResult] = useState([]);
 
 
     useEffect(() => {
@@ -48,26 +50,26 @@ export default function Facebook() {
 
     }, [])
 
-
     const getUserAccessToken = (e) => {
         e.preventDefault()
         FB.getLoginStatus(async function (response) {
             if (response.status === 'connected') {
                 const userAccessToken = response.authResponse.accessToken;
-                console.log(userAccessToken)
-                setUserAccessToken(userAccessToken)
-                await postUserAccessTokenToLambda(userAccessToken)
+                const userID = response.authResponse.userID
+                const webhookSubscriptionResponse = await postUserAccessTokenToLambda(userID, userAccessToken)
+                setWebhookSubscriptionResult(webhookSubscriptionResponse.data.body)
             }
         });
 
     }
-    const postUserAccessTokenToLambda = () => {
+    const postUserAccessTokenToLambda = (userID, userAccessToken) => {
         const apiName = 'nvsocial';
-        const path = '/settings/facebook/accesstoken';
+        const path = '/settings/facebook/subscribeWebhook';
         const config = {
             response: true,
             body: {
-                userAccessToken
+                userID: userID,
+                userAccessToken: userAccessToken
             }
         };
 
@@ -110,9 +112,8 @@ export default function Facebook() {
 
                     <Paper className={classes.paper}>
                         <div>
-                            <div className="fb-login-button" data-width="" data-size="large"
-                                 data-button-type="continue_with" data-layout="default" data-auto-logout-link="true"
-                                 data-use-continue-as="true" />
+                            <div className="fb-login-button" data-width="" data-size="medium" data-button-type="continue_with"
+                                 data-layout="default" data-auto-logout-link="false" data-use-continue-as="false" data-scope="pages_manage_metadata,pages_messaging" />
                         </div>
                         {isFBLogin ? renderGetAccessToken() : null}
                         <Snackbar
@@ -125,6 +126,5 @@ export default function Facebook() {
                 </Grid>
             </Grid>
         </Container>
-
     )
 }

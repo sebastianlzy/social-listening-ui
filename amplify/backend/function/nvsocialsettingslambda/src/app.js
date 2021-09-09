@@ -17,6 +17,8 @@ const getTwitterRules = require('./twitterRulesAPI/getTwitterRules')
 const addTwitterRule = require('./twitterRulesAPI/addTwitterRule')
 const deleteTwitterRules = require('./twitterRulesAPI/deleteTwitterRules')
 const getRecentMentions = require("./recentMentionsAPI/getRecentMentions")
+const getPageAccessToken = require("./facebookSubscribeWebhookAPI/getPageAccessToken")
+const installApp = require("./facebookSubscribeWebhookAPI/installApp")
 
 // declare a new express app
 const app = express()
@@ -109,10 +111,23 @@ app.post('/settings/:ssn/rules', function (req, res) {
 
 });
 
-app.post('/settings/:ssn/accesstoken', function (req, res) {
-
-    //Yudho code here
-    console.log(req.body)
+app.post('/settings/:ssn/subscribeWebhook', function (req, res) {
+    const userID = req.body.userID;
+    const userAccessToken = req.body.userAccessToken;
+    return getPageAccessToken(userID, userAccessToken)
+        .then((resp) => { return installApp(resp) })
+        .then((resp) => {
+            res.json({
+                url: req.url,
+                body: "Facebook webhook subscription succeed!"
+            });
+        })
+        .catch((err) => {
+            res.status(500).json({
+                msg: 'Facebook webhook subscription failed!',
+                body: err
+            })
+        })    
 
 });
 
