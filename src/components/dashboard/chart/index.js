@@ -1,9 +1,13 @@
 import React from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from 'recharts';
-import Title from '../Title';
+import Title from '../../common/Title';
 
 // Generate Sales Data
+import moment from 'moment'
+import set from 'lodash/set'
+import get from 'lodash/get'
+
 function createData(time, amount) {
     return { time, amount };
 }
@@ -20,15 +24,33 @@ const data = [
     createData('Aug 31', -20),
 ];
 
-export default function Chart() {
+const aggregateMentions = (mentions) => {
+    return mentions.reduce((acc, mention) => {
+        const createdAt = moment(mention.created_at).format("MMM DD")
+        const currVal = get(acc, `${createdAt}`, 0)
+        set(acc, `${createdAt}`, currVal + 1)
+        return acc
+    }, {})
+}
+
+const convertToChartData = (aggregatedMentions) => {
+    return Object.keys(aggregatedMentions).map((date) => {
+        return createData(date, aggregatedMentions[date])
+    })
+}
+
+export default function Chart(props) {
+    const {recentMentions} = props
     const theme = useTheme();
 
+    const recentMentionsData = convertToChartData(aggregateMentions(recentMentions))
+    
     return (
         <React.Fragment>
             <Title>Last 7 days</Title>
             <ResponsiveContainer>
                 <LineChart
-                    data={data}
+                    data={recentMentionsData}
                     margin={{
                         top: 16,
                         right: 16,
@@ -43,7 +65,7 @@ export default function Chart() {
                             position="left"
                             style={{ textAnchor: 'middle', fill: theme.palette.text.primary }}
                         >
-                            Sentiment score
+                            Recent Mentions
                         </Label>
                     </YAxis>
                     <Line type="monotone" dataKey="amount" stroke={theme.palette.primary.main} dot={false} />

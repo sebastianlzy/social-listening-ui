@@ -1,14 +1,13 @@
 import './App.css';
 import Amplify from 'aws-amplify';
 import awsconfig from './aws-exports';
-import Dashboard from './components/Dashboard'
+import Dashboard from './components/dashboard'
 import Facebook from './components/Facebook'
 import Layout from "./layout";
 import Twitter from './components/twitter'
 import {BrowserRouter as Router, Route, Switch,} from "react-router-dom";
 import {withAuthenticator} from '@aws-amplify/ui-react';
 import React from 'react';
-import Snackbar from "@material-ui/core/Snackbar";
 import BackdropContextProvider from './components/contextProvider/backdropContextProvider'
 
 Amplify.configure(awsconfig);
@@ -26,7 +25,7 @@ function App() {
                     <Switch>
                         <Route path="/dashboard">
                             <Layout>
-                                <Dashboard/>
+                                <Dashboard />
                             </Layout>
                         </Route>
                         <Route path="/settings/twitter">

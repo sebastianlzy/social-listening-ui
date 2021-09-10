@@ -9,26 +9,65 @@ import SentimentScore from './sentimentScore';
 import RecentMentions from './recentMentions';
 import Copyright from './Copyright'
 import clsx from "clsx";
-import getRecentMentions from "./recentMentions/getRecentMentions";
-import get from "lodash/get";
-import isEqual from "lodash/isEqual";
+import get from 'lodash/get'
+import isEqual from 'lodash/isEqual'
+import {useBackdropContext} from "../contextProvider/backdropContextProvider";
+import getRecentMentions from './getRecentMentions'
+import moment from 'moment'
 
-export default function Dashboard() {
+export default function Index() {
 
     const [recentMentions, setRecentMentions] = useState([]);
+    const {setIsBackdropShown, setNotificationMessage} = useBackdropContext()
 
     useEffect(() => {
+        setIsBackdropShown(true)
         fetchRecentMentions()
+            .then(() => {
+                setIsBackdropShown(false)
+            })
     }, [])
 
-    const fetchRecentMentions = () => {
-        return getRecentMentions()
-            .then((resp) => {
+    const cacheKey = "recentMentions"
 
-                let newRecentMentions = get(resp, 'data.body')
+    const fetchRecentMentionsFromLocalStorage = () => {
+
+
+        const itemStr = localStorage.getItem(cacheKey)
+        if (!itemStr) {
+            return Promise.reject()
+        }
+        const item = JSON.parse(itemStr)
+        if (moment().isAfter(item.expiry)) {
+            localStorage.removeItem(cacheKey)
+            return Promise.reject()
+        }
+
+        setNotificationMessage("Recent Mentions retrieved from cache")
+        return Promise.resolve(item.recentMentions)
+
+    }
+
+    const fetchRecentMentions = () => {
+
+        return fetchRecentMentionsFromLocalStorage()
+            .catch(() => {
+                return getRecentMentions().then((resp) => {
+                    const newRecentMentions = get(resp, 'data.body')
+                    const item = {
+                        recentMentions: newRecentMentions,
+                        expiry: moment().add(5, 'm')
+                    }
+
+                    localStorage.setItem(cacheKey, JSON.stringify(item))
+                    return newRecentMentions
+                })
+            })
+            .then((newRecentMentions) => {
                 if (!isEqual(newRecentMentions, recentMentions)) {
-                    setRecentMentions(newRecentMentions)
+                    setRecentMentions(newRecentMentions ? newRecentMentions : [])
                 }
+
             })
             .catch((err) => {
                 console.log(err)
@@ -57,7 +96,9 @@ export default function Dashboard() {
                 {/*Chart*/}
                 <Grid item xs={12} md={8} lg={9}>
                     <Paper className={fixedHeightPaper}>
-                        <Chart />
+                        <Chart
+                            recentMentions={recentMentions}
+                        />
                     </Paper>
                 </Grid>
                 {/*Overall sentiment*/}
@@ -78,7 +119,7 @@ export default function Dashboard() {
                 </Grid>
             </Grid>
             <Box pt={4}>
-                <Copyright />
+                <Copyright/>
             </Box>
         </Container>
     )

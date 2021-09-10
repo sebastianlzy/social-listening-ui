@@ -5,7 +5,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import FilledInput from '@material-ui/core/FilledInput';
 import Button from '@material-ui/core/Button';
-import Title from '../Title'
+import Title from '../common/Title'
 import updateTwitterKey from './updateTwitterKey'
 
 const useStyles = makeStyles((theme) => ({
