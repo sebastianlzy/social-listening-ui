@@ -9,8 +9,7 @@ import isEqual from "lodash/isEqual"
 
 import TwitterRules from './TwitterRules'
 import TwitterKey from './TwitterKey'
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import {useBackdropContext} from "../contextProvider/backdropContextProvider";
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -34,11 +33,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Twitter(props) {
+export default function Twitter() {
 
-    const {setNotificationMessage} = props
+    const {setIsBackdropShown, setNotificationMessage} = useBackdropContext()
     const [twitterRules, setTwitterRules] = useState([]);
-    const [isBackdropShown, setIsBackdropShown] = React.useState(true);
 
     const fetchTwitterRules = () => {
         return getTwitterRules()
@@ -52,6 +50,7 @@ export default function Twitter(props) {
     }
 
     useEffect(() => {
+        setIsBackdropShown(true)
         fetchTwitterRules()
             .then(() => {
                 setIsBackdropShown(false)
@@ -77,9 +76,6 @@ export default function Twitter(props) {
                     />
                 </Grid>
             </Grid>
-            <Backdrop className={classes.backdrop} open={isBackdropShown} onClick={() => setIsBackdropShown(false)}>
-                <CircularProgress color="inherit" />
-            </Backdrop>
         </Container>
     )
 }
