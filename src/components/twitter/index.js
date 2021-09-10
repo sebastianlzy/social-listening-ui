@@ -8,6 +8,9 @@ import Container from "@material-ui/core/Container";
 import isEqual from "lodash/isEqual"
 
 import TwitterRules from './TwitterRules'
+import TwitterKey from './TwitterKey'
+import Backdrop from "@material-ui/core/Backdrop";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -25,10 +28,15 @@ const useStyles = makeStyles((theme) => ({
         overflow: 'auto',
         flexDirection: 'column',
     },
+    backdrop: {
+        zIndex: theme.zIndex.modal + 1,
+        color: '#fff',
+    },
 }));
 
-export default function Twitter() {
+export default function Twitter(props) {
 
+    const {setNotificationMessage} = props
     const [twitterRules, setTwitterRules] = useState([]);
     const [isBackdropShown, setIsBackdropShown] = React.useState(true);
 
@@ -50,21 +58,28 @@ export default function Twitter() {
             })
     }, [])
 
-
     const classes = useStyles();
 
     return (
         <Container maxWidth="lg" className={classes.container}>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={12} lg={12}>
+                    <TwitterKey
+                        setIsBackdropShown={setIsBackdropShown}
+                        setNotificationMessage={setNotificationMessage}
+                    />
+                </Grid>
+                <Grid item xs={12} md={12} lg={12}>
                     <TwitterRules
                         rows={twitterRules}
                         fetchTwitterRules={fetchTwitterRules}
-                        isBackdropShown={isBackdropShown}
                         setIsBackdropShown={setIsBackdropShown}
                     />
                 </Grid>
             </Grid>
+            <Backdrop className={classes.backdrop} open={isBackdropShown} onClick={() => setIsBackdropShown(false)}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </Container>
     )
 }

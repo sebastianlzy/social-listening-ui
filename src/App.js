@@ -7,11 +7,27 @@ import Layout from "./layout";
 import Twitter from './components/twitter'
 import {BrowserRouter as Router, Route, Switch,} from "react-router-dom";
 import {withAuthenticator} from '@aws-amplify/ui-react';
+import React from 'react';
+import Snackbar from "@material-ui/core/Snackbar";
 
 
 Amplify.configure(awsconfig);
 
 function App() {
+
+    const [openSnackbar, setOpenSnackbar] = React.useState(false);
+    const [snackbarMsg, setSnackbarMsg] = React.useState("");
+
+    const handleCloseSnackbar = () => {
+        setOpenSnackbar(false)
+        setSnackbarMsg("")
+    }
+
+    const setNotificationMessage = (message) => {
+        setOpenSnackbar(true)
+        setSnackbarMsg(message)
+    }
+
     return (
         <div>
             <Router>
@@ -23,7 +39,9 @@ function App() {
                     </Route>
                     <Route path="/settings/twitter">
                         <Layout>
-                            <Twitter/>
+                            <Twitter
+                                setNotificationMessage={setNotificationMessage}
+                            />
                         </Layout>
                     </Route>
                     <Route path="/settings/facebook">
@@ -38,6 +56,13 @@ function App() {
                     </Route>
                 </Switch>
             </Router>
+
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+                message={snackbarMsg}
+            />
         </div>
     );
 }

@@ -32,11 +32,7 @@ const useStyles = makeStyles((theme) => ({
         position: 'absolute',
         top: 20,
         width: 1,
-    },
-    backdrop: {
-        zIndex: theme.zIndex.modal + 1,
-        color: '#fff',
-    },
+    }
 }));
 
 const headCells = [
@@ -46,7 +42,7 @@ const headCells = [
 ];
 
 export default function TwitterRules(props) {
-    const {rows, fetchTwitterRules, isBackdropShown, setIsBackdropShown} = props
+    const {rows, fetchTwitterRules, setIsBackdropShown} = props
     const classes = useStyles();
     const [selected, setSelected] = React.useState([]);
     const [openAddRuleModal, setOpenAddRuleModal] = React.useState(false);
@@ -108,9 +104,7 @@ export default function TwitterRules(props) {
                     handleAdd={handleOpenAddRuleModal}
                     handleDelete={handleDeleteTwitterRules}
                 />
-                <Backdrop className={classes.backdrop} open={isBackdropShown} onClick={() => setIsBackdropShown(false)}>
-                    <CircularProgress color="inherit" />
-                </Backdrop>
+
                 <TableContainer>
                     <Table
                         className={classes.table}
