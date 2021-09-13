@@ -38,7 +38,7 @@ export default function Chart(props) {
     
     return (
         <React.Fragment>
-            <Title>Last 7 days</Title>
+            <Title>Last 200 mentions</Title>
             <ResponsiveContainer>
                 <LineChart
                     data={recentMentionsData}
