@@ -1,16 +1,15 @@
 /*global FB, a*/
 import React, {useEffect, useState} from "react";
 import {API} from "aws-amplify";
-import Button from '@material-ui/core/Button';
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import {makeStyles} from "@material-ui/core/styles";
 import Paper from '@material-ui/core/Paper';
 import Snackbar from '@material-ui/core/Snackbar';
-import Typography from '@material-ui/core/Typography';
 import {useBackdropContext} from "../contextProvider/backdropContextProvider";
 import FacebookKey from "./FacebookKey";
 import Title from "../common/Title";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -36,33 +35,60 @@ export default function Facebook() {
     const [openSnackbar, setOpenSnackbar] = React.useState(false);
     const [webhookSubscriptionResult, setWebhookSubscriptionResult] = useState([]);
     const [isFBInit, setIsFBInit] = React.useState(false);
-    const appId = "183172253917242"
+
+    const fbAppIdCacheKey = "fbAppId"
+    const fbDefaultAppId = "183172253917242"
+    const getAppId = () => {
+        const itemStr = localStorage.getItem(fbAppIdCacheKey)
+        if (!itemStr) {
+            return fbDefaultAppId
+        }
 
 
+        const item = JSON.parse(itemStr)
+        if (moment().isAfter(item.expiry)) {
+            localStorage.removeItem(fbAppIdCacheKey)
+            return fbDefaultAppId
+        }
 
-    useEffect(() => {
-        if (isFBInit) {
+        return item.appId
+    }
+
+    const [appId] = React.useState(getAppId());
+
+
+    const FBinit = () => {
+        console.log("FB init")
+        console.log(appId)
+        FB.init({
+            appId            : appId,
+            autoLogAppEvents : true,
+            xfbml            : true,
+            version          : 'v11.0',
+            status: true
+        });
+    }
+
+    const FBAsyncInit = () => {
+        setIsBackdropShown(true)
+        console.log("fbAsyncInit")
+        if (window.FB !== undefined) {
+            FBinit()
+            setIsFBInit(true)
             setIsBackdropShown(false)
             return
         }
 
-        setIsBackdropShown(true)
-        console.log("fbAsyncInit")
         window.fbAsyncInit = function() {
-            console.log("FB init")
-            FB.init({
-                appId            : appId,
-                autoLogAppEvents : true,
-                xfbml            : true,
-                version          : 'v11.0',
-                status: true
-            });
-
+            FBinit()
             setIsFBInit(true)
             setIsBackdropShown(false)
         };
+    }
 
-        window.handleOnFbLogin = (resp) => {
+
+    useEffect(() => {
+        window.handleOnFbLogin = () => {
             FB.getLoginStatus(async function (response) {
                 if (response.status === 'connected') {
                     const {accessToken, userID} = response.authResponse
@@ -71,6 +97,17 @@ export default function Facebook() {
             });
         }
     }, [])
+
+
+    useEffect(() => {
+        console.log("isFBInit: " + isFBInit)
+        if (isFBInit) {
+            setIsBackdropShown(false)
+            return
+        }
+
+        FBAsyncInit()
+    }, [appId])
 
     const subscribeToFBWebhook = async (userID, accessToken) => {
         setIsBackdropShown(true)
@@ -99,12 +136,13 @@ export default function Facebook() {
     }
 
     const classes = useStyles();
+
     return (
 
         <Container maxWidth="lg" className={classes.container}>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={12} lg={12}>
-                    <FacebookKey appId={appId}/>
+                    <FacebookKey appId={appId} fbAppIdCacheKey={fbAppIdCacheKey} />
                     <Paper className={classes.paper}>
                         <div >
                             <Title>Login to facebook and subscribe to webhook</Title>

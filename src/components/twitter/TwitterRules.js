@@ -8,8 +8,6 @@ import deleteTwitterRules from './deleteTwitterRules'
 import EnhancedTableToolbar from '../enhanceTable/EnhancedTableToolbar'
 import EnhancedTableHead from '../enhanceTable/EnhancedTableHead'
 import EnhancedTableBody from '../enhanceTable/EnhancedTableBody'
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
     root: {

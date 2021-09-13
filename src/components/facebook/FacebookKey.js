@@ -6,6 +6,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FilledInput from '@material-ui/core/FilledInput';
 import Button from '@material-ui/core/Button';
 import Title from '../common/Title'
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -31,19 +32,20 @@ const useStyles = makeStyles((theme) => ({
 
 export default function FacebookKey(props) {
     const classes = useStyles();
-    const [appId, setAppId] = React.useState(props.appId);
+
+    const {appId, fbAppIdCacheKey} = props
+    const [inputAppId, setInputAppId] = React.useState(appId);
 
     const handleChange = (e) => {
-        const appId = e.target.value
-        setAppId(appId)
+        setInputAppId(e.target.value)
     }
 
     const handleSubmit = (e) => {
-        e.preventDefault()
-        console.log("--------------------43-handleSubmit-appId---------------------------")
-        console.log(appId)
-        console.log("--------------------43-handleSubmit-appId--------------------------")
-
+        localStorage.setItem(fbAppIdCacheKey, JSON.stringify({
+            appId: inputAppId,
+            expiry: moment().add(1, 'd')
+        }))
+        window.location.reload()
     }
 
     return (
@@ -57,7 +59,7 @@ export default function FacebookKey(props) {
                         <InputLabel htmlFor="facebookKey-appId">App ID</InputLabel>
                         <FilledInput
                             id="facebookKey-appId"
-                            value={appId}
+                            value={inputAppId}
                             onChange={handleChange}
                         />
                     </FormControl>
@@ -65,7 +67,7 @@ export default function FacebookKey(props) {
                         <Button
                             variant="outlined"
                             color="primary"
-                            disabled={appId && appId.length < 5}
+                            disabled={inputAppId && inputAppId.length < 5}
                             onClick={handleSubmit}
                         >
                             Update App ID
