@@ -15,14 +15,12 @@ const addTwitterRule = require('./twitterRulesAPI/addTwitterRule')
 const deleteTwitterRules = require('./twitterRulesAPI/deleteTwitterRules')
 const getRecentMentions = require("./recentMentionsAPI/getRecentMentions")
 const getPageAccessToken = require("./facebookSubscribeWebhookAPI/getPageAccessToken")
+const postTwitterKey = require("./twitterKeyAPI/postTwitterKey")
 const installApp = require("./facebookSubscribeWebhookAPI/installApp")
-const { SecretsManagerClient, PutSecretValueCommand } = require("@aws-sdk/client-secrets-manager");
+
 
 // declare a new express app
 const app = express()
-const SecretManagerClient = new SecretsManagerClient({
-    region: "ap-southeast-1"
-});
 
 
 app.use(bodyParser.json())
@@ -138,17 +136,19 @@ app.post('/settings/:ssn/twitterKey', async function (req, res) {
     const secretString = req.body.apiKey;
 
 
-    const command = new PutSecretValueCommand({
-        SecretId: "TwitterBearerTokenSecretManagerSecret",
-        SecretString: secretString
-    });
-    await SecretManagerClient.send(command);
+    return postTwitterKey(secretString)
+        .then(() => {
+            res.json({
+                url: req.url,
+                body: "Updated secret for Twitter API"
+            });
+        }).catch((err) => {
+            res.status(500).json({
+                msg: 'Twitter API update failed!',
+                body: err
+            })
+        })
 
-
-    res.json({
-        url: req.url,
-        body: "Updated secret for Twitter API"
-    });
 });
 
 /****************************
