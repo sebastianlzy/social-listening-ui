@@ -12,7 +12,7 @@ const lambdaClient = new LambdaClient({
 const postTwitterKey = async (secretString) => {
 
     const putSecretValueCommand = new PutSecretValueCommand({
-        SecretId: "TwitterBearerTokenSecretManagerSecret",
+        SecretId: process.env.TW_SECRET_ID,
         SecretString: secretString
     });
     await secretManagerClient.send(putSecretValueCommand);
