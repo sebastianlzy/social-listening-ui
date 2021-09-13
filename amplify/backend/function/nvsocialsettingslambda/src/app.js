@@ -142,7 +142,7 @@ app.post('/settings/:ssn/twitterKey', async function (req, res) {
         SecretId: "TwitterBearerTokenSecretManagerSecret",
         SecretString: secretString
     });
-    const response = await SecretManagerClient.send(command);
+    await SecretManagerClient.send(command);
 
 
     res.json({

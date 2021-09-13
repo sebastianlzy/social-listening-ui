@@ -12,21 +12,9 @@ function createData(time, amount) {
     return { time, amount };
 }
 
-const data = [
-    createData('Aug 23', 25),
-    createData('Aug 24', 1),
-    createData('Aug 25', -25),
-    createData('Aug 26', 3),
-    createData('Aug 27', 100),
-    createData('Aug 28', 50),
-    createData('Aug 29', 40),
-    createData('Aug 30', 10),
-    createData('Aug 31', -20),
-];
-
 const aggregateMentions = (mentions) => {
     return mentions.reduce((acc, mention) => {
-        const createdAt = moment(mention.created_at).format("MMM DD")
+        const createdAt = moment(mention.created_at).format("YYYY-MM-DD")
         const currVal = get(acc, `${createdAt}`, 0)
         set(acc, `${createdAt}`, currVal + 1)
         return acc
@@ -34,9 +22,12 @@ const aggregateMentions = (mentions) => {
 }
 
 const convertToChartData = (aggregatedMentions) => {
-    return Object.keys(aggregatedMentions).map((date) => {
-        return createData(date, aggregatedMentions[date])
-    })
+    return Object.keys(aggregatedMentions)
+        .sort((dateA, dateB) => moment(dateA).isAfter(dateB) ? 1 : -1 )
+        .map((date) => {
+            return createData(moment(date).format("MMM DD"), aggregatedMentions[date])
+        }
+    )
 }
 
 export default function Chart(props) {
