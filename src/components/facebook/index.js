@@ -37,7 +37,7 @@ export default function Facebook() {
     const [isFBInit, setIsFBInit] = React.useState(false);
 
     const fbAppIdCacheKey = "fbAppId"
-    const fbDefaultAppId = "183172253917242"
+    const fbDefaultAppId = "579539346533486"
     const getAppId = () => {
         const itemStr = localStorage.getItem(fbAppIdCacheKey)
         if (!itemStr) {
