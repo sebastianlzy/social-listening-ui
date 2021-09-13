@@ -84,22 +84,26 @@ const executeCommand = async (command, callback=async (resp)=> resp ) => {
 const filterByCurrMonth = (contents) => {
     return contents
         .filter((res) => {
-            return moment().diff(moment(res.LastModified), 'days') < 7
+            return moment().diff(moment(res.LastModified), 'month') < 1
         })
 }
 
 const getRecentMentions = async () => {
 
     const bucketName = process.env.RESULT_BUCKET_NAME
-
     const command = listObjectCommand(bucketName)
+    const limitNumberOfRecentMentions = 200
 
     try {
 
-        const fileNames = await executeCommand(command, async (resp) => filterByCurrMonth(resp.Contents).slice(5))
+        const fileNames = await executeCommand(command, async (resp) => filterByCurrMonth(resp.Contents))
         
         const messages = await fileNames.reduce(async (accPromise, fileName) =>  {
             const acc = await accPromise
+            if (acc.length >= limitNumberOfRecentMentions) {
+                return acc
+            }
+
             const command = getObjectCommand(bucketName, fileName.Key)
             const texts = await executeCommand(command, async (resp) => parseBody(await streamToString(resp.Body)))
             return [
