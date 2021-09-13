@@ -6,11 +6,11 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FilledInput from '@material-ui/core/FilledInput';
 import Button from '@material-ui/core/Button';
 import Title from '../common/Title'
-import updateTwitterKey from './updateTwitterKey'
 
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
+        paddingBottom: theme.spacing(2)
     },
     paper: {
         width: '100%',
@@ -29,28 +29,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function TwitterKey(props) {
-    const {setNotificationMessage, setIsBackdropShown} = props
+export default function FacebookKey(props) {
     const classes = useStyles();
-    const [apiKey, setApiKey] = React.useState("");
+    const [appId, setAppId] = React.useState(props.appId);
 
     const handleChange = (e) => {
-        const apiKey = e.target.value
-        setApiKey(apiKey)
+        const appId = e.target.value
+        setAppId(appId)
     }
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        setIsBackdropShown(true)
-        updateTwitterKey(apiKey)
-            .then(() => {
-                setIsBackdropShown(false)
-                setNotificationMessage("API key updated")
-            })
-            .catch(() => {
-                setIsBackdropShown(false)
-                setNotificationMessage("API key not updated")
-            })
+        console.log("--------------------43-handleSubmit-appId---------------------------")
+        console.log(appId)
+        console.log("--------------------43-handleSubmit-appId--------------------------")
 
     }
 
@@ -58,14 +50,14 @@ export default function TwitterKey(props) {
         <div className={classes.root}>
             <Paper className={classes.paper}>
                 <div className={classes.title}>
-                    <Title> Update Twitter API Key</Title>
+                    <Title> Update Facebook App ID</Title>
                 </div>
                 <div className={classes.inputTextApiKey}>
                     <FormControl fullWidth variant="filled">
-                        <InputLabel htmlFor="twitterKey-apiKey">API key</InputLabel>
+                        <InputLabel htmlFor="facebookKey-appId">App ID</InputLabel>
                         <FilledInput
-                            id="twitterKey-apiKey"
-                            value={apiKey}
+                            id="facebookKey-appId"
+                            value={appId}
                             onChange={handleChange}
                         />
                     </FormControl>
@@ -73,10 +65,10 @@ export default function TwitterKey(props) {
                         <Button
                             variant="outlined"
                             color="primary"
-                            disabled={apiKey.length < 5}
+                            disabled={appId && appId.length < 5}
                             onClick={handleSubmit}
                         >
-                            Update API key
+                            Update App ID
                         </Button>
                     </div>
                 </div>

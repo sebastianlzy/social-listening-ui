@@ -2,7 +2,7 @@ import './App.css';
 import Amplify from 'aws-amplify';
 import awsconfig from './aws-exports';
 import Dashboard from './components/dashboard'
-import Facebook from './components/facebook/Facebook'
+import Facebook from './components/facebook/'
 import Layout from "./layout";
 import Twitter from './components/twitter'
 import {BrowserRouter as Router, Route, Switch,} from "react-router-dom";
@@ -13,26 +13,26 @@ import BackdropContextProvider from './components/contextProvider/backdropContex
 Amplify.configure(awsconfig);
 
 
-
 function App() {
-
 
 
     return (
         <div>
+
             <BackdropContextProvider>
                 <Router>
                     <Switch>
                         <Route path="/dashboard">
                             <Layout>
-                                <Dashboard />
+                                <Dashboard/>
                             </Layout>
                         </Route>
                         <Route path="/settings/twitter">
                             <Layout>
-                                <Twitter />
+                                <Twitter/>
                             </Layout>
                         </Route>
+
                         <Route path="/settings/facebook">
                             <Layout>
                                 <Facebook/>
@@ -46,10 +46,6 @@ function App() {
                     </Switch>
                 </Router>
             </BackdropContextProvider>
-
-
-
-
         </div>
     );
 }
