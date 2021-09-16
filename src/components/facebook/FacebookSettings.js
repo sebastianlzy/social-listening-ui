@@ -10,6 +10,7 @@ import updateFBAppChallenge from "./updateFBAppChallenge";
 import updateFBAppSecretID from "./updateFBAppSecretID";
 import Title from '../common/Title'
 import moment from "moment";
+import {useBackdropContext} from "../contextProvider/backdropContextProvider";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -70,7 +71,7 @@ const InputFieldWithButton = (props) => {
 
 export default function FacebookSettings(props) {
 
-
+    const {setIsBackdropShown, setNotificationMessage} = useBackdropContext()
     const {appId, fbAppIdCacheKey} = props
     const [FBAppID, setFBAppID] = React.useState(appId);
     const [FBAppSecretId, setFBAppSecretId] = React.useState("");
@@ -99,19 +100,27 @@ export default function FacebookSettings(props) {
     }
 
     const handleFBAppChallengeSubmit = async () => {
+        setIsBackdropShown(true)
         try {
             await updateFBAppChallenge(FBAppChallenge)
+            setNotificationMessage("FB challenge successfully updated")
         } catch (e) {
+            setNotificationMessage("ERROR" + e.message)
             console.error(e)
         }
+        setIsBackdropShown(false)
     }
 
     const handleFBAppSecretIDSubmit = async () => {
+        setIsBackdropShown(true)
         try {
             await updateFBAppSecretID(FBAppSecretId)
+            setNotificationMessage("FB app secret ID successfully updated")
         } catch (e) {
+            setNotificationMessage("ERROR" + e.message)
             console.error(e)
         }
+        setIsBackdropShown(false)
     }
 
     return (
@@ -124,7 +133,7 @@ export default function FacebookSettings(props) {
 
                 <InputFieldWithButton
                     inputValue={FBAppID}
-                    isDisabled={FBAppID && FBAppID.length < 5}
+                    isDisabled={!FBAppID || FBAppID.length < 5}
                     label="FB App ID"
                     handleChange={handleInputChange("fbAppId")}
                     handleSubmit={handleFBAppIDSubmit}
@@ -132,7 +141,7 @@ export default function FacebookSettings(props) {
                 />
                 <InputFieldWithButton
                     inputValue={FBAppSecretId}
-                    isDisabled={FBAppSecretId && FBAppSecretId.length < 5}
+                    isDisabled={!FBAppSecretId || FBAppSecretId.length < 5}
                     label="FB App Secret ID"
                     handleChange={handleInputChange("fbAppSecretId")}
                     handleSubmit={handleFBAppSecretIDSubmit}
@@ -140,7 +149,7 @@ export default function FacebookSettings(props) {
                 />
                 <InputFieldWithButton
                     inputValue={FBAppChallenge}
-                    isDisabled={FBAppChallenge && FBAppChallenge.length < 5}
+                    isDisabled={!FBAppChallenge || FBAppChallenge.length < 5}
                     label="FB App Challenge"
                     handleChange={handleInputChange("fbAppChallenge")}
                     handleSubmit={handleFBAppChallengeSubmit}

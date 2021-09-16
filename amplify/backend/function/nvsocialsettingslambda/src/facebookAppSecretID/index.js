@@ -7,7 +7,7 @@ const secretManagerClient = new SecretsManagerClient({
 const postFacebookAppSecretId = async (secretString) => {
 
     const putSecretValueCommand = new PutSecretValueCommand({
-        SecretId: process.env.FB_APP_CHALLENGE,
+        SecretId: process.env.FB_APP_SECRET_ID,
         SecretString: secretString
     });
     await secretManagerClient.send(putSecretValueCommand);

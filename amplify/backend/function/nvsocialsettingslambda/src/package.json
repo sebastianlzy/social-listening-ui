@@ -20,7 +20,9 @@
     "test:addTwitterRule": "amplify mock function --event 'src/twitterRulesApi/addTwitterRuleEvent.json'",
     "test:deleteTwitterRules": "amplify mock function --event 'src/twitterRulesApi/deleteTwitterRulesEvent.json'",
     "test:getRecentMentions": "amplify mock function --event 'src/recentMentionsAPI/getRecentMentionsEvent.json' --timeout 30",
-    "test:addTwitterKey": "amplify mock function --event 'src/twitterKeyAPI/addTwitterKeyEvent.json'"
+    "test:addTwitterKey": "amplify mock function --event 'src/twitterKeyAPI/addTwitterKeyEvent.json'",
+    "test:postFacebookAppSecretId": "amplify mock function --event 'src/facebookAppSecretID/postFacebookAppSecretIdEvent.json'",
+    "test:postFacebookAppChallenge": "amplify mock function --event 'src/facebookAppChallenge/postFacebookAppChallengeEvent.json'"
   },
   "author": "",
   "license": "ISC"
