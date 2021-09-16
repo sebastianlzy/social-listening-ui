@@ -7,7 +7,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import Paper from '@material-ui/core/Paper';
 import Snackbar from '@material-ui/core/Snackbar';
 import {useBackdropContext} from "../contextProvider/backdropContextProvider";
-import FacebookKey from "./FacebookKey";
+import FacebookSettings from "./FacebookSettings";
 import Title from "../common/Title";
 import moment from "moment";
 
@@ -142,7 +142,12 @@ export default function Facebook() {
         <Container maxWidth="lg" className={classes.container}>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={12} lg={12}>
-                    <FacebookKey appId={appId} fbAppIdCacheKey={fbAppIdCacheKey} />
+                    <FacebookSettings
+                        appId={appId}
+                        fbAppIdCacheKey={fbAppIdCacheKey}
+                        handleFBChallengeSubmit={() => {}}
+                        handleFBAppSecretIDSubmit={() => {}}
+                    />
                     <Paper className={classes.paper}>
                         <div >
                             <Title>Login to facebook and subscribe to webhook</Title>

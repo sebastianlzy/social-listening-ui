@@ -6,6 +6,9 @@ or in the "license" file accompanying this file. This file is distributed on an 
 See the License for the specific language governing permissions and limitations under the License.
 */
 
+import {postFacebookAppChallenge} from "./facebookAppChallenge";
+import {postFacebookAppSecretId} from "./facebookAppSecretID";
+
 const express = require('express')
 const bodyParser = require('body-parser')
 const get = require('lodash/get')
@@ -135,7 +138,6 @@ app.post('/settings/:ssn/subscribeWebhook', function (req, res) {
 app.post('/settings/:ssn/twitterKey', async function (req, res) {
     const secretString = req.body.apiKey;
 
-
     return postTwitterKey(secretString)
         .then(() => {
             res.json({
@@ -148,7 +150,40 @@ app.post('/settings/:ssn/twitterKey', async function (req, res) {
                 body: err
             })
         })
+});
 
+app.post('/settings/:ssn/appChallenge', async function (req, res) {
+    const secretString = req.body.appChallenge;
+
+    return postFacebookAppChallenge(secretString)
+        .then(() => {
+            res.json({
+                url: req.url,
+                body: "Updated secret for postFacebookAppChallenge"
+            });
+        }).catch((err) => {
+            res.status(500).json({
+                msg: 'postFacebookAppChallenge update failed!',
+                body: err
+            })
+        })
+});
+
+app.post('/settings/:ssn/appSecretId', async function (req, res) {
+    const secretString = req.body.appSecretId;
+
+    return postFacebookAppSecretId(secretString)
+        .then(() => {
+            res.json({
+                url: req.url,
+                body: "Updated secret for postFacebookAppSecretId"
+            });
+        }).catch((err) => {
+            res.status(500).json({
+                msg: 'postFacebookAppSecretId update failed!',
+                body: err
+            })
+        })
 });
 
 /****************************
