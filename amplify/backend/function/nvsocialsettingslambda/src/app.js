@@ -6,8 +6,8 @@ or in the "license" file accompanying this file. This file is distributed on an 
 See the License for the specific language governing permissions and limitations under the License.
 */
 
-import {postFacebookAppChallenge} from "./facebookAppChallenge";
-import {postFacebookAppSecretId} from "./facebookAppSecretID";
+const {postFacebookAppChallenge} = require("./facebookAppChallenge");
+const {postFacebookAppSecretId} = require("./facebookAppSecretID");
 
 const express = require('express')
 const bodyParser = require('body-parser')
