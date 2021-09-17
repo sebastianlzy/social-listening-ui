@@ -7,7 +7,7 @@
     "@aws-sdk/client-lambda": "^3.31.0",
     "@aws-sdk/client-s3": "^3.28.0",
     "@aws-sdk/client-secrets-manager": "^3.30.0",
-    "@aws-sdk/client-ssm": "^3.30.0",
+    "@aws-sdk/client-ssm": "^3.31.0",
     "aws-serverless-express": "^3.3.5",
     "axios": "^0.21.1",
     "body-parser": "^1.17.1",
@@ -20,9 +20,11 @@
     "test:addTwitterRule": "amplify mock function --event 'src/twitterRulesApi/addTwitterRuleEvent.json'",
     "test:deleteTwitterRules": "amplify mock function --event 'src/twitterRulesApi/deleteTwitterRulesEvent.json'",
     "test:getRecentMentions": "amplify mock function --event 'src/recentMentionsAPI/getRecentMentionsEvent.json' --timeout 30",
+    "test:getFBconfiguration": "amplify mock function --event 'src/facebookConfiguration/getFacebookConfiguration.json'",
     "test:addTwitterKey": "amplify mock function --event 'src/twitterKeyAPI/addTwitterKeyEvent.json'",
     "test:postFacebookAppSecretId": "amplify mock function --event 'src/facebookAppSecretID/postFacebookAppSecretIdEvent.json'",
-    "test:postFacebookAppChallenge": "amplify mock function --event 'src/facebookAppChallenge/postFacebookAppChallengeEvent.json'"
+    "test:postFacebookAppChallenge": "amplify mock function --event 'src/facebookAppChallenge/postFacebookAppChallengeEvent.json'",
+    "test:postFBconfiguration": "amplify mock function --event 'src/facebookConfiguration/postFacebookConfiguration.json'"
   },
   "author": "",
   "license": "ISC"

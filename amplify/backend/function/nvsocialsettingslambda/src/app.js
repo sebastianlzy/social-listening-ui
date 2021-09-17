@@ -20,6 +20,7 @@ const getRecentMentions = require("./recentMentionsAPI/getRecentMentions")
 const getPageAccessToken = require("./facebookSubscribeWebhookAPI/getPageAccessToken")
 const postTwitterKey = require("./twitterKeyAPI/postTwitterKey")
 const installApp = require("./facebookSubscribeWebhookAPI/installApp")
+const {getFacebookConfiguration, postFacebookConfiguration} = require("./facebookConfiguration");
 
 
 // declare a new express app
@@ -85,6 +86,25 @@ app.get('/settings/:ssn/rules', function (req, res) {
         })
 });
 
+app.get('/settings/:ssn/configuration', function (req, res) {
+
+    return getFacebookConfiguration()
+        .then((resp) => {
+            res.json({
+                msg: 'get call succeed!',
+                url: req.url,
+                body: JSON.parse(get(resp, "Parameter.Value", {})),
+            })
+        })
+        .catch((err) => {
+            console.error(err)
+            res.status(500).json({
+                msg: 'get call failed!',
+                body: err
+            })
+        })
+});
+
 /****************************
  * Example post method *
  ****************************/
@@ -136,9 +156,9 @@ app.post('/settings/:ssn/subscribeWebhook', function (req, res) {
 });
 
 app.post('/settings/:ssn/twitterKey', async function (req, res) {
-    const secretString = req.body.apiKey;
+    const apiKey = req.body.apiKey;
 
-    return postTwitterKey(secretString)
+    return postTwitterKey(apiKey)
         .then(() => {
             res.json({
                 url: req.url,
@@ -153,9 +173,9 @@ app.post('/settings/:ssn/twitterKey', async function (req, res) {
 });
 
 app.post('/settings/:ssn/appChallenge', async function (req, res) {
-    const secretString = req.body.appChallenge;
+    const appChallenge = req.body.appChallenge;
 
-    return postFacebookAppChallenge(secretString)
+    return postFacebookAppChallenge(appChallenge)
         .then(() => {
             res.json({
                 url: req.url,
@@ -170,9 +190,9 @@ app.post('/settings/:ssn/appChallenge', async function (req, res) {
 });
 
 app.post('/settings/:ssn/appSecretId', async function (req, res) {
-    const secretString = req.body.appSecretId;
+    const appSecretId = req.body.appSecretId;
 
-    return postFacebookAppSecretId(secretString)
+    return postFacebookAppSecretId(appSecretId)
         .then(() => {
             res.json({
                 url: req.url,
@@ -181,6 +201,23 @@ app.post('/settings/:ssn/appSecretId', async function (req, res) {
         }).catch((err) => {
             res.status(500).json({
                 msg: 'postFacebookAppSecretId update failed!',
+                body: err
+            })
+        })
+});
+
+app.post('/settings/:ssn/configuration', async function (req, res) {
+    const configuration = get(req, "body.configuration", "");
+
+    return postFacebookConfiguration(JSON.stringify(configuration))
+        .then(() => {
+            res.json({
+                url: req.url,
+                body: "Updated parameterStore for postFacebookSettings"
+            });
+        }).catch((err) => {
+            res.status(500).json({
+                msg: 'postFacebookSettings update failed!',
                 body: err
             })
         })
