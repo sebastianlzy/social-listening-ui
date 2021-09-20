@@ -8,7 +8,9 @@ import Paper from '@material-ui/core/Paper';
 import {useBackdropContext} from "../contextProvider/backdropContextProvider";
 import Title from "../common/Title";
 import InputFieldWithButton from "../common/InputFieldWithButton";
-import {updateMLConfiguration} from "./MLConfiguration";
+import {getMLConfiguration, updateComprehendConfiguration} from "./MLConfiguration";
+import {getFBConfiguration} from "../facebook/FBConfiguration";
+import get from "lodash/get";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -37,6 +39,16 @@ export default function MlConfiguration() {
 
     const classes = useStyles();
 
+    useEffect(() => {
+        async function fetchData() {
+            const mlConfiguration = await getMLConfiguration()
+            console.log(mlConfiguration)
+            setPositiveSentimentThreshold(get(mlConfiguration, "POSITIVE_SENTIMENT_CONFIDENCE_THRESHOLD", ""))
+            setNegativeSentimentThreshold(get(mlConfiguration, "NEGATIVE_SENTIMENT_CONFIDENCE_THRESHOLD", ""))
+        }
+
+        fetchData();
+    }, [])
 
     const handleInputChange = (inputType) => (e) => {
         const registry = {
@@ -52,15 +64,14 @@ export default function MlConfiguration() {
 
     const handleSubmit = (submitType, submitValue) => async ()  => {
         const registry = {
-            "setPositiveSentimentThreshold": updateMLConfiguration,
-            "setNegativeSentimentThreshold": updateMLConfiguration
+            "updateComprehendConfiguration": updateComprehendConfiguration(positiveSentimentThreshold, negativeSentimentThreshold),
         }
         setIsBackdropShown(true)
         try {
             await registry[submitType](submitValue)
             setNotificationMessage(`${submitType} successfully updated`)
         } catch (e) {
-            setNotificationMessage("ERROR" + e.message)
+            setNotificationMessage("ERROR:: " + e.message)
             console.error(e)
         }
         setIsBackdropShown(false)
@@ -80,15 +91,16 @@ export default function MlConfiguration() {
                             isDisabled={!positiveSentimentThreshold}
                             label="Positive Sentiment Threshold"
                             handleChange={handleInputChange("positiveSentimentThreshold")}
-                            handleSubmit={handleSubmit("setPositiveSentimentThreshold", positiveSentimentThreshold)}
+                            handleSubmit={handleSubmit("updateComprehendConfiguration")}
                             btnText="Update"
+                            isBtnVisible={false}
                         />
                         <InputFieldWithButton
                             inputValue={negativeSentimentThreshold}
                             isDisabled={!negativeSentimentThreshold}
                             label="Negative Sentiment Threshold"
                             handleChange={handleInputChange("negativeSentimentThreshold")}
-                            handleSubmit={handleSubmit("setNegativeSentimentThreshold", positiveSentimentThreshold)}
+                            handleSubmit={handleSubmit("updateComprehendConfiguration")}
                             btnText="Update"
                         />
                     </Paper>

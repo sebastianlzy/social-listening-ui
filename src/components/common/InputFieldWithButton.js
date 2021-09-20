@@ -6,6 +6,8 @@ import Button from "@material-ui/core/Button";
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 
+
+
 const InputFieldWithButton = (props) => {
     const classes = makeStyles((theme) => ({
         inputTextApiKey: {
@@ -18,7 +20,22 @@ const InputFieldWithButton = (props) => {
         }
     }))();
 
-    const {inputValue, handleChange, handleSubmit, isDisabled, label, btnText} = props
+    const {inputValue, handleChange, handleSubmit, isDisabled, label, btnText, isBtnVisible} = props
+
+    const SubmitBtn = () => {
+        return <Grid item xs={2} className={classes.divSubmitBtn}>
+            <Button
+                variant="outlined"
+                color="primary"
+                disabled={isDisabled}
+                onClick={handleSubmit}
+                size="large"
+            >
+                {btnText}
+            </Button>
+        </Grid>
+    }
+
     return (
         <Grid container spacing={4}>
             <Grid item xs={10}>
@@ -33,17 +50,7 @@ const InputFieldWithButton = (props) => {
                     </FormControl>
                 </div>
             </Grid>
-            <Grid item xs={2} className={classes.divSubmitBtn}>
-                <Button
-                    variant="outlined"
-                    color="primary"
-                    disabled={isDisabled}
-                    onClick={handleSubmit}
-                    size="large"
-                >
-                    {btnText}
-                </Button>
-            </Grid>
+            {isBtnVisible === false ? undefined : <SubmitBtn />}
 
         </Grid>
     )

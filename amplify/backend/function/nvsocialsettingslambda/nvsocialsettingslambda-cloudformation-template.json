@@ -238,6 +238,19 @@
                       }
                     }
                   ]
+                },
+                {
+                  "Fn::Sub": [
+                    "arn:aws:ssm:${region}:${account}:parameter/AI_CONFIG",
+                    {
+                      "region": {
+                        "Ref": "AWS::Region"
+                      },
+                      "account": {
+                        "Ref": "AWS::AccountId"
+                      }
+                    }
+                  ]
                 }
               ]
             },
