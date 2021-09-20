@@ -21,10 +21,12 @@
     "test:deleteTwitterRules": "amplify mock function --event 'src/twitterRulesApi/deleteTwitterRulesEvent.json'",
     "test:getRecentMentions": "amplify mock function --event 'src/recentMentionsAPI/getRecentMentionsEvent.json' --timeout 30",
     "test:getFBconfiguration": "amplify mock function --event 'src/facebookConfiguration/getFacebookConfiguration.json'",
+    "test:getMLconfiguration": "amplify mock function --event 'src/mlConfiguration/getMLConfigurationEvent.json'",
     "test:addTwitterKey": "amplify mock function --event 'src/twitterKeyAPI/addTwitterKeyEvent.json'",
     "test:postFacebookAppSecretId": "amplify mock function --event 'src/facebookAppSecretID/postFacebookAppSecretIdEvent.json'",
     "test:postFacebookAppChallenge": "amplify mock function --event 'src/facebookAppChallenge/postFacebookAppChallengeEvent.json'",
-    "test:postFBconfiguration": "amplify mock function --event 'src/facebookConfiguration/postFacebookConfiguration.json'"
+    "test:postFBconfiguration": "amplify mock function --event 'src/facebookConfiguration/postFacebookConfigurationEvent.json'",
+    "test:postMLconfiguration": "amplify mock function --event 'src/mlConfiguration/postMLConfigurationEvent.json'"
   },
   "author": "",
   "license": "ISC"

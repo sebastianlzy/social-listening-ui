@@ -9,6 +9,7 @@ import {BrowserRouter as Router, Route, Switch,} from "react-router-dom";
 import {withAuthenticator} from '@aws-amplify/ui-react';
 import React from 'react';
 import BackdropContextProvider from './components/contextProvider/backdropContextProvider'
+import MlConfiguration from "./components/mlConfiguration";
 
 Amplify.configure(awsconfig);
 
@@ -36,6 +37,11 @@ function App() {
                         <Route path="/settings/facebook">
                             <Layout>
                                 <Facebook/>
+                            </Layout>
+                        </Route>
+                        <Route path="/settings/ml-configuration">
+                            <Layout>
+                                <MlConfiguration />
                             </Layout>
                         </Route>
                         <Route path="/">

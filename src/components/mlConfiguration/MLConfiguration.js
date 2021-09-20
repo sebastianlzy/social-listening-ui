@@ -1,17 +1,17 @@
 import {API} from 'aws-amplify';
 import get from 'lodash/get'
 
-export async function updateFBWebhookURL(webhookURL) {
-    const configuration = await getFBConfiguration()
-    await updateFBConfiguration({
+export async function updateMLConfiguration(webhookURL) {
+    const configuration = await getMLConfiguration()
+    await postFBConfiguration({
         ...configuration,
         webhookURL
     })
 }
 
-export async function getFBConfiguration() {
+export async function getMLConfiguration() {
     const apiName = 'nvsocial';
-    const path = '/settings/facebook/configuration';
+    const path = '/settings/ml/configuration';
     const config = {
         response: true,
     };
@@ -21,9 +21,9 @@ export async function getFBConfiguration() {
 }
 
 
-export default async function updateFBConfiguration(configuration) {
+export default async function postFBConfiguration(configuration) {
     const apiName = 'nvsocial';
-    const path = '/settings/facebook/configuration';
+    const path = '/settings/ml/configuration';
     const config = {
         response: true,
         body: {

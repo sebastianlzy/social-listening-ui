@@ -3,9 +3,9 @@ const get = require("lodash/get")
 const client = new SSMClient({region: "ap-southeast-1"});
 
 
-const postFacebookConfiguration = async (configuration) => {
+const postMLConfiguration = async (configuration) => {
     const command = new PutParameterCommand({
-        Name: process.env.FB_CONFIGURATION,
+        Name: process.env.ML_CONFIGURATION,
         Overwrite: true,
         Value: configuration
     });
@@ -13,13 +13,14 @@ const postFacebookConfiguration = async (configuration) => {
 }
 
 
-const getFacebookConfiguration = async () => {
+const getMLConfiguration = async () => {
     const command = new GetParameterCommand({
-        Name: process.env.FB_CONFIGURATION
+        Name: process.env.ML_CONFIGURATION
     });
+
     const response = await client.send(command);
     return JSON.parse(get(response, "Parameter.Value", {}))
 }
 
-module.exports.getFacebookConfiguration = getFacebookConfiguration
-module.exports.postFacebookConfiguration = postFacebookConfiguration
+module.exports.getMLConfiguration = getMLConfiguration
+module.exports.postMLConfiguration = postMLConfiguration

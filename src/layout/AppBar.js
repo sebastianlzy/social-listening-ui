@@ -24,13 +24,13 @@ const AppBarComponent = ({classes, handleDrawerOpen, open}) => (
                 <MenuIcon />
             </IconButton>
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                Dashboard
+                Social listening
             </Typography>
-            <IconButton color="inherit">
-                <Badge badgeContent={4} color="secondary">
-                    <NotificationsIcon />
-                </Badge>
-            </IconButton>
+            {/*<IconButton color="inherit">*/}
+            {/*    <Badge badgeContent={4} color="secondary">*/}
+            {/*        <NotificationsIcon />*/}
+            {/*    </Badge>*/}
+            {/*</IconButton>*/}
         </Toolbar>
     </AppBar>
 )

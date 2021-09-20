@@ -6,6 +6,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import FacebookIcon from '@material-ui/icons/Facebook';
+import SettingsIcon from '@material-ui/icons/Settings';
 import {useLocation} from 'react-router-dom'
 import {matchPath} from "react-router";
 
@@ -13,7 +14,8 @@ import {matchPath} from "react-router";
 const pageNames = {
     dashboard: "/dashboard",
     twitter: "/settings/twitter",
-    facebook: "/settings/facebook"
+    facebook: "/settings/facebook",
+    mlConfiguration: "/settings/ml-configuration"
 }
 
 let isLocationPathMatch = (location) => (pageName) => {
@@ -75,6 +77,17 @@ export const SecondaryListItems = () => {
                     <FacebookIcon/>
                 </ListItemIcon>
                 <ListItemText primary="Facebook"/>
+            </ListItem>
+            <ListItem
+                button
+                component="a"
+                href={pageNames.mlConfiguration}
+                selected={isMatch(pageNames.mlConfiguration)}
+            >
+                <ListItemIcon>
+                    <SettingsIcon/>
+                </ListItemIcon>
+                <ListItemText primary="AI/ML"/>
             </ListItem>
         </div>
     );

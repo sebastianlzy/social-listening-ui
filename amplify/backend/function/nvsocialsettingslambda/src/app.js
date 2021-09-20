@@ -6,6 +6,7 @@ or in the "license" file accompanying this file. This file is distributed on an 
 See the License for the specific language governing permissions and limitations under the License.
 */
 
+
 const {postFacebookAppChallenge} = require("./facebookAppChallenge");
 const {postFacebookAppSecretId} = require("./facebookAppSecretID");
 
@@ -21,7 +22,7 @@ const getPageAccessToken = require("./facebookSubscribeWebhookAPI/getPageAccessT
 const postTwitterKey = require("./twitterKeyAPI/postTwitterKey")
 const installApp = require("./facebookSubscribeWebhookAPI/installApp")
 const {getFacebookConfiguration, postFacebookConfiguration} = require("./facebookConfiguration");
-
+const {getMLConfiguration, postMLConfiguration} = require("./mlConfiguration");
 
 // declare a new express app
 const app = express()
@@ -87,13 +88,27 @@ app.get('/settings/:ssn/rules', function (req, res) {
 });
 
 app.get('/settings/:ssn/configuration', function (req, res) {
+    const ssn = get(req, "params.ssn", "")
+    const fnRegistry = {
+        "facebook": getFacebookConfiguration,
+        "ml": getMLConfiguration
+    }
+    const fn = fnRegistry[ssn]
 
-    return getFacebookConfiguration()
+    if (fn === undefined) {
+        res.status(500).json({
+            msg: 'method does not exist',
+            url: req.url,
+        })
+    }
+
+    return fn()
         .then((resp) => {
             res.json({
                 msg: 'get call succeed!',
                 url: req.url,
-                body: JSON.parse(get(resp, "Parameter.Value", {})),
+                body: resp,
+                ssn,
             })
         })
         .catch((err) => {
@@ -101,7 +116,8 @@ app.get('/settings/:ssn/configuration', function (req, res) {
             res.status(500).json({
                 msg: 'get call failed!',
                 url: req.url,
-                body: err
+                body: err,
+                ssn,
             })
         })
 });
@@ -210,16 +226,36 @@ app.post('/settings/:ssn/appSecretId', async function (req, res) {
 app.post('/settings/:ssn/configuration', async function (req, res) {
     const configuration = get(req, "body.configuration", "");
 
-    return postFacebookConfiguration(JSON.stringify(configuration))
-        .then(() => {
+    const ssn = get(req, "params.ssn", "")
+    const fnRegistry = {
+        "facebook": postFacebookConfiguration,
+        "ml": postMLConfiguration
+    }
+    const fn = fnRegistry[ssn]
+
+    if (fn === undefined) {
+        res.status(500).json({
+            msg: 'method does not exist',
+            url: req.url,
+        })
+    }
+
+    return fn(JSON.stringify(configuration))
+        .then((resp) => {
             res.json({
+                msg: 'successfully updated',
                 url: req.url,
-                body: "Updated parameterStore for postFacebookSettings"
-            });
-        }).catch((err) => {
+                body: resp,
+                ssn,
+            })
+        })
+        .catch((err) => {
+            console.error(err)
             res.status(500).json({
-                msg: 'postFacebookSettings update failed!',
-                body: err
+                msg: 'update failed',
+                url: req.url,
+                body: err,
+                ssn,
             })
         })
 });

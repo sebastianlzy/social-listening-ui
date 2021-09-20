@@ -151,6 +151,6 @@
     "domainName": "73z05s8i9c.execute-api.ap-southeast-1.amazonaws.com",
     "apiId": "73z05s8i9c"
   },
-  "body": "{\"configuration\":{\"hello\": \"world\"}}",
+  "body": "{\"configuration\":{\"webhookURL\": \"world\"}}",
   "isBase64Encoded": false
 }
