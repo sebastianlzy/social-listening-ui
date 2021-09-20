@@ -23,6 +23,7 @@ const postTwitterKey = require("./twitterKeyAPI/postTwitterKey")
 const installApp = require("./facebookSubscribeWebhookAPI/installApp")
 const {getFacebookConfiguration, postFacebookConfiguration} = require("./facebookConfiguration");
 const {getMLConfiguration, postMLConfiguration} = require("./mlConfiguration");
+const moment = require("moment")
 
 // declare a new express app
 const app = express()
@@ -51,7 +52,10 @@ app.get('/settings/:ssn', function (req, res) {
 
 app.get('/settings/:ssn/recentMentions', function (req, res) {
 
-    getRecentMentions()
+    let noOfMentions = get(req, 'noOfMentions', 50)
+
+
+    getRecentMentions(noOfMentions)
         .then((recentMentions) => {
             res.json({
                 success: 'get call /settings/:ssn/recentMentions succeed!',

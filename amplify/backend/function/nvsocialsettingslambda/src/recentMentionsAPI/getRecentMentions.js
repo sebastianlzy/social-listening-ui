@@ -84,16 +84,15 @@ const executeCommand = async (command, callback=async (resp)=> resp ) => {
 const filterByCurrMonth = (contents) => {
     return contents
         .filter((res) => {
-            return moment().diff(moment(res.LastModified), 'month') < 1
+            return moment().diff(moment(res.LastModified), 'month') < 6
         })
 }
 
-const getRecentMentions = async () => {
-
+const getRecentMentions = async (noOfMentions) => {
     const bucketName = process.env.RESULT_BUCKET_NAME
     const command = listObjectCommand(bucketName)
-    const limitNumberOfRecentMentions = 200
-
+    const limitNumberOfRecentMentions = noOfMentions
+    
     try {
 
         const fileNames = await executeCommand(command, async (resp) => filterByCurrMonth(resp.Contents))
