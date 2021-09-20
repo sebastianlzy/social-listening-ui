@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import FormControl from '@material-ui/core/FormControl';
@@ -11,6 +11,8 @@ import updateFBAppSecretID from "./updateFBAppSecretID";
 import Title from '../common/Title'
 import moment from "moment";
 import {useBackdropContext} from "../contextProvider/backdropContextProvider";
+import {updateFBWebhookURL, getFBConfiguration} from "./updateFBConfiguration";
+import get from "lodash/get"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -76,13 +78,25 @@ export default function FacebookSettings(props) {
     const [FBAppID, setFBAppID] = React.useState(appId);
     const [FBAppSecretId, setFBAppSecretId] = React.useState("");
     const [FBAppChallenge, setFBAppChallenge] = React.useState("");
+    const [FBWebhookURL, setFBWebhookURL] = React.useState("");
     const classes = useStyles();
+
+    useEffect(() => {
+        async function fetchData() {
+            const fbConfiguration = await getFBConfiguration()
+            console.log(fbConfiguration)
+            setFBWebhookURL(get(fbConfiguration, "webhookURL", ""))
+        }
+
+        fetchData();
+    }, [])
 
     const handleInputChange = (inputType) => (e) => {
         const registry = {
             fbAppId: setFBAppID,
             fbAppSecretId: setFBAppSecretId,
             fbAppChallenge: setFBAppChallenge,
+            fbWebhookURL: setFBWebhookURL,
         }
         try {
             registry[inputType](e.target.value)
@@ -91,36 +105,31 @@ export default function FacebookSettings(props) {
         }
     }
 
-    const handleFBAppIDSubmit = () => {
+    const handleSubmit = (submitType, submitValue) => async ()  => {
+        const registry = {
+            updateFBWebhookURL,
+            updateFBAppChallenge,
+            updateFBAppSecretID,
+            updateFBAppID
+        }
+        setIsBackdropShown(true)
+        try {
+            await registry[submitType](submitValue)
+            setNotificationMessage(`${submitType} successfully updated`)
+        } catch (e) {
+            setNotificationMessage("ERROR" + e.message)
+            console.error(e)
+        }
+        setIsBackdropShown(false)
+
+    }
+
+    const updateFBAppID = () => {
         localStorage.setItem(fbAppIdCacheKey, JSON.stringify({
             appId: FBAppID,
             expiry: moment().add(1, 'd')
         }))
         window.location.reload()
-    }
-
-    const handleFBAppChallengeSubmit = async () => {
-        setIsBackdropShown(true)
-        try {
-            await updateFBAppChallenge(FBAppChallenge)
-            setNotificationMessage("FB challenge successfully updated")
-        } catch (e) {
-            setNotificationMessage("ERROR" + e.message)
-            console.error(e)
-        }
-        setIsBackdropShown(false)
-    }
-
-    const handleFBAppSecretIDSubmit = async () => {
-        setIsBackdropShown(true)
-        try {
-            await updateFBAppSecretID(FBAppSecretId)
-            setNotificationMessage("FB app secret ID successfully updated")
-        } catch (e) {
-            setNotificationMessage("ERROR" + e.message)
-            console.error(e)
-        }
-        setIsBackdropShown(false)
     }
 
     return (
@@ -136,15 +145,24 @@ export default function FacebookSettings(props) {
                     isDisabled={!FBAppID || FBAppID.length < 5}
                     label="FB App ID"
                     handleChange={handleInputChange("fbAppId")}
-                    handleSubmit={handleFBAppIDSubmit}
+                    handleSubmit={handleSubmit("updateFBAppID", FBAppID)}
                     btnText="Update"
                 />
+                <InputFieldWithButton
+                    inputValue={FBWebhookURL}
+                    isDisabled={!FBWebhookURL || FBWebhookURL.length < 5}
+                    label="FB webhook URL"
+                    handleChange={handleInputChange("fbWebhookURL")}
+                    handleSubmit={handleSubmit("updateFBWebhookURL", FBWebhookURL)}
+                    btnText="Update"
+                />
+
                 <InputFieldWithButton
                     inputValue={FBAppSecretId}
                     isDisabled={!FBAppSecretId || FBAppSecretId.length < 5}
                     label="FB App Secret ID"
                     handleChange={handleInputChange("fbAppSecretId")}
-                    handleSubmit={handleFBAppSecretIDSubmit}
+                    handleSubmit={handleSubmit("updateFBAppSecretID", FBAppSecretId)}
                     btnText="Update"
                 />
                 <InputFieldWithButton
@@ -152,7 +170,7 @@ export default function FacebookSettings(props) {
                     isDisabled={!FBAppChallenge || FBAppChallenge.length < 5}
                     label="FB App Challenge"
                     handleChange={handleInputChange("fbAppChallenge")}
-                    handleSubmit={handleFBAppChallengeSubmit}
+                    handleSubmit={handleSubmit("updateFBAppChallenge", FBAppChallenge)}
                     btnText="Update"
                 />
             </Paper>

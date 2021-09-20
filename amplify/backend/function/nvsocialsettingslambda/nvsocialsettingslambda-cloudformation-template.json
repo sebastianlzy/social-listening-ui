@@ -163,22 +163,83 @@
             },
             {
               "Effect": "Allow",
-              "Action": [
-                "ssm:GetParameter"
-              ],
-              "Resource": {
-                "Fn::Sub": [
-                  "arn:aws:ssm:${region}:${account}:parameter/TW_LAMBDA_ARN",
-                  {
-                    "region": {
-                      "Ref": "AWS::Region"
-                    },
-                    "account": {
-                      "Ref": "AWS::AccountId"
+              "Action": "secretsmanager:UpdateSecret",
+              "Resource": [
+                {
+                  "Fn::Sub": [
+                    "arn:aws:secretsmanager:${region}:${account}:parameter/TW_BEARER_TOKEN",
+                    {
+                      "region": {
+                        "Ref": "AWS::Region"
+                      },
+                      "account": {
+                        "Ref": "AWS::AccountId"
+                      }
                     }
-                  }
-                ]
-              }
+                  ]
+                },
+                {
+                  "Fn::Sub": [
+                    "arn:aws:secretsmanager:${region}:${account}:parameter/FB_APP_SECRET",
+                    {
+                      "region": {
+                        "Ref": "AWS::Region"
+                      },
+                      "account": {
+                        "Ref": "AWS::AccountId"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Fn::Sub": [
+                    "arn:aws:secretsmanager:${region}:${account}:parameter/FB_TOKEN",
+                    {
+                      "region": {
+                        "Ref": "AWS::Region"
+                      },
+                      "account": {
+                        "Ref": "AWS::AccountId"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "ssm:GetParameter",
+                "ssm:PutParameter"
+              ],
+              "Resource": [
+                {
+                  "Fn::Sub": [
+                    "arn:aws:ssm:${region}:${account}:parameter/TW_LAMBDA_ARN",
+                    {
+                      "region": {
+                        "Ref": "AWS::Region"
+                      },
+                      "account": {
+                        "Ref": "AWS::AccountId"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Fn::Sub": [
+                    "arn:aws:ssm:${region}:${account}:parameter/FB_SETTINGS",
+                    {
+                      "region": {
+                        "Ref": "AWS::Region"
+                      },
+                      "account": {
+                        "Ref": "AWS::AccountId"
+                      }
+                    }
+                  ]
+                }
+              ]
             },
             {
               "Effect": "Allow",

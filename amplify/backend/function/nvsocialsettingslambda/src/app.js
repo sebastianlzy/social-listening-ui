@@ -100,6 +100,7 @@ app.get('/settings/:ssn/configuration', function (req, res) {
             console.error(err)
             res.status(500).json({
                 msg: 'get call failed!',
+                url: req.url,
                 body: err
             })
         })

@@ -145,8 +145,6 @@ export default function Facebook() {
                     <FacebookSettings
                         appId={appId}
                         fbAppIdCacheKey={fbAppIdCacheKey}
-                        handleFBChallengeSubmit={() => {}}
-                        handleFBAppSecretIDSubmit={() => {}}
                     />
                     <Paper className={classes.paper}>
                         <div >
