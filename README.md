@@ -40,4 +40,5 @@ To test lambda function
 
 # Re-provision hosting
 > amplify add hosting
+
 ```
