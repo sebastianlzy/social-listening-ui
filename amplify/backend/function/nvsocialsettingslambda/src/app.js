@@ -51,8 +51,8 @@ app.get('/settings/:ssn', function (req, res) {
 });
 
 app.get('/settings/:ssn/recentMentions', function (req, res) {
-
-    let noOfMentions = get(req, 'query.limit', 50)
+    console.log(JSON.stringify(req))
+    let noOfMentions = get(req, 'query.limit', 200)
 
 
     getRecentMentions(noOfMentions)
