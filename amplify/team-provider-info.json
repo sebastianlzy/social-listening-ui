@@ -22,10 +22,7 @@
         }
       },
       "hosting": {
-        "amplifyhosting": {
-          "appId": "d1uj22evtf1yyo",
-          "type": "cicd"
-        }
+        "amplifyhosting": {}
       }
     }
   }
