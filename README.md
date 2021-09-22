@@ -32,6 +32,9 @@ To test lambda function
 # Remove existing configuration
 > rm ./amplify/team-provider-info.json
 
+# Update AWS profile
+> vim ./amplify/.config/local-aws-info.json
+
 # Initialize a new amplify env
 > amplify init
 
@@ -40,5 +43,7 @@ To test lambda function
 
 # Re-provision hosting
 > amplify add hosting
+
+# On console, connect front-end to repository
 ```
 
