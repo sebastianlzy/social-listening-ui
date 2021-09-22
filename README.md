@@ -32,7 +32,7 @@ To test lambda function
 > git clone https://github.com/sebastianlzy/nv-social-listening-ui
 
 # Setup amplify to sync with upstream changes
-> amplify pull
+> amplify init
 ```
 
 # Setting up in new AWS account 
