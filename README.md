@@ -24,4 +24,13 @@ To test lambda function
 
 ```
 > amplify init
-```
+
+# Re-provision backend infrastructure
+> amplify push
+
+# Re-provision hosting
+> amplify add hosting
+
+# On console, connect front-end to repository
+# Things to note: 
+#    1. Create a service role for amplify
