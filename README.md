@@ -20,11 +20,6 @@ To test lambda function
 > npm run test:getRecentMentions
 ```
 
-# Setting up in new account
-```
-
-```
-
 # Setting up in the same account (i.e. collaboration)
 
 ```
@@ -60,5 +55,8 @@ To test lambda function
 # On console, connect front-end to repository
 # Things to note: 
 #    1. Create a service role for amplify
+
+# Setup rewrites and redirect
+1. `</^[^.]+$|\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|map|json)$)([^.]+$)/>` --> /index.html
 
 ```
