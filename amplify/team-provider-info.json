@@ -1,30 +1,30 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-nvsociallisteningui-dev-174705-authRole",
-      "UnauthRoleArn": "arn:aws:iam::436710492804:role/amplify-nvsociallisteningui-dev-174705-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::436710492804:role/amplify-nvsociallisteningui-dev-174705-authRole",
+      "AuthRoleName": "amplify-nvsociallisteningui-dev-121322-authRole",
+      "UnauthRoleArn": "arn:aws:iam::402448380767:role/amplify-nvsociallisteningui-dev-121322-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::402448380767:role/amplify-nvsociallisteningui-dev-121322-authRole",
       "Region": "ap-southeast-1",
-      "DeploymentBucketName": "amplify-nvsociallisteningui-dev-174705-deployment",
-      "UnauthRoleName": "amplify-nvsociallisteningui-dev-174705-unauthRole",
-      "StackName": "amplify-nvsociallisteningui-dev-174705",
-      "StackId": "arn:aws:cloudformation:ap-southeast-1:436710492804:stack/amplify-nvsociallisteningui-dev-174705/6aec1d00-0589-11ec-a80f-06b1f00f8c64",
-      "AmplifyAppId": "d2ksas9tnhzftk"
+      "DeploymentBucketName": "amplify-nvsociallisteningui-dev-121322-deployment",
+      "UnauthRoleName": "amplify-nvsociallisteningui-dev-121322-unauthRole",
+      "StackName": "amplify-nvsociallisteningui-dev-121322",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:402448380767:stack/amplify-nvsociallisteningui-dev-121322/6eeea430-1b5b-11ec-82bd-064fa575994a",
+      "AmplifyAppId": "d1uj22evtf1yyo"
     },
     "categories": {
-      "hosting": {
-        "amplifyhosting": {
-          "appId": "d2ksas9tnhzftk",
-          "type": "cicd"
-        }
-      },
       "auth": {
         "nvsociallisteninguia7866996": {}
       },
       "function": {
         "nvsocialsettingslambda": {
-          "deploymentBucketName": "amplify-nvsociallisteningui-dev-174705-deployment",
-          "s3Key": "amplify-builds/nvsocialsettingslambda-734c7a4c5a7445565937-build.zip"
+          "deploymentBucketName": "amplify-nvsociallisteningui-dev-121322-deployment",
+          "s3Key": "amplify-builds/nvsocialsettingslambda-71636769515742706c59-build.zip"
+        }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1uj22evtf1yyo",
+          "type": "cicd"
         }
       }
     }
