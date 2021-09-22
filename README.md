@@ -21,8 +21,34 @@ To test lambda function
 ```
 
 # Setting up in new account
+```
 
 ```
+
+# Setting up in the same account (i.e. collaboration)
+
+```
+# Clone repo
+> git clone https://github.com/sebastianlzy/nv-social-listening-ui
+
+# Setup amplify to sync with upstream changes
+> amplify pull
+```
+
+# Setting up in new AWS account 
+
+```
+
+# Clone repo
+> git clone https://github.com/sebastianlzy/nv-social-listening-ui
+
+# Remove existing configuration
+> rm ./amplify/team-provider-info.json
+
+# Update AWS profile
+> vim ./amplify/.config/local-aws-info.json
+
+# Initialize a new amplify env
 > amplify init
 
 # Re-provision backend infrastructure
@@ -34,3 +60,5 @@ To test lambda function
 # On console, connect front-end to repository
 # Things to note: 
 #    1. Create a service role for amplify
+
+```
