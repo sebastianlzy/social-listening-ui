@@ -11,7 +11,6 @@ import Title from '../../common/Title';
 export default function RecentMentions(props) {
 
     const {recentMentions} = props
-
     return (
         <React.Fragment>
             <Title>Recent Mentions</Title>
@@ -32,8 +31,8 @@ export default function RecentMentions(props) {
                             <TableCell>{idx + 1}</TableCell>
                             <TableCell>{moment(row.created_at).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
                             <TableCell>{row.source}</TableCell>
-                            <TableCell>{row.originaltext}</TableCell>
-                            <TableCell>{row.language}</TableCell>
+                            <TableCell>{row.text}</TableCell>
+                            <TableCell>{row.language_code}</TableCell>
                             <TableCell>{row.sentiment}</TableCell>
                         </TableRow>
                     ))}
