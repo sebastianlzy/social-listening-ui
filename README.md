@@ -24,12 +24,21 @@ To test lambda function
 # Setting up in the same account (i.e. collaboration)
 
 ```
+# Clone repo
+> git clone https://github.com/sebastianlzy/nv-social-listening-ui
 
+# Setup amplify to sync with upstream changes
+> amplify init
 ```
 
 # Setting up in new AWS account 
 
 ```
+
+# Clone repo
+> git clone https://github.com/sebastianlzy/nv-social-listening-ui
+
+
 # Remove existing configuration
 > rm ./amplify/team-provider-info.json
 
@@ -46,5 +55,12 @@ To test lambda function
 > amplify add hosting
 
 # On console, connect front-end to repository
+
+# Things to note: 
+#    1. Create a service role for amplify
+
+# Setup rewrites and redirect
+# 1. `</^[^.]+$|\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|map|json)$)([^.]+$)/>` --> /index.html
+
 ```
 
