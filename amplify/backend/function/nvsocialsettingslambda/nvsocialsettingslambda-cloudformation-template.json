@@ -73,9 +73,10 @@
             "FB_APP_CHALLENGE": "FB_TOKEN",
             "FB_APP_SECRET_ID": "FB_APP_SECRET",
             "FB_CONFIGURATION": "FB_SETTINGS",
-            "ML_CONFIGURATION": "ML_CONFIGURATION",
+            "ML_CONFIGURATION": "AI_CONFIG",
             "TW_SECRET_ID": "TW_BEARER_TOKEN",
-            "TW_STREAM_RULES_API_URL": "https://api.twitter.com/2/tweets/search/stream/rules"
+            "TW_STREAM_RULES_API_URL": "https://api.twitter.com/2/tweets/search/stream/rules",
+            "RESULT_BUCKET_NAME": "nv-social-listening-cdk-basene-databuckete3889a50-19jktq5r36ez3"
           }
         },
         "Role": {

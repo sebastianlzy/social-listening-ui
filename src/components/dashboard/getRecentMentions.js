@@ -7,7 +7,7 @@ export default function getRecentMentions() {
     const config = {
         response: true,
         queryStringParameters: {  // OPTIONAL
-            limit: '200',
+
         },
     };
 

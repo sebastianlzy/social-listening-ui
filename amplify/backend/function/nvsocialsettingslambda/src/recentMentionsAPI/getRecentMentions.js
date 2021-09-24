@@ -33,26 +33,10 @@ const CSVtoArray = (text) => {
 };
 
 const parseBody = (bodyContents) => {
-    let headers = []
-
     const contents = bodyContents.split(/\r?\n/)
         .map((content, idx) => {
             try {
-                const contentInArray = CSVtoArray(content)
-                if (idx === 0) {
-                    headers = contentInArray
-                    return undefined
-                }
-
-                if (contentInArray.length === 0) {
-                    return undefined
-                }
-
-                const resp = {}
-                for (let i = 0; i< headers.length; i ++){
-                    resp[headers[i]] = contentInArray[i]
-                }
-                return resp
+                return JSON.parse(content)
 
             } catch (err) {
                 return undefined
