@@ -6,7 +6,7 @@ import updateFBAppSecretID from "./updateFBAppSecretID";
 import Title from '../common/Title'
 import moment from "moment";
 import {useBackdropContext} from "../contextProvider/backdropContextProvider";
-import {updateFBWebhookURL, getFBConfiguration} from "./FBConfiguration";
+import {updateFBWebhookURL, updateFBAppId, getFBConfiguration} from "./FBConfiguration";
 import get from "lodash/get"
 import InputFieldWithButton from "../common/InputFieldWithButton";
 
@@ -72,7 +72,7 @@ export default function FacebookSettings(props) {
             updateFBWebhookURL,
             updateFBAppChallenge,
             updateFBAppSecretID,
-            updateFBAppID
+            updateFBAppId
         }
         setIsBackdropShown(true)
         try {
@@ -86,13 +86,13 @@ export default function FacebookSettings(props) {
 
     }
 
-    const updateFBAppID = () => {
-        localStorage.setItem(fbAppIdCacheKey, JSON.stringify({
-            appId: FBAppID,
-            expiry: moment().add(1, 'd')
-        }))
-        window.location.reload()
-    }
+    //const updateFBAppID = () => {
+    //    localStorage.setItem(fbAppIdCacheKey, JSON.stringify({
+    //        appId: FBAppID,
+    //        expiry: moment().add(1, 'd')
+    //    }))
+    //    window.location.reload()
+    //}
 
     return (
         <div className={classes.root}>
@@ -107,7 +107,7 @@ export default function FacebookSettings(props) {
                     isDisabled={!FBAppID || FBAppID.length < 5}
                     label="FB App ID"
                     handleChange={handleInputChange("fbAppId")}
-                    handleSubmit={handleSubmit("updateFBAppID", FBAppID)}
+                    handleSubmit={handleSubmit("updateFBAppId", FBAppID)}
                     btnText="Update"
                 />
                 <InputFieldWithButton

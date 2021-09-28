@@ -9,6 +9,14 @@ export async function updateFBWebhookURL(webhookURL) {
     })
 }
 
+export async function updateFBAppId(fbAppId) {
+    const configuration = await getFBConfiguration()
+    await postFBConfiguration({
+        ...configuration,
+        fbAppId
+    })
+}
+
 export async function getFBConfiguration() {
     const apiName = 'nvsocial';
     const path = '/settings/facebook/configuration';
