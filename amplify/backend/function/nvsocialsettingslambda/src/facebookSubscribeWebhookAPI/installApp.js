@@ -3,12 +3,17 @@ const axios = require('axios')
 const get = require('lodash/get')
 
 const installApp = (getPageAccessTokenResponse) => {
-    const pageID = get(getPageAccessTokenResponse, 'data.data[0].id');
-    const pageAccessToken = get(getPageAccessTokenResponse, 'data.data[0].access_token');
-    return axios({
-        url: "https://graph.facebook.com/"+ pageID +"/subscribed_apps?subscribed_fields=mention&access_token=" + pageAccessToken,
-        method: "POST"
-    })
+    const pages = get(getPageAccessTokenResponse, 'data.data');
+    var processes = []
+    for(const i in pages){
+        const pageID = pages[i].id;
+        const pageAccessToken = pages[i].access_token;
+        processes.push(axios({
+            url: "https://graph.facebook.com/"+ pageID +"/subscribed_apps?subscribed_fields=mention&access_token=" + pageAccessToken,
+            method: "POST"
+        }))
+    }
+    return Promise.all(processes)
 
 }
 
