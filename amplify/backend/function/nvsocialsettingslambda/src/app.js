@@ -21,6 +21,8 @@ const getRecentMentions = require("./recentMentionsAPI/getRecentMentions")
 const getPageAccessToken = require("./facebookSubscribeWebhookAPI/getPageAccessToken")
 const postTwitterKey = require("./twitterKeyAPI/postTwitterKey")
 const installApp = require("./facebookSubscribeWebhookAPI/installApp")
+const getFbAppCredentials = require("./facebookSubscribeWebhookAPI/getFbAppCredentials")
+const getLongLivedUserAccessToken = require("./facebookSubscribeWebhookAPI/getLongLivedUserAccessToken")
 const {getFacebookConfiguration, postFacebookConfiguration} = require("./facebookConfiguration");
 const {getMLConfiguration, postMLConfiguration} = require("./mlConfiguration");
 const moment = require("moment")
@@ -158,8 +160,18 @@ app.post('/settings/:ssn/rules', function (req, res) {
 app.post('/settings/:ssn/subscribeWebhook', function (req, res) {
     const userID = req.body.userID;
     const userAccessToken = req.body.userAccessToken;
-    return getPageAccessToken(userID, userAccessToken)
-        .then((resp) => { return installApp(resp) })
+    return getFbAppCredentials()
+        .then((resp) => { 
+            const fbAppSecret = resp.SecretString
+            return getLongLivedUserAccessToken(fbAppSecret, userAccessToken)
+        })
+        .then((resp) => {
+            const longUserAccessToken = get(resp, 'data.access_token')
+            return getPageAccessToken(userID, longUserAccessToken)
+        })
+        .then((resp) => { 
+            return installApp(resp) 
+        })
         .then((resp) => {
             res.json({
                 url: req.url,
@@ -167,6 +179,7 @@ app.post('/settings/:ssn/subscribeWebhook', function (req, res) {
             });
         })
         .catch((err) => {
+            console.log(err)
             res.status(500).json({
                 msg: 'Facebook webhook subscription failed!',
                 body: err

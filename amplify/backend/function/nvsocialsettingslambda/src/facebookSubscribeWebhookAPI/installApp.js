@@ -6,6 +6,7 @@ const installApp = (getPageAccessTokenResponse) => {
     const pages = get(getPageAccessTokenResponse, 'data.data');
     var processes = []
     for(const i in pages){
+        console.log(pages[i])
         const pageID = pages[i].id;
         const pageAccessToken = pages[i].access_token;
         processes.push(axios({

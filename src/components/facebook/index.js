@@ -91,6 +91,7 @@ export default function Facebook() {
         window.handleOnFbLogin = () => {
             FB.getLoginStatus(async function (response) {
                 if (response.status === 'connected') {
+                    console.log(response.authResponse)
                     const {accessToken, userID} = response.authResponse
                     await subscribeToFBWebhook(userID, accessToken)
                 }

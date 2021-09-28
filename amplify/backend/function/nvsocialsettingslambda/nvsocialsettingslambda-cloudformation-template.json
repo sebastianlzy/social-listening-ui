@@ -178,11 +178,11 @@
             },
             {
               "Effect": "Allow",
-              "Action": "secretsmanager:UpdateSecret",
+              "Action": "secretsmanager:PutSecretValue",
               "Resource": [
                 {
                   "Fn::Sub": [
-                    "arn:aws:secretsmanager:${region}:${account}:parameter/TW_BEARER_TOKEN",
+                    "arn:aws:secretsmanager:${region}:${account}:secret:*TW_BEARER_TOKEN*",
                     {
                       "region": {
                         "Ref": "AWS::Region"
@@ -195,7 +195,7 @@
                 },
                 {
                   "Fn::Sub": [
-                    "arn:aws:secretsmanager:${region}:${account}:parameter/FB_APP_SECRET",
+                    "arn:aws:secretsmanager:${region}:${account}:secret:*FB_APP_SECRET*",
                     {
                       "region": {
                         "Ref": "AWS::Region"
@@ -208,7 +208,26 @@
                 },
                 {
                   "Fn::Sub": [
-                    "arn:aws:secretsmanager:${region}:${account}:parameter/FB_TOKEN",
+                    "arn:aws:secretsmanager:${region}:${account}:secret:*FB_TOKEN*",
+                    {
+                      "region": {
+                        "Ref": "AWS::Region"
+                      },
+                      "account": {
+                        "Ref": "AWS::AccountId"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": "secretsmanager:GetSecretValue",
+              "Resource": [
+                {
+                  "Fn::Sub": [
+                    "arn:aws:secretsmanager:${region}:${account}:secret:*FB_APP_SECRET*",
                     {
                       "region": {
                         "Ref": "AWS::Region"
