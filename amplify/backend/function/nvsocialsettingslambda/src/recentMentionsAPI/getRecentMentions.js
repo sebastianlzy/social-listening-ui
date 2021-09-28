@@ -1,6 +1,9 @@
 const {S3Client, GetObjectCommand, ListObjectsV2Command} = require("@aws-sdk/client-s3");
+const { SSMClient, GetParameterCommand, PutParameterCommand } = require("@aws-sdk/client-ssm");
 const moment = require('moment')
+const get = require("lodash/get")
 const client = new S3Client({region: "ap-southeast-1"});
+const ssmClient = new SSMClient({region: "ap-southeast-1"});
 
 
 const streamToString = (stream) =>
@@ -52,7 +55,13 @@ const filterByCurrMonth = (contents) => {
 }
 
 const getRecentMentions = async (noOfMentions) => {
-    const bucketName = process.env.RESULT_BUCKET_NAME
+    
+    const ssmCommand = new GetParameterCommand({
+        Name: process.env.RESULT_BUCKET_NAME
+    });
+    const ssmResponse = await ssmClient.send(ssmCommand);
+    const bucketName = get(ssmResponse, "Parameter.Value", {})
+    
     const command = listObjectCommand(bucketName)
     const limitNumberOfRecentMentions = noOfMentions
     
