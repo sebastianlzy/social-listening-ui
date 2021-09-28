@@ -23,6 +23,7 @@ const postTwitterKey = require("./twitterKeyAPI/postTwitterKey")
 const installApp = require("./facebookSubscribeWebhookAPI/installApp")
 const getFbAppCredentials = require("./facebookSubscribeWebhookAPI/getFbAppCredentials")
 const getLongLivedUserAccessToken = require("./facebookSubscribeWebhookAPI/getLongLivedUserAccessToken")
+const storeFbPageAccessTokens = require("./facebookSubscribeWebhookAPI/storeFbPageAccessTokens")
 const {getFacebookConfiguration, postFacebookConfiguration} = require("./facebookConfiguration");
 const {getMLConfiguration, postMLConfiguration} = require("./mlConfiguration");
 const moment = require("moment")
@@ -170,7 +171,12 @@ app.post('/settings/:ssn/subscribeWebhook', function (req, res) {
             return getPageAccessToken(userID, longUserAccessToken)
         })
         .then((resp) => { 
-            return installApp(resp) 
+            const pages = get(resp, 'data.data');
+            return installApp(pages)
+        })
+        .then((resp) => {
+            console.log(resp)
+            return storeFbPageAccessTokens
         })
         .then((resp) => {
             res.json({

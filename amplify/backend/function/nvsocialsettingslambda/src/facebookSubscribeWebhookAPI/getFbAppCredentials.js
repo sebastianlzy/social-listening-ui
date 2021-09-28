@@ -1,6 +1,3 @@
-
-const axios = require('axios')
-const get = require('lodash/get')
 const { SecretsManagerClient, GetSecretValueCommand } = require("@aws-sdk/client-secrets-manager");
 
 const getFbAppCredentials = (userID, userAccessToken) => {

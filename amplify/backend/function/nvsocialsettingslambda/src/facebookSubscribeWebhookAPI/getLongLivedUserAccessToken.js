@@ -1,6 +1,4 @@
-
 const axios = require('axios')
-const get = require('lodash/get')
 
 const getLongLivedUserAccessToken = (fbAppSecret, userAccessToken) => {
     return axios({
