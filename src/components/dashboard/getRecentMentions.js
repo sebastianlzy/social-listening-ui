@@ -6,9 +6,6 @@ export default function getRecentMentions() {
     const path = '/settings/twitter/recentMentions';
     const config = {
         response: true,
-        queryStringParameters: {  // OPTIONAL
-
-        },
     };
 
     return API.get(apiName, path, config)

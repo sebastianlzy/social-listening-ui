@@ -5,7 +5,8 @@ import Dashboard from './components/dashboard'
 import Facebook from './components/facebook/'
 import Layout from "./layout";
 import Twitter from './components/twitter'
-import {BrowserRouter as Router, Route, Switch,} from "react-router-dom";
+import FacebookMessage from './components/facebookMessage'
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {withAuthenticator} from '@aws-amplify/ui-react';
 import React from 'react';
 import BackdropContextProvider from './components/contextProvider/backdropContextProvider'
@@ -14,12 +15,13 @@ import MlConfiguration from "./components/mlConfiguration";
 Amplify.configure(awsconfig);
 
 
+
+
 function App() {
 
 
     return (
         <div>
-
             <BackdropContextProvider>
                 <Router>
                     <Switch>
@@ -42,6 +44,11 @@ function App() {
                         <Route path="/settings/ml-configuration">
                             <Layout>
                                 <MlConfiguration />
+                            </Layout>
+                        </Route>
+                        <Route path="/facebook/message">
+                            <Layout>
+                                <FacebookMessage />
                             </Layout>
                         </Route>
                         <Route path="/">
