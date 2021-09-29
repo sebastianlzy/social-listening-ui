@@ -18,6 +18,7 @@ const getTwitterRules = require('./twitterRulesAPI/getTwitterRules')
 const addTwitterRule = require('./twitterRulesAPI/addTwitterRule')
 const deleteTwitterRules = require('./twitterRulesAPI/deleteTwitterRules')
 const getRecentMentions = require("./recentMentionsAPI/getRecentMentions")
+const postMessage = require("./facebookMessage/postMessage")
 const getPageAccessToken = require("./facebookSubscribeWebhookAPI/getPageAccessToken")
 const postTwitterKey = require("./twitterKeyAPI/postTwitterKey")
 const installApp = require("./facebookSubscribeWebhookAPI/installApp")
@@ -52,6 +53,8 @@ app.get('/settings/:ssn', function (req, res) {
     // Add your code here
     res.json({success: 'get call succeed!', url: req.url});
 });
+
+
 
 app.get('/settings/:ssn/recentMentions', function (req, res) {
     let noOfMentions = get(req, 'query.limit', 200)
@@ -131,6 +134,26 @@ app.get('/settings/:ssn/configuration', function (req, res) {
 /****************************
  * Example post method *
  ****************************/
+
+app.post('/settings/:ssn/message', function (req, res) {
+    const message = get(req, 'body.message')
+
+
+    postMessage(message)
+        .then((resp) => {
+            res.json({
+                success: 'post call /settings/:ssn/message succeed!',
+                url: req.url,
+                body: resp
+            });
+        })
+        .catch((err) => {
+            res.status(500).json({
+                msg: 'post call /settings/:ssn/message failed!',
+                body: err
+            })
+        })
+});
 
 app.post('/settings/:ssn', function (req, res) {
 
