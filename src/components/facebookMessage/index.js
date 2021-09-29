@@ -4,9 +4,13 @@ import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import {makeStyles} from "@material-ui/core/styles";
 import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
 import {useBackdropContext} from "../contextProvider/backdropContextProvider";
 import Title from "../common/Title";
 import {useLocation} from "react-router-dom";
+import Button from "@material-ui/core/Button";
+import updateTwitterKey from "../twitter/updateTwitterKey";
+import postFacebookMessage from "./postFacebookMessage";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -18,12 +22,9 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         padding: theme.spacing(2),
     },
-    subscribeToFBWebhookBtn: {
-        paddingTop: theme.spacing(2),
-    },
-    userAccessTokenText: {
-        paddingTop: theme.spacing(2),
-    },
+    divSubmitBtn: {
+        paddingTop: theme.spacing(2)
+    }
 
 }));
 
@@ -35,20 +36,37 @@ function useQuery() {
 
 export default function Facebook(props) {
 
-    const {setIsBackdropShown} = useBackdropContext()
-    const [s3Url, setS3Url] = React.useState(false);
-    const [textId, setTextId] = React.useState(false);
+    const {setIsBackdropShown, setNotificationMessage} = useBackdropContext()
+    const [originalText, setOriginalText] = React.useState("");
+    const [message, setMessage] = React.useState("");
 
     let query  = useQuery()
 
     useEffect(() => {
-        setS3Url(query.get("s3Url"))
-        setTextId(query.get("textId"))
+        setOriginalText(query.get("originalText"))
 
     }, [])
 
 
     const classes = useStyles();
+
+    const handleChange = (e) => {
+        setMessage(e.target.value)
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        setIsBackdropShown(true)
+        postFacebookMessage(message)
+            .then(() => {
+                setIsBackdropShown(false)
+                setNotificationMessage("Facebook message posted")
+            })
+            .catch(() => {
+                setIsBackdropShown(false)
+                setNotificationMessage("Facebook message not posted")
+            })
+    }
 
     return (
         <Container maxWidth="lg" className={classes.container}>
@@ -57,8 +75,28 @@ export default function Facebook(props) {
 
                     <Paper className={classes.paper}>
                         <div >
-                            <Title>{s3Url}</Title>
-                            <span>{textId}</span>
+                            <Title>{originalText}</Title>
+
+                            <TextField
+                                id="filled-multiline-flexible"
+                                label="Reply message"
+                                multiline
+                                maxRows={4}
+                                value={message}
+                                onChange={handleChange}
+                                variant="filled"
+                                fullWidth
+                            />
+                        </div>
+                        <div className={classes.divSubmitBtn}>
+                            <Button
+                                variant="outlined"
+                                color="primary"
+                                disabled={message.length < 5}
+                                onClick={handleSubmit}
+                            >
+                                Post FB message
+                            </Button>
                         </div>
                     </Paper>
                 </Grid>
