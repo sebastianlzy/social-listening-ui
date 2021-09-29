@@ -20,7 +20,6 @@ const installApp = (pages) => {
         )
     }
     return Promise.all(processes).then(() => { return validPages })
-
 }
 
 module.exports = installApp

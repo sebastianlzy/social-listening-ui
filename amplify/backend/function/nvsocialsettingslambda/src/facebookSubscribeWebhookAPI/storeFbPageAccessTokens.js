@@ -15,7 +15,7 @@ const storeFbPageAccessTokens = (pages) => {
         SecretString: JSON.stringify(secret)
     });
     
-    return secretManagerClient.send(putSecretValueCommand);
+    return secretManagerClient.send(putSecretValueCommand)
 };
 
 module.exports = storeFbPageAccessTokens

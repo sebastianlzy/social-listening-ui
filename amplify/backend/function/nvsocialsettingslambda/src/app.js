@@ -198,8 +198,7 @@ app.post('/settings/:ssn/subscribeWebhook', function (req, res) {
             return installApp(pages)
         })
         .then((resp) => {
-            console.log(resp)
-            return storeFbPageAccessTokens
+            return storeFbPageAccessTokens(resp)
         })
         .then((resp) => {
             res.json({
