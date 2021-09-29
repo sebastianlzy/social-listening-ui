@@ -2,6 +2,7 @@ const {S3Client, GetObjectCommand, ListObjectsV2Command} = require("@aws-sdk/cli
 const { SSMClient, GetParameterCommand, PutParameterCommand } = require("@aws-sdk/client-ssm");
 const moment = require('moment')
 const get = require("lodash/get")
+const isEmpty = require("lodash/isEmpty")
 const client = new S3Client({region: "ap-southeast-1"});
 const ssmClient = new SSMClient({region: "ap-southeast-1"});
 
@@ -48,6 +49,11 @@ const executeCommand = async (command, callback=async (resp)=> resp ) => {
 }
 
 const filterByCurrMonth = (contents) => {
+
+    if (isEmpty(contents)){
+        return []
+    }
+
     return contents
         .filter((res) => {
             return moment().diff(moment(res.LastModified), 'month') < 6
@@ -59,16 +65,17 @@ const getRecentMentions = async (noOfMentions) => {
     const ssmCommand = new GetParameterCommand({
         Name: process.env.RESULT_BUCKET_NAME
     });
+    
     const ssmResponse = await ssmClient.send(ssmCommand);
     const bucketName = get(ssmResponse, "Parameter.Value", {})
-    
+
     const command = listObjectCommand(bucketName)
     const limitNumberOfRecentMentions = noOfMentions
     
     try {
 
         const fileNames = await executeCommand(command, async (resp) => filterByCurrMonth(resp.Contents))
-        
+
         const messages = await fileNames.reduce(async (accPromise, fileName) =>  {
             const acc = await accPromise
             if (acc.length >= limitNumberOfRecentMentions) {
