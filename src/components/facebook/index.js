@@ -55,7 +55,7 @@ export default function Facebook() {
     }
 
     const [appId] = React.useState(getAppId());
-
+    
 
     const FBinit = () => {
         console.log("FB init")

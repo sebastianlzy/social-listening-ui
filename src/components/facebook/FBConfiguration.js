@@ -9,7 +9,7 @@ export async function updateFBWebhookURL(webhookURL) {
     })
 }
 
-export async function updateFBAppId(fbAppId) {
+export async function updateFBAppIdParameter(fbAppId) {
     const configuration = await getFBConfiguration()
     await postFBConfiguration({
         ...configuration,
