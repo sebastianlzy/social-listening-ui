@@ -87,12 +87,12 @@ export default function FacebookSettings(props) {
 
     }
 
-    const updateFBAppId = () => {
+    const updateFBAppId = async () => {
+        await updateFBAppIdParameter(FBAppID)
         localStorage.setItem(fbAppIdCacheKey, JSON.stringify({
             appId: FBAppID,
             expiry: moment().add(1, 'd')
         }))
-        updateFBAppIdParameter(FBAppID)
         window.location.reload()
     }
 
