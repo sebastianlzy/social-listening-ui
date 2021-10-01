@@ -48,7 +48,7 @@ export default function FacebookSettings(props) {
             const fbConfiguration = await getFBConfiguration()
             console.log(fbConfiguration)
             setFBWebhookURL(get(fbConfiguration, "webhookURL", ""))
-            setFBAppSecretId(get(fbConfiguration, "fbAppId", ""))
+            setFBAppID(get(fbConfiguration, "fbAppId", ""))
         }
 
         fetchData();
