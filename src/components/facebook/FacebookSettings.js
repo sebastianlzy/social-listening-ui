@@ -36,8 +36,8 @@ const useStyles = makeStyles((theme) => ({
 export default function FacebookSettings(props) {
 
     const {setIsBackdropShown, setNotificationMessage} = useBackdropContext()
-    //const {appId, fbAppIdCacheKey} = props
-    const [FBAppID, setFBAppID] = React.useState(""); //React.useState(appId);
+    const {appId, fbAppIdCacheKey} = props
+    const [FBAppID, setFBAppID] = React.useState(appId);
     const [FBAppSecretId, setFBAppSecretId] = React.useState("");
     const [FBAppChallenge, setFBAppChallenge] = React.useState("");
     const [FBWebhookURL, setFBWebhookURL] = React.useState("");
@@ -87,7 +87,7 @@ export default function FacebookSettings(props) {
 
     }
 
-    const updateFBAppID = () => {
+    const updateFBAppId = () => {
         localStorage.setItem(fbAppIdCacheKey, JSON.stringify({
             appId: FBAppID,
             expiry: moment().add(1, 'd')
