@@ -34,16 +34,20 @@ function useQuery() {
 }
 
 
-export default function Facebook(props) {
+export default function MessageReply(props) {
 
     const {setIsBackdropShown, setNotificationMessage} = useBackdropContext()
     const [originalText, setOriginalText] = React.useState("");
+    const [postId, setPostId] = React.useState("");
+    const [platform, setPlatform] = React.useState("");
     const [message, setMessage] = React.useState("");
 
     let query  = useQuery()
 
     useEffect(() => {
         setOriginalText(query.get("originalText"))
+        setPostId(query.get("postId"))
+        setPlatform(query.get("platform"))
 
     }, [])
 
@@ -57,14 +61,19 @@ export default function Facebook(props) {
     const handleSubmit = (e) => {
         e.preventDefault()
         setIsBackdropShown(true)
-        postFacebookMessage(message)
+        postFacebookMessage(platform,{
+            message,
+            postId,
+            originalText,
+            platform
+        })
             .then(() => {
                 setIsBackdropShown(false)
-                setNotificationMessage("Facebook message posted")
+                setNotificationMessage("Message posted")
             })
             .catch(() => {
                 setIsBackdropShown(false)
-                setNotificationMessage("Facebook message not posted")
+                setNotificationMessage("Message not posted")
             })
     }
 
@@ -75,7 +84,7 @@ export default function Facebook(props) {
 
                     <Paper className={classes.paper}>
                         <div >
-                            <Title>{originalText}</Title>
+                            <Title>"{originalText}"</Title>
 
                             <TextField
                                 id="filled-multiline-flexible"
@@ -95,7 +104,7 @@ export default function Facebook(props) {
                                 disabled={message.length < 5}
                                 onClick={handleSubmit}
                             >
-                                Post FB message
+                                Post message
                             </Button>
                         </div>
                     </Paper>

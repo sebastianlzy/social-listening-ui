@@ -24,7 +24,7 @@
     "test:getMLconfiguration": "amplify mock function --event 'src/mlConfiguration/getMLConfigurationEvent.json'",
     "test:addTwitterKey": "amplify mock function --event 'src/twitterKeyAPI/addTwitterKeyEvent.json'",
     "test:postFacebookAppSecretId": "amplify mock function --event 'src/facebookAppSecretID/postFacebookAppSecretIdEvent.json'",
-    "test:postFacebookMessage": "amplify mock function --event 'src/facebookMessage/postMessageEvent.json'",
+    "test:postSSNMessage": "amplify mock function --event 'src/facebookMessage/postMessageEvent.json'",
     "test:postFacebookAppChallenge": "amplify mock function --event 'src/facebookAppChallenge/postFacebookAppChallengeEvent.json'",
     "test:postFBconfiguration": "amplify mock function --event 'src/facebookConfiguration/postFacebookConfigurationEvent.json'",
     "test:postMLconfiguration": "amplify mock function --event 'src/mlConfiguration/postMLConfigurationEvent.json'"

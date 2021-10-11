@@ -136,10 +136,8 @@ app.get('/settings/:ssn/configuration', function (req, res) {
  ****************************/
 
 app.post('/settings/:ssn/message', function (req, res) {
-    const message = get(req, 'body.message')
 
-
-    postMessage(message)
+    postMessage(get(req, 'body'))
         .then((resp) => {
             res.json({
                 success: 'post call /settings/:ssn/message succeed!',

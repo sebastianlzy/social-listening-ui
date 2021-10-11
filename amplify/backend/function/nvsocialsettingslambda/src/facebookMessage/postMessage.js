@@ -1,19 +1,42 @@
+const get = require('lodash/get')
+const {LambdaClient, InvokeCommand} = require("@aws-sdk/client-lambda");
+const {SSMClient, GetParameterCommand} = require("@aws-sdk/client-ssm");
 
+const ssmClient = new SSMClient({
+    region: "ap-southeast-1"
+});
 
-const postMessage = async (facebookMessage) => {
+const lambdaClient = new LambdaClient({
+    region: "ap-southeast-1"
+});
 
-    try {
+const postMessage = async (body) => {
 
-      console.log("--------------------7-postMessage-facebookMessage---------------------------")
-      console.log(facebookMessage)
-      console.log("--------------------7-postMessage-facebookMessage--------------------------")
+    const message = get(body, 'message')
+    const postId = get(body, 'postId')
+    const originalText = get(body, 'originalText')
+    const platform = get(body, 'platform')
 
-    } catch (err) {
-        console.log(err)
-    }
+    const lambdaARNParameterStoreName = process.env.MESSAGE_LAMBDA_PARAMETER_STORE
+    const getParameterCommand = new GetParameterCommand({
+        "Name": `${lambdaARNParameterStoreName}`,
+    })
+    const ssmResponse = await ssmClient.send(getParameterCommand);
+    const lambdaARN = ssmResponse.Parameter.Value;
 
+    const invokeCommand = new InvokeCommand({
+        FunctionName: lambdaARN,
+        LogType: "Tail",
+        Payload: new TextEncoder().encode(JSON.stringify({
+            message,
+            postId,
+            originalText,
+            platform
+        }))
+    })
 
-    return "Success"
+    await lambdaClient.send(invokeCommand)
+
 
 }
 

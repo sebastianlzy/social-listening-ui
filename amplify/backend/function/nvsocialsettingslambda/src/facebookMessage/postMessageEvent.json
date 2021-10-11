@@ -151,6 +151,6 @@
     "domainName": "73z05s8i9c.execute-api.ap-southeast-1.amazonaws.com",
     "apiId": "73z05s8i9c"
   },
-  "body": "{\"message\":\"thank you\"}",
+  "body": "{\"message\":\"my message\", \"postId\":\"123\", \"originalText\":\"my original text\", \"platform\":\"facebook\"}",
   "isBase64Encoded": false
 }
