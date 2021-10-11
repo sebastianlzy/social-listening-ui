@@ -6,7 +6,7 @@ import updateFBAppSecretID from "./updateFBAppSecretID";
 import Title from '../common/Title'
 import moment from "moment";
 import {useBackdropContext} from "../contextProvider/backdropContextProvider";
-import {updateFBWebhookURL, updateFBAppId, getFBConfiguration} from "./FBConfiguration";
+import {updateFBWebhookURL, updateFBAppIdParameter, getFBConfiguration} from "./FBConfiguration";
 import get from "lodash/get"
 import InputFieldWithButton from "../common/InputFieldWithButton";
 
@@ -48,6 +48,7 @@ export default function FacebookSettings(props) {
             const fbConfiguration = await getFBConfiguration()
             console.log(fbConfiguration)
             setFBWebhookURL(get(fbConfiguration, "webhookURL", ""))
+            setFBAppID(get(fbConfiguration, "fbAppId", ""))
         }
 
         fetchData();
@@ -86,13 +87,14 @@ export default function FacebookSettings(props) {
 
     }
 
-    //const updateFBAppID = () => {
-    //    localStorage.setItem(fbAppIdCacheKey, JSON.stringify({
-    //        appId: FBAppID,
-    //        expiry: moment().add(1, 'd')
-    //    }))
-    //    window.location.reload()
-    //}
+    const updateFBAppId = async () => {
+        await updateFBAppIdParameter(FBAppID)
+        localStorage.setItem(fbAppIdCacheKey, JSON.stringify({
+            appId: FBAppID,
+            expiry: moment().add(1, 'd')
+        }))
+        window.location.reload()
+    }
 
     return (
         <div className={classes.root}>

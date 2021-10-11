@@ -172,6 +172,11 @@
             },
             {
               "Effect": "Allow",
+              "Action": "lambda:InvokeFunction",
+              "Resource": "*"
+            },
+            {
+              "Effect": "Allow",
               "Action": [
                 "s3:GetObject",
                 "s3:ListBucket"
@@ -264,6 +269,19 @@
               "Resource": [
                 {
                   "Fn::Sub": [
+                    "arn:aws:ssm:${region}:${account}:parameter/MESSAGE_LAMBDA_ARN",
+                    {
+                      "region": {
+                        "Ref": "AWS::Region"
+                      },
+                      "account": {
+                        "Ref": "AWS::AccountId"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Fn::Sub": [
                     "arn:aws:ssm:${region}:${account}:parameter/TW_LAMBDA_ARN",
                     {
                       "region": {
@@ -313,7 +331,7 @@
                       }
                     }
                   ]
-                },
+                }
               ]
             },
             {

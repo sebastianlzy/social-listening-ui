@@ -18,11 +18,17 @@ const postMessage = async (body) => {
     const platform = get(body, 'platform')
 
     const lambdaARNParameterStoreName = process.env.MESSAGE_LAMBDA_PARAMETER_STORE
+    console.log("--------------------21-postMessage-lambdaARNParameterStoreName---------------------------")
+    console.log(lambdaARNParameterStoreName)
+    console.log("--------------------21-postMessage-lambdaARNParameterStoreName--------------------------")
     const getParameterCommand = new GetParameterCommand({
         "Name": `${lambdaARNParameterStoreName}`,
     })
     const ssmResponse = await ssmClient.send(getParameterCommand);
     const lambdaARN = ssmResponse.Parameter.Value;
+    console.log("--------------------29-postMessage-lambdaARN---------------------------")
+    console.log(lambdaARN)
+    console.log("--------------------29-postMessage-lambdaARN--------------------------")
 
     const invokeCommand = new InvokeCommand({
         FunctionName: lambdaARN,
