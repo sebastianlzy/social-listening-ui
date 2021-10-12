@@ -1,12 +1,12 @@
 const get = require('lodash/get')
-const {LambdaClient, InvokeCommand} = require("@aws-sdk/client-lambda");
+const {SNSClient, PublishCommand} = require("@aws-sdk/client-sns");
 const {SSMClient, GetParameterCommand} = require("@aws-sdk/client-ssm");
 
 const ssmClient = new SSMClient({
     region: "ap-southeast-1"
 });
 
-const lambdaClient = new LambdaClient({
+const snsClient = new SNSClient({
     region: "ap-southeast-1"
 });
 
@@ -17,19 +17,27 @@ const postMessage = async (body) => {
     const originalText = get(body, 'originalText')
     const platform = get(body, 'platform')
 
-    const lambdaARNParameterStoreName = process.env.MESSAGE_LAMBDA_PARAMETER_STORE
-    console.log("--------------------21-postMessage-lambdaARNParameterStoreName---------------------------")
-    console.log(lambdaARNParameterStoreName)
-    console.log("--------------------21-postMessage-lambdaARNParameterStoreName--------------------------")
+    const snsARNParameterStoreName = process.env.MESSAGE_SNS_PARAMETER_STORE
+    console.log("--------------------21-postMessage-snsARNParameterStoreName---------------------------")
+    console.log(snsARNParameterStoreName)
+    console.log("--------------------21-postMessage-snsARNParameterStoreName--------------------------")
     const getParameterCommand = new GetParameterCommand({
-        "Name": `${lambdaARNParameterStoreName}`,
+        "Name": `${snsARNParameterStoreName}`,
     })
     const ssmResponse = await ssmClient.send(getParameterCommand);
-    const lambdaARN = ssmResponse.Parameter.Value;
-    console.log("--------------------29-postMessage-lambdaARN---------------------------")
-    console.log(lambdaARN)
-    console.log("--------------------29-postMessage-lambdaARN--------------------------")
-
+    const snsTopicARN = ssmResponse.Parameter.Value;
+    console.log("--------------------29-postMessage-snsTopicARN---------------------------")
+    console.log(snsTopicARN)
+    console.log("--------------------29-postMessage-snsTopicARN--------------------------")
+    
+    var sendMessageParams = {
+      Message: message, // MESSAGE_TEXT
+      TopicArn: snsTopicARN, //TOPIC_ARN
+    };
+    
+    await snsClient.send(new PublishCommand(sendMessageParams));
+    
+    /*
     const invokeCommand = new InvokeCommand({
         FunctionName: lambdaARN,
         LogType: "Tail",
@@ -42,7 +50,8 @@ const postMessage = async (body) => {
     })
 
     await lambdaClient.send(invokeCommand)
-
+    */
+    
 
 }
 

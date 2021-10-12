@@ -78,7 +78,7 @@
             "TW_SECRET_ID": "TW_BEARER_TOKEN",
             "TW_STREAM_RULES_API_URL": "https://api.twitter.com/2/tweets/search/stream/rules",
             "RESULT_BUCKET_NAME": "DATA_BUCKET_NAME",
-            "MESSAGE_LAMBDA_PARAMETER_STORE": "MESSAGE_LAMBDA_ARN"
+            "MESSAGE_SNS_PARAMETER_STORE": "REPLY_MESSAGE_DEST_ARN"
           }
         },
         "Role": {
@@ -269,7 +269,7 @@
               "Resource": [
                 {
                   "Fn::Sub": [
-                    "arn:aws:ssm:${region}:${account}:parameter/MESSAGE_LAMBDA_ARN",
+                    "arn:aws:ssm:${region}:${account}:parameter/REPLY_MESSAGE_DEST_ARN",
                     {
                       "region": {
                         "Ref": "AWS::Region"
@@ -342,6 +342,25 @@
               "Resource": {
                 "Fn::Sub": [
                   "arn:aws:lambda:${region}:${account}:function:*TwitterChangeToken*",
+                  {
+                    "region": {
+                      "Ref": "AWS::Region"
+                    },
+                    "account": {
+                      "Ref": "AWS::AccountId"
+                    }
+                  }
+                ]
+              }
+            },
+             {
+              "Effect": "Allow",
+              "Action": [
+                "sns:Publish"
+              ],
+              "Resource": {
+                "Fn::Sub": [
+                  "arn:aws:sns:${region}:${account}:*ReplyMessageTopic*",
                   {
                     "region": {
                       "Ref": "AWS::Region"
