@@ -12,10 +12,8 @@ const snsClient = new SNSClient({
 
 const postMessage = async (body) => {
 
-    const message = get(body, 'message')
-    const postId = get(body, 'postId')
-    const originalText = get(body, 'originalText')
-    const platform = get(body, 'platform')
+    const message = get(body, 'data')
+    const messageString = JSON.stringify(message)
 
     const snsARNParameterStoreName = process.env.MESSAGE_SNS_PARAMETER_STORE
     console.log("--------------------21-postMessage-snsARNParameterStoreName---------------------------")
@@ -31,10 +29,10 @@ const postMessage = async (body) => {
     console.log("--------------------29-postMessage-snsTopicARN--------------------------")
     
     var sendMessageParams = {
-      Message: message, // MESSAGE_TEXT
+      Message: messageString, // MESSAGE_TEXT
       TopicArn: snsTopicARN, //TOPIC_ARN
     };
-    
+
     await snsClient.send(new PublishCommand(sendMessageParams));
     
     /*

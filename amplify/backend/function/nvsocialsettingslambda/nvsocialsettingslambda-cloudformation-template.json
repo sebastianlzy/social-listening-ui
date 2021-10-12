@@ -353,7 +353,7 @@
                 ]
               }
             },
-             {
+            {
               "Effect": "Allow",
               "Action": [
                 "sns:Publish"
