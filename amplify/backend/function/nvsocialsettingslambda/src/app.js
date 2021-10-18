@@ -23,6 +23,7 @@ const getPageAccessToken = require("./facebookSubscribeWebhookAPI/getPageAccessT
 const postTwitterKey = require("./twitterKeyAPI/postTwitterKey")
 const installApp = require("./facebookSubscribeWebhookAPI/installApp")
 const getFbAppCredentials = require("./facebookSubscribeWebhookAPI/getFbAppCredentials")
+const getFbAppId = require("./facebookSubscribeWebhookAPI/getFbAppId")
 const getLongLivedUserAccessToken = require("./facebookSubscribeWebhookAPI/getLongLivedUserAccessToken")
 const storeFbPageAccessTokens = require("./facebookSubscribeWebhookAPI/storeFbPageAccessTokens")
 const {getFacebookConfiguration, postFacebookConfiguration} = require("./facebookConfiguration");
@@ -182,10 +183,12 @@ app.post('/settings/:ssn/rules', function (req, res) {
 app.post('/settings/:ssn/subscribeWebhook', function (req, res) {
     const userID = req.body.userID;
     const userAccessToken = req.body.userAccessToken;
-    return getFbAppCredentials()
-        .then((resp) => { 
-            const fbAppSecret = resp.SecretString
-            return getLongLivedUserAccessToken(fbAppSecret, userAccessToken)
+    const getCreds = [getFbAppId(), getFbAppCredentials()]
+    return Promise.all(getCreds)
+        .then((resps) => { 
+            const fbAppId = JSON.parse(resps[0].Parameter.Value).fbAppId
+            const fbAppSecret = resps[1].SecretString
+            return getLongLivedUserAccessToken(fbAppId, fbAppSecret, userAccessToken)
         })
         .then((resp) => {
             const longUserAccessToken = get(resp, 'data.access_token')
