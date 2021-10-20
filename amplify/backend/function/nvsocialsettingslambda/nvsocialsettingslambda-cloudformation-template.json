@@ -185,7 +185,10 @@
             },
             {
               "Effect": "Allow",
-              "Action": "secretsmanager:PutSecretValue",
+              "Action": [
+                "secretsmanager:PutSecretValue",
+                "secretsmanager:GetSecretValue"
+              ],
               "Resource": [
                 {
                   "Fn::Sub": [
