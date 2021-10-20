@@ -64,7 +64,7 @@ export default function Facebook() {
             appId            : appId,
             autoLogAppEvents : true,
             xfbml            : true,
-            version          : 'v11.0',
+            version          : 'v12.0',
             status: true
         });
     }
