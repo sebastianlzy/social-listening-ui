@@ -6,6 +6,7 @@ import Container from "@material-ui/core/Container";
 import {makeStyles} from "@material-ui/core/styles";
 import Paper from '@material-ui/core/Paper';
 import Snackbar from '@material-ui/core/Snackbar';
+import Button from "@material-ui/core/Button";
 import {useBackdropContext} from "../contextProvider/backdropContextProvider";
 import FacebookSettings from "./FacebookSettings";
 import Title from "../common/Title";
@@ -33,8 +34,10 @@ export default function Facebook() {
 
     const {setIsBackdropShown} = useBackdropContext()
     const [openSnackbar, setOpenSnackbar] = React.useState(false);
-    const [webhookSubscriptionResult, setWebhookSubscriptionResult] = useState([]);
+    const [messageToDisplay, setMessageToDisplay] = useState([]);
     const [isFBInit, setIsFBInit] = React.useState(false);
+    const [userID, setUserID] = React.useState("0");
+    const [accessToken, setAccessToken] = React.useState("0");
 
     const fbAppIdCacheKey = "fbAppId"
     const fbDefaultAppId = "579539346533486"
@@ -92,8 +95,9 @@ export default function Facebook() {
             FB.getLoginStatus(async function (response) {
                 if (response.status === 'connected') {
                     console.log(response.authResponse)
-                    const {accessToken, userID} = response.authResponse
-                    await subscribeToFBWebhook(userID, accessToken)
+                    const {fbAccessToken, fbUserID} = response.authResponse
+                    setUserID(fbUserID)
+                    setAccessToken(fbAccessToken)
                 }
             });
         }
@@ -110,17 +114,27 @@ export default function Facebook() {
         FBAsyncInit()
     }, [appId])
 
-    const subscribeToFBWebhook = async (userID, accessToken) => {
+    const subscribeToFBWebhook = async () => {
         setIsBackdropShown(true)
         try {
             const webhookSubscriptionResponse = await postUserAccessTokenToLambda(userID, accessToken)
-            setWebhookSubscriptionResult(webhookSubscriptionResponse.data.body)
+            setMessageToDisplay(webhookSubscriptionResponse.data.body)
         } catch (e) {
             console.log(e)
         }
-
         setIsBackdropShown(false)
         setOpenSnackbar(true)
+    }
+    const startFBCrawler = async () => {
+        setIsBackdropShown(true)
+        try {
+            const startCrawlerResponse = await postStartCrawlerRequestToLambda(userID, accessToken)
+            setMessageToDisplay(startCrawlerResponse.data.body)
+        } catch (e) {
+            console.log(e)
+        }
+        setIsBackdropShown(false)
+        setIsBackdropShown(false)
     }
     const postUserAccessTokenToLambda = (userID, userAccessToken) => {
         const apiName = 'nvsocial';
@@ -130,6 +144,19 @@ export default function Facebook() {
             body: {
                 userID: userID,
                 userAccessToken: userAccessToken
+            }
+        };
+
+        return API.post(apiName, path, config)
+    }
+    const postStartCrawlerRequestToLambda = (fbUserID, fbAccessToken) => {
+        const apiName = 'nvsocial';
+        const path = '/settings/facebook/startCrawler';
+        const config = {
+            response: true,
+            body: {
+                userID: fbUserID,
+                userAccessToken: fbAccessToken
             }
         };
 
@@ -149,7 +176,7 @@ export default function Facebook() {
                     />
                     <Paper className={classes.paper}>
                         <div >
-                            <Title>Login to facebook and subscribe to webhook</Title>
+                            <Title>Login to facebook</Title>
                         </div>
                         <div>
                             <div className="fb-login-button" data-width="" data-size="large"
@@ -158,11 +185,22 @@ export default function Facebook() {
                                  data-scope="pages_manage_metadata,pages_manage_engagement,pages_show_list,pages_read_user_content"
                             />
                         </div>
+                        <div>
+                            <Button 
+                                variant="contained"
+                                onClick={subscribeToFBWebhook}>Subscribe to webhook
+                            </Button>
+                            <span> or </span>
+                            <Button 
+                                variant="contained"
+                                onClick={startFBCrawler} >Start crawler
+                            </Button>
+                        </div>
                         <Snackbar
                             open={openSnackbar}
                             autoHideDuration={6000}
                             onClose={() => setOpenSnackbar(false)}
-                            message={webhookSubscriptionResult}
+                            message={messageToDisplay}
                         />
                     </Paper>
                 </Grid>

@@ -22,6 +22,8 @@ const postMessage = require("./facebookMessage/postMessage")
 const getPageAccessToken = require("./facebookSubscribeWebhookAPI/getPageAccessToken")
 const postTwitterKey = require("./twitterKeyAPI/postTwitterKey")
 const installApp = require("./facebookSubscribeWebhookAPI/installApp")
+const checkPageAccess = require("./facebookCrawler/checkPageAccess")
+const startFBCrawler = require("./facebookCrawler/startFBCrawler")
 const getFbAppCredentials = require("./facebookSubscribeWebhookAPI/getFbAppCredentials")
 const getFbAppId = require("./facebookSubscribeWebhookAPI/getFbAppId")
 const getLongLivedUserAccessToken = require("./facebookSubscribeWebhookAPI/getLongLivedUserAccessToken")
@@ -29,6 +31,7 @@ const storeFbPageAccessTokens = require("./facebookSubscribeWebhookAPI/storeFbPa
 const {getFacebookConfiguration, postFacebookConfiguration} = require("./facebookConfiguration");
 const {getMLConfiguration, postMLConfiguration} = require("./mlConfiguration");
 const moment = require("moment")
+
 
 // declare a new express app
 const app = express()
@@ -205,6 +208,46 @@ app.post('/settings/:ssn/subscribeWebhook', function (req, res) {
             res.json({
                 url: req.url,
                 body: "Facebook webhook subscription succeed!"
+            });
+        })
+        .catch((err) => {
+            console.log(err)
+            res.status(500).json({
+                msg: 'Facebook webhook subscription failed!',
+                body: err
+            })
+        })    
+
+});
+
+app.post('/settings/facebook/startCrawler', function (req, res) {
+    const userID = req.body.userID;
+    const userAccessToken = req.body.userAccessToken;
+    const getCreds = [getFbAppId(), getFbAppCredentials()]
+    return Promise.all(getCreds)
+        .then((resps) => { 
+            const fbAppId = JSON.parse(resps[0].Parameter.Value).fbAppId
+            const fbAppSecret = resps[1].SecretString
+            return getLongLivedUserAccessToken(fbAppId, fbAppSecret, userAccessToken)
+        })
+        .then((resp) => {
+            const longUserAccessToken = get(resp, 'data.access_token')
+            return getPageAccessToken(userID, longUserAccessToken)
+        })
+        .then((resp) => { 
+            const pages = get(resp, 'data.data');
+            return checkPageAccess(pages)
+        })
+        .then((resp) => {
+            return storeFbPageAccessTokens(resp)
+        })
+        .then((resp) => {
+            return startFBCrawler();
+        })
+        .then((resp) => {
+            res.json({
+                url: req.url,
+                body: "Facebook crawler started"
             });
         })
         .catch((err) => {
