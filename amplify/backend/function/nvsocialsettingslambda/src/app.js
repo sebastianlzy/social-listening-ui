@@ -253,7 +253,7 @@ app.post('/settings/facebook/startCrawler', function (req, res) {
         .catch((err) => {
             console.log(err)
             res.status(500).json({
-                msg: 'Facebook webhook subscription failed!',
+                msg: 'Facebook crawler start failed!',
                 body: err
             })
         })    

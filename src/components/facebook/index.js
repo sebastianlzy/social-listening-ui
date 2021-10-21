@@ -9,8 +9,10 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Button from "@material-ui/core/Button";
 import {useBackdropContext} from "../contextProvider/backdropContextProvider";
 import FacebookSettings from "./FacebookSettings";
+import {getFBConfiguration} from "./FBConfiguration";
 import Title from "../common/Title";
 import moment from "moment";
+import get from 'lodash/get'
 
 const useStyles = makeStyles((theme) => ({
 
@@ -27,7 +29,9 @@ const useStyles = makeStyles((theme) => ({
     userAccessTokenText: {
         paddingTop: theme.spacing(2),
     },
-
+    fbActionButtonContainer: {
+        paddingTop: theme.spacing(2),
+    }
 }));
 
 export default function Facebook() {
@@ -40,21 +44,25 @@ export default function Facebook() {
     const [accessToken, setAccessToken] = React.useState("0");
 
     const fbAppIdCacheKey = "fbAppId"
-    const fbDefaultAppId = "579539346533486"
+    //const fbDefaultAppId = "PLACEHOLDER"
     const getAppId = () => {
         const itemStr = localStorage.getItem(fbAppIdCacheKey)
         if (!itemStr) {
-            return fbDefaultAppId
+            return getAppIdFromServer()
         }
 
 
         const item = JSON.parse(itemStr)
         if (moment().isAfter(item.expiry)) {
             localStorage.removeItem(fbAppIdCacheKey)
-            return fbDefaultAppId
+            return getAppIdFromServer()
         }
 
         return item.appId
+    }
+    
+    const getAppIdFromServer = () => {
+        return get(getFBConfiguration(), 'data.body.webhookURL')
     }
 
     const [appId] = React.useState(getAppId());
@@ -78,6 +86,7 @@ export default function Facebook() {
         if (window.FB !== undefined) {
             FBinit()
             setIsFBInit(true)
+            setFBCreds()
             setIsBackdropShown(false)
             return
         }
@@ -85,20 +94,25 @@ export default function Facebook() {
         window.fbAsyncInit = function() {
             FBinit()
             setIsFBInit(true)
+            setFBCreds()
             setIsBackdropShown(false)
         };
     }
+    
+   const setFBCreds = () => {
+        FB.getLoginStatus(async function (response) {
+            if (response.status === 'connected') {
+                console.log(response.authResponse)
+                setUserID(response.authResponse.userID)
+                setAccessToken(response.authResponse.accessToken)
+            }
+        });
+   }
 
 
     useEffect(() => {
         window.handleOnFbLogin = () => {
-            FB.getLoginStatus(async function (response) {
-                if (response.status === 'connected') {
-                    console.log(response.authResponse)
-                    setUserID(response.authResponse.userID)
-                    setAccessToken(response.authResponse.accessToken)
-                }
-            });
+            setFBCreds()
         }
     }, [])
 
@@ -186,7 +200,7 @@ export default function Facebook() {
                                  data-scope="pages_manage_metadata,pages_manage_engagement,pages_show_list,pages_read_user_content"
                             />
                         </div>
-                        <div>
+                        <div className={classes.fbActionButtonContainer}>
                             <Button 
                                 variant="contained"
                                 onClick={subscribeToFBWebhook}>Subscribe to webhook
