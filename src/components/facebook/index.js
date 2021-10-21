@@ -95,9 +95,8 @@ export default function Facebook() {
             FB.getLoginStatus(async function (response) {
                 if (response.status === 'connected') {
                     console.log(response.authResponse)
-                    const {fbAccessToken, fbUserID} = response.authResponse
-                    setUserID(fbUserID)
-                    setAccessToken(fbAccessToken)
+                    setUserID(response.authResponse.userID)
+                    setAccessToken(response.authResponse.accessToken)
                 }
             });
         }
@@ -127,6 +126,8 @@ export default function Facebook() {
     }
     const startFBCrawler = async () => {
         setIsBackdropShown(true)
+        console.log(userID)
+        console.log(accessToken)
         try {
             const startCrawlerResponse = await postStartCrawlerRequestToLambda(userID, accessToken)
             setMessageToDisplay(startCrawlerResponse.data.body)

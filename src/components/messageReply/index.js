@@ -71,7 +71,8 @@ export default function MessageReply(props) {
                 setIsBackdropShown(false)
                 setNotificationMessage("Message posted")
             })
-            .catch(() => {
+            .catch((error) => {
+                console.log(error)
                 setIsBackdropShown(false)
                 setNotificationMessage("Message not posted")
             })

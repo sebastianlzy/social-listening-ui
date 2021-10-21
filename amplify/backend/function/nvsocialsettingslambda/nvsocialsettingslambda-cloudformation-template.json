@@ -286,7 +286,7 @@
                 },
                 {
                   "Fn::Sub": [
-                    "arn:aws:ssm:${region}:${account}:parameter/FB_CRAWLER_EVENT_BRIDGE",
+                    "arn:aws:ssm:${region}:${account}:parameter/FB_CRAWLER_EVENT_BRIDGE_RULE_NAME",
                     {
                       "region": {
                         "Ref": "AWS::Region"
@@ -392,12 +392,12 @@
             {
               "Effect": "Allow",
               "Action": [
-                "eventbridge:EnableRule",
-                "eventbridge:DisableRule"
+                "events:EnableRule",
+                "events:DisableRule"
               ],
               "Resource": {
                 "Fn::Sub": [
-                  "arn:aws:events:${region}:${account}:rule/*/*FBCrawler*",
+                  "arn:aws:events:${region}:${account}:rule/FacebookCrawlingScheduler",
                   {
                     "region": {
                       "Ref": "AWS::Region"
@@ -408,7 +408,7 @@
                   }
                 ]
               }
-            },
+            }
           ]
         }
       }

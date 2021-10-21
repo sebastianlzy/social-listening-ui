@@ -8,10 +8,10 @@ const startFBCrawler = async () => {
     const getSecretValueCommand = new GetParameterCommand({
         Name: process.env.FB_CRAWLER_EVENT_BRIDGE
     });
-    const eventBridgeRuleName = await ssmClient.send(getSecretValueCommand);
+    const eventBridgeRuleParameter = await ssmClient.send(getSecretValueCommand);
     
     const params = {
-        Name: eventBridgeRuleName,
+        Name: eventBridgeRuleParameter.Parameter.Value,
     };
     const enableRuleCommand = new EnableRuleCommand(params);
     return eventBridgeClient.send(enableRuleCommand)
