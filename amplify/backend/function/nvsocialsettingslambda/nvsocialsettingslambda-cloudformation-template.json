@@ -77,6 +77,10 @@
             "FB_CRAWLER_EVENT_BRIDGE": "FB_CRAWLER_EVENT_BRIDGE_RULE_NAME",
             "ML_CONFIGURATION": "AI_CONFIG",
             "TW_SECRET_ID": "TW_BEARER_TOKEN",
+            "TW_CONSUMER_KEY": "TW_CONSUMER_KEY",
+            "TW_CONSUMER_SECRET": "TW_CONSUMER_SECRET",
+            "TW_TOKEN": "TW_TOKEN",
+            "TW_TOKEN_SECRET": "TW_TOKEN_SECRET",
             "TW_STREAM_RULES_API_URL": "https://api.twitter.com/2/tweets/search/stream/rules",
             "RESULT_BUCKET_NAME": "DATA_BUCKET_NAME",
             "MESSAGE_SNS_PARAMETER_STORE": "REPLY_MESSAGE_DEST_ARN"
@@ -194,6 +198,58 @@
                 {
                   "Fn::Sub": [
                     "arn:aws:secretsmanager:${region}:${account}:secret:*TW_BEARER_TOKEN*",
+                    {
+                      "region": {
+                        "Ref": "AWS::Region"
+                      },
+                      "account": {
+                        "Ref": "AWS::AccountId"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Fn::Sub": [
+                    "arn:aws:secretsmanager:${region}:${account}:secret:*TW_CONSUMER_KEY*",
+                    {
+                      "region": {
+                        "Ref": "AWS::Region"
+                      },
+                      "account": {
+                        "Ref": "AWS::AccountId"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Fn::Sub": [
+                    "arn:aws:secretsmanager:${region}:${account}:secret:*TW_CONSUMER_SECRET*",
+                    {
+                      "region": {
+                        "Ref": "AWS::Region"
+                      },
+                      "account": {
+                        "Ref": "AWS::AccountId"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Fn::Sub": [
+                    "arn:aws:secretsmanager:${region}:${account}:secret:*TW_TOKEN*",
+                    {
+                      "region": {
+                        "Ref": "AWS::Region"
+                      },
+                      "account": {
+                        "Ref": "AWS::AccountId"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Fn::Sub": [
+                    "arn:aws:secretsmanager:${region}:${account}:secret:*TW_TOKEN_SECRET*",
                     {
                       "region": {
                         "Ref": "AWS::Region"

@@ -15,25 +15,46 @@ const lambdaClient = new LambdaClient({
 });
 const lambdaARNParameterStoreName = "TW_LAMBDA_ARN"
 
-const postTwitterKey = async (secretString) => {
+const postTwitterKey = async (secretString, mode) => {
+    var secretId = ""
+     switch(mode) {
+      case "bearer":
+        secretId = process.env.TW_SECRET_ID;
+        break;
+      case "key":
+        secretId = process.env.TW_CONSUMER_KEY;
+        break;
+      case "secret":
+        secretId = process.env.TW_CONSUMER_SECRET;
+        break;
+      case "token":
+        secretId = process.env.TW_TOKEN;
+        break;
+      case "token_secret":
+        secretId = process.env.TW_TOKEN_SECRET;
+    } 
+        
 
     const putSecretValueCommand = new PutSecretValueCommand({
-        SecretId: process.env.TW_SECRET_ID,
+        SecretId: secretId,
         SecretString: secretString
     });
     await secretManagerClient.send(putSecretValueCommand);
-
-    const getParameterCommand = new GetParameterCommand({
-        "Name": `${lambdaARNParameterStoreName}`,
-        "WithDecryption": true
-    })
-    const ssmResponse = await ssmClient.send(getParameterCommand);
-    const lambdaARN = ssmResponse.Parameter.Value;
-    const invokeCommand = new InvokeCommand({
-        FunctionName: lambdaARN,
-        LogType: "Tail"
-    })
-    await lambdaClient.send(invokeCommand)
+    
+    if(mode == "bearer"){
+        const getParameterCommand = new GetParameterCommand({
+            "Name": `${lambdaARNParameterStoreName}`,
+            "WithDecryption": true
+        })
+        const ssmResponse = await ssmClient.send(getParameterCommand);
+        
+        const lambdaARN = ssmResponse.Parameter.Value;
+        const invokeCommand = new InvokeCommand({
+            FunctionName: lambdaARN,
+            LogType: "Tail"
+        })
+        await lambdaClient.send(invokeCommand)
+    }
 
 }
 

@@ -262,8 +262,9 @@ app.post('/settings/facebook/startCrawler', function (req, res) {
 
 app.post('/settings/:ssn/twitterKey', async function (req, res) {
     const apiKey = req.body.apiKey;
-
-    return postTwitterKey(apiKey)
+    const mode = req.body.mode
+    
+    return postTwitterKey(apiKey, mode)
         .then(() => {
             res.json({
                 url: req.url,

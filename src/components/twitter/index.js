@@ -66,6 +66,35 @@ export default function Twitter() {
                     <TwitterKey
                         setIsBackdropShown={setIsBackdropShown}
                         setNotificationMessage={setNotificationMessage}
+                        mode="bearer"
+                    />
+                </Grid>
+                <Grid item xs={12} md={12} lg={12}>
+                    <TwitterKey
+                        setIsBackdropShown={setIsBackdropShown}
+                        setNotificationMessage={setNotificationMessage}
+                        mode="key"
+                    />
+                </Grid>
+                <Grid item xs={12} md={12} lg={12}>
+                    <TwitterKey
+                        setIsBackdropShown={setIsBackdropShown}
+                        setNotificationMessage={setNotificationMessage}
+                        mode="secret"
+                    />
+                </Grid>
+                <Grid item xs={12} md={12} lg={12}>
+                    <TwitterKey
+                        setIsBackdropShown={setIsBackdropShown}
+                        setNotificationMessage={setNotificationMessage}
+                        mode="token"
+                    />
+                </Grid>
+                <Grid item xs={12} md={12} lg={12}>
+                    <TwitterKey
+                        setIsBackdropShown={setIsBackdropShown}
+                        setNotificationMessage={setNotificationMessage}
+                        mode="token_secret"
                     />
                 </Grid>
                 <Grid item xs={12} md={12} lg={12}>
