@@ -69,19 +69,19 @@ export default function TwitterKey(props) {
         console.log(mode)
         var valueToUpdate = ""
         switch(mode) {
-          case "twbearer":
+          case "bearer":
             valueToUpdate = twBearer;
             break;
-          case "twkey":
+          case "key":
             valueToUpdate = twKey;
             break;
-          case "twsecret":
+          case "secret":
             valueToUpdate = twSecret;
             break;
-          case "twtoken":
+          case "token":
             valueToUpdate = twToken;
             break;
-          case "twtokensecret":
+          case "token_secret":
             valueToUpdate = twTokenSecret;
         } 
         updateTwitterKey(valueToUpdate, mode)
@@ -114,10 +114,9 @@ export default function TwitterKey(props) {
                     <div className={classes.divSubmitBtn}>
                         <Button
                             variant="outlined"
-                            twMode="bearer"
                             color="primary"
                             disabled={twBearer.length < 5}
-                            onClick={handleSubmit}
+                            onClick={(e) => handleSubmit("bearer", e)}
                         >
                             Update
                         </Button>
@@ -135,10 +134,9 @@ export default function TwitterKey(props) {
                     <div className={classes.divSubmitBtn}>
                         <Button
                             variant="outlined"
-                            twMode="key"
                             color="primary"
                             disabled={twKey.length < 5}
-                            onClick={handleSubmit}
+                            onClick={(e) => handleSubmit("key", e)}
                         >
                             Update
                         </Button>
@@ -157,9 +155,8 @@ export default function TwitterKey(props) {
                         <Button
                             variant="outlined"
                             color="primary"
-                            twMode="secret"
                             disabled={twSecret.length < 5}
-                            onClick={handleSubmit}
+                            onClick={(e) => handleSubmit("secret", e)}
                         >
                             Update
                         </Button>
@@ -178,9 +175,8 @@ export default function TwitterKey(props) {
                         <Button
                             variant="outlined"
                             color="primary"
-                            twMode="token"
                             disabled={twToken.length < 5}
-                            onClick={handleSubmit}
+                            onClick={(e) => handleSubmit("token", e)}
                         >
                             Update
                         </Button>
@@ -199,9 +195,8 @@ export default function TwitterKey(props) {
                         <Button
                             variant="outlined"
                             color="primary"
-                            twMode="token_secret"
                             disabled={twTokenSecret.length < 5}
-                            onClick={handleSubmit}
+                            onClick={(e) => handleSubmit("token_secret", e)}
                         >
                             Update
                         </Button>
