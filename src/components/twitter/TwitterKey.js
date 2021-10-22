@@ -30,36 +30,61 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function TwitterKey(props) {
-    const {setNotificationMessage, setIsBackdropShown, mode} = props
-    var displayMode = ""
-    switch(mode) {
-      case "bearer":
-        displayMode = "Twitter Bearer Token"
-        break;
-      case "key":
-        displayMode = "Twitter API (Consumer) Key"
-        break;
-      case "secret":
-        displayMode = "Twitter API (Consumer) Secret"
-        break;
-      case "token":
-        displayMode = "Twitter Access Token"
-        break;
-      case "token_secret":
-        displayMode = "Twitter Access Token Secret"
-    } 
+    const {setNotificationMessage, setIsBackdropShown} = props
+    
     const classes = useStyles();
-    const [twKeyValue, setTwKeyValue] = React.useState("");
+    const [twBearer, setTwBearer] = React.useState("");
+    const [twKey, setTwKey] = React.useState("");
+    const [twSecret, setTwSecret] = React.useState("");
+    const [twToken, setTwToken] = React.useState("");
+    const [twTokenSecret, setTwTokenSecret] = React.useState("");
 
     const handleChange = (e) => {
         const key = e.target.value
-        setTwKeyValue(key)
+        const id = e.target.id
+        console.log(id)
+        console.log(key)
+        switch(id) {
+          case "twbearer":
+            setTwBearer(key)
+            break;
+          case "twkey":
+            setTwKey(key)
+            break;
+          case "twsecret":
+            setTwSecret(key)
+            break;
+          case "twtoken":
+            setTwToken(key)
+            break;
+          case "twtokensecret":
+            setTwTokenSecret(key)
+        } 
     }
 
     const handleSubmit = (e) => {
         e.preventDefault()
         setIsBackdropShown(true)
-        updateTwitterKey(twKeyValue, mode)
+        const mode = e.target.twMode
+        console.log(mode)
+        var valueToUpdate = ""
+        switch(mode) {
+          case "twbearer":
+            valueToUpdate = twBearer;
+            break;
+          case "twkey":
+            valueToUpdate = twKey;
+            break;
+          case "twsecret":
+            valueToUpdate = twSecret;
+            break;
+          case "twtoken":
+            valueToUpdate = twToken;
+            break;
+          case "twtokensecret":
+            valueToUpdate = twTokenSecret;
+        } 
+        updateTwitterKey(valueToUpdate, mode)
             .then(() => {
                 setIsBackdropShown(false)
                 setNotificationMessage("Value updated")
@@ -75,14 +100,56 @@ export default function TwitterKey(props) {
         <div className={classes.root}>
             <Paper className={classes.paper}>
                 <div className={classes.title}>
-                    <Title> {"Update" + displayMode}</Title>
+                    <Title> Update Twitter API Credentials </Title>
                 </div>
                 <div className={classes.inputTextApiKey}>
                     <FormControl fullWidth variant="filled">
-                        <InputLabel htmlFor={"tw" + mode}>{displayMode}</InputLabel>
+                        <InputLabel htmlFor="twbearer">Twitter Bearer Token</InputLabel>
                         <FilledInput
-                            id={"tw" + mode}
-                            value={twKeyValue}
+                            id="twbearer"
+                            value={twBearer}
+                            onChange={handleChange}
+                        />
+                    </FormControl>
+                    <div className={classes.divSubmitBtn}>
+                        <Button
+                            variant="outlined"
+                            twMode="bearer"
+                            color="primary"
+                            disabled={twBearer.length < 5}
+                            onClick={handleSubmit}
+                        >
+                            Update
+                        </Button>
+                    </div>
+                </div>
+                <div className={classes.inputTextApiKey}>
+                    <FormControl fullWidth variant="filled">
+                        <InputLabel htmlFor="twkey">Twitter Consumer (API) Key</InputLabel>
+                        <FilledInput
+                            id="twkey"
+                            value={twKey}
+                            onChange={handleChange}
+                        />
+                    </FormControl>
+                    <div className={classes.divSubmitBtn}>
+                        <Button
+                            variant="outlined"
+                            twMode="key"
+                            color="primary"
+                            disabled={twKey.length < 5}
+                            onClick={handleSubmit}
+                        >
+                            Update
+                        </Button>
+                    </div>
+                </div>
+                <div className={classes.inputTextApiKey}>
+                    <FormControl fullWidth variant="filled">
+                        <InputLabel htmlFor="twkey">Twitter Consumer (API) Secret</InputLabel>
+                        <FilledInput
+                            id="twsecret"
+                            value={twSecret}
                             onChange={handleChange}
                         />
                     </FormControl>
@@ -90,7 +157,50 @@ export default function TwitterKey(props) {
                         <Button
                             variant="outlined"
                             color="primary"
-                            disabled={twKeyValue.length < 5}
+                            twMode="secret"
+                            disabled={twSecret.length < 5}
+                            onClick={handleSubmit}
+                        >
+                            Update
+                        </Button>
+                    </div>
+                </div>
+                <div className={classes.inputTextApiKey}>
+                    <FormControl fullWidth variant="filled">
+                        <InputLabel htmlFor="twkey">Twitter Access Token</InputLabel>
+                        <FilledInput
+                            id="twtoken"
+                            value={twToken}
+                            onChange={handleChange}
+                        />
+                    </FormControl>
+                    <div className={classes.divSubmitBtn}>
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            twMode="token"
+                            disabled={twToken.length < 5}
+                            onClick={handleSubmit}
+                        >
+                            Update
+                        </Button>
+                    </div>
+                </div>
+                <div className={classes.inputTextApiKey}>
+                    <FormControl fullWidth variant="filled">
+                        <InputLabel htmlFor="twkey">Twitter Access Token Secret</InputLabel>
+                        <FilledInput
+                            id="twtokensecret"
+                            value={twTokenSecret}
+                            onChange={handleChange}
+                        />
+                    </FormControl>
+                    <div className={classes.divSubmitBtn}>
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            twMode="token_secret"
+                            disabled={twTokenSecret.length < 5}
                             onClick={handleSubmit}
                         >
                             Update
