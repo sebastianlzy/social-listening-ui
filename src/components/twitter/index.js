@@ -68,6 +68,13 @@ export default function Twitter() {
                         setNotificationMessage={setNotificationMessage}
                     />
                 </Grid>
+                <Grid item xs={12} md={12} lg={12}>
+                    <TwitterRules
+                        rows={twitterRules}
+                        fetchTwitterRules={fetchTwitterRules}
+                        setIsBackdropShown={setIsBackdropShown}
+                    />
+                </Grid>
             </Grid>
         </Container>
     )
