@@ -62,7 +62,7 @@ export default function Facebook() {
     }
     
     const getAppIdFromServer = () => {
-        return get(getFBConfiguration(), 'data.body.webhookURL')
+        return get(getFBConfiguration(), 'fbAppId')
     }
 
     const [appId] = React.useState(getAppId());
