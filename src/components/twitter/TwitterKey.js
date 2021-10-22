@@ -62,10 +62,9 @@ export default function TwitterKey(props) {
         } 
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (mode, e) => {
         e.preventDefault()
         setIsBackdropShown(true)
-        const mode = e.target.twMode
         console.log(mode)
         var valueToUpdate = ""
         switch(mode) {
