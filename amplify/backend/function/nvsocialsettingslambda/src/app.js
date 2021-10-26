@@ -28,6 +28,7 @@ const getFbAppCredentials = require("./facebookSubscribeWebhookAPI/getFbAppCrede
 const getFbAppId = require("./facebookSubscribeWebhookAPI/getFbAppId")
 const getLongLivedUserAccessToken = require("./facebookSubscribeWebhookAPI/getLongLivedUserAccessToken")
 const storeFbPageAccessTokens = require("./facebookSubscribeWebhookAPI/storeFbPageAccessTokens")
+const storeIgToFbPageMapping = require("./facebookSubscribeWebhookAPI/storeIgToFbPageMapping")
 const {getFacebookConfiguration, postFacebookConfiguration} = require("./facebookConfiguration");
 const {getMLConfiguration, postMLConfiguration} = require("./mlConfiguration");
 const moment = require("moment")
@@ -202,7 +203,9 @@ app.post('/settings/:ssn/subscribeWebhook', function (req, res) {
             return installApp(pages)
         })
         .then((resp) => {
-            return storeFbPageAccessTokens(resp)
+            const igPromise = storeIgToFbPageMapping(resp)
+            const fbPromise = storeFbPageAccessTokens(resp)
+            return Promise([igPromise, fbPromise])
         })
         .then((resp) => {
             res.json({

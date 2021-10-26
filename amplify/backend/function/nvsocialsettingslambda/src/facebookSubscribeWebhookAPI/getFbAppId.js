@@ -1,4 +1,4 @@
-const { SSMClient, GetParameterCommand } = require("@aws-sdk/client-ssm");
+const { SSMClient, PutParameterCommand } = require("@aws-sdk/client-ssm");
 
 const getFbAppId = () => {
     const ssmClient = new SSMClient({
