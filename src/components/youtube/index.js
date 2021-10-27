@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Twitter() {
+export default function Youtube() {
 
     const {setIsBackdropShown, setNotificationMessage} = useBackdropContext()
     //const [twitterRules, setTwitterRules] = useState([]);
