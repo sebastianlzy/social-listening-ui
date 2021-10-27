@@ -6,6 +6,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import FacebookIcon from '@material-ui/icons/Facebook';
+import YoutubeIcon from '@material-ui/icons/YouTube';
 import SettingsIcon from '@material-ui/icons/Settings';
 import {useLocation} from 'react-router-dom'
 import {matchPath} from "react-router";
@@ -15,6 +16,7 @@ const pageNames = {
     dashboard: "/dashboard",
     twitter: "/settings/twitter",
     facebook: "/settings/facebook",
+    youtube: "/settings/youtube",
     mlConfiguration: "/settings/ml-configuration"
 }
 
@@ -76,7 +78,18 @@ export const SecondaryListItems = () => {
                 <ListItemIcon>
                     <FacebookIcon/>
                 </ListItemIcon>
-                <ListItemText primary="Facebook"/>
+                <ListItemText primary="Facebook/Instagram"/>
+            </ListItem>
+            <ListItem
+                button
+                component="a"
+                href={pageNames.youtube}
+                selected={isMatch(pageNames.youtube)}
+            >
+                <ListItemIcon>
+                    <YoutubeIcon/>
+                </ListItemIcon>
+                <ListItemText primary="Youtube"/>
             </ListItem>
             <ListItem
                 button

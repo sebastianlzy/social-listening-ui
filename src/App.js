@@ -3,6 +3,7 @@ import Amplify from 'aws-amplify';
 import awsconfig from './aws-exports';
 import Dashboard from './components/dashboard'
 import Facebook from './components/facebook/'
+import Youtube from './components/youtube/'
 import Layout from "./layout";
 import Twitter from './components/twitter'
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
@@ -39,6 +40,11 @@ function App() {
                         <Route path="/settings/facebook">
                             <Layout>
                                 <Facebook/>
+                            </Layout>
+                        </Route>
+                        <Route path="/settings/youtube">
+                            <Layout>
+                                <Youtube/>
                             </Layout>
                         </Route>
                         <Route path="/settings/ml-configuration">
