@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
 export default function Youtube() {
 
     const {setIsBackdropShown, setNotificationMessage} = useBackdropContext()
-    //const [twitterRules, setTwitterRules] = useState([]);
 
     const classes = useStyles();
 
@@ -41,10 +40,9 @@ export default function Youtube() {
         <Container maxWidth="lg" className={classes.container}>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={12} lg={12}>
-
-                </Grid>
-                <Grid item xs={12} md={12} lg={12}>
-
+                     <YoutubeConfig
+                        setIsBackdropShown={setIsBackdropShown}
+                    />
                 </Grid>
             </Grid>
         </Container>

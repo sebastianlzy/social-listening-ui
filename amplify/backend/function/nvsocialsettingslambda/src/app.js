@@ -21,6 +21,8 @@ const getRecentMentions = require("./recentMentionsAPI/getRecentMentions")
 const postMessage = require("./facebookMessage/postMessage")
 const getPageAccessToken = require("./facebookSubscribeWebhookAPI/getPageAccessToken")
 const postTwitterKey = require("./twitterKeyAPI/postTwitterKey")
+const postYoutubeClientId = require("./youtubeClientID/postYoutubeClientId")
+const getYoutubeClientId = require("./youtubeClientID/getYoutubeClientId")
 const installApp = require("./facebookSubscribeWebhookAPI/installApp")
 const checkPageAccess = require("./facebookCrawler/checkPageAccess")
 const startFBCrawler = require("./facebookCrawler/startFBCrawler")
@@ -276,6 +278,39 @@ app.post('/settings/:ssn/twitterKey', async function (req, res) {
         }).catch((err) => {
             res.status(500).json({
                 msg: 'Twitter API update failed!',
+                body: err
+            })
+        })
+});
+
+app.post('/settings/youtube/youtubeClientId', async function (req, res) {
+    const ytClientId = req.body.ytClientId
+    
+    return postYoutubeClientId(ytClientId)
+        .then(() => {
+            res.json({
+                url: req.url,
+                body: "Updated client ID for Youtube"
+            });
+        }).catch((err) => {
+            res.status(500).json({
+                msg: 'Youtube client ID API update failed!',
+                body: err
+            })
+        })
+});
+
+app.get('/settings/youtube/youtubeClientId', async function (req, res) {
+    
+    return getYoutubeClientId()
+        .then((ytClientID) => {
+            res.json({
+                url: req.url,
+                body: ytClientID
+            });
+        }).catch((err) => {
+            res.status(500).json({
+                msg: 'Youtube client ID API fetching failed!',
                 body: err
             })
         })

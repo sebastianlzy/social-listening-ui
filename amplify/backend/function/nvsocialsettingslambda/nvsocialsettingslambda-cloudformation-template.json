@@ -84,7 +84,8 @@
             "TW_STREAM_RULES_API_URL": "https://api.twitter.com/2/tweets/search/stream/rules",
             "RESULT_BUCKET_NAME": "DATA_BUCKET_NAME",
             "MESSAGE_SNS_PARAMETER_STORE": "REPLY_MESSAGE_DEST_ARN",
-            "IG_TO_FB_PAGE": "IG_TO_FB_PAGE"
+            "IG_TO_FB_PAGE": "IG_TO_FB_PAGE",
+            "YT_CLIENT_ID": "YT_CLIENT_ID"
           }
         },
         "Role": {
@@ -409,6 +410,19 @@
                 {
                   "Fn::Sub": [
                     "arn:aws:ssm:${region}:${account}:parameter/IG_TO_FB_PAGE",
+                    {
+                      "region": {
+                        "Ref": "AWS::Region"
+                      },
+                      "account": {
+                        "Ref": "AWS::AccountId"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Fn::Sub": [
+                    "arn:aws:ssm:${region}:${account}:parameter/YT_CLIENT_ID",
                     {
                       "region": {
                         "Ref": "AWS::Region"
