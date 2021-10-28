@@ -23,6 +23,7 @@ export default function RecentMentions(props) {
                         <TableCell>Text</TableCell>
                         <TableCell>Language</TableCell>
                         <TableCell>Sentiment</TableCell>
+                        <TableCell>Reply</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -34,6 +35,7 @@ export default function RecentMentions(props) {
                             <TableCell>{row.text}</TableCell>
                             <TableCell>{row.language_code}</TableCell>
                             <TableCell>{row.sentiment}</TableCell>
+                            <TableCell><a href={row.reply_link}>reply</a></TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
