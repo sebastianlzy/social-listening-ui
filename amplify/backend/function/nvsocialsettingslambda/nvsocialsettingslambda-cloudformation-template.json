@@ -85,7 +85,10 @@
             "RESULT_BUCKET_NAME": "DATA_BUCKET_NAME",
             "MESSAGE_SNS_PARAMETER_STORE": "REPLY_MESSAGE_DEST_ARN",
             "IG_TO_FB_PAGE": "IG_TO_FB_PAGE",
-            "YT_CLIENT_ID": "YT_CLIENT_ID"
+            "YT_CLIENT_ID": "YT_CLIENT_ID",
+            "YT_CLIENT_SECRET": "YT_CLIENT_SECRET",
+            "YT_REDIRECT_URL": "YT_REDIRECT_URL",
+            "YT_QUERY": "YT_QUERY"
           }
         },
         "Role": {
@@ -212,6 +215,19 @@
                 },
                 {
                   "Fn::Sub": [
+                    "arn:aws:secretsmanager:${region}:${account}:secret:*YT_CLIENT_SECRET*",
+                    {
+                      "region": {
+                        "Ref": "AWS::Region"
+                      },
+                      "account": {
+                        "Ref": "AWS::AccountId"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Fn::Sub": [
                     "arn:aws:secretsmanager:${region}:${account}:secret:*TW_CONSUMER_KEY*",
                     {
                       "region": {
@@ -326,9 +342,43 @@
               "Effect": "Allow",
               "Action": [
                 "ssm:GetParameter",
+              ],
+              "Resource": [
+                 {
+                  "Fn::Sub": [
+                    "arn:aws:ssm:${region}:${account}:parameter/YT_REDIRECT_URL",
+                    {
+                      "region": {
+                        "Ref": "AWS::Region"
+                      },
+                      "account": {
+                        "Ref": "AWS::AccountId"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "ssm:GetParameter",
                 "ssm:PutParameter"
               ],
               "Resource": [
+                {
+                  "Fn::Sub": [
+                    "arn:aws:ssm:${region}:${account}:parameter/YT_QUERY",
+                    {
+                      "region": {
+                        "Ref": "AWS::Region"
+                      },
+                      "account": {
+                        "Ref": "AWS::AccountId"
+                      }
+                    }
+                  ]
+                },
                 {
                   "Fn::Sub": [
                     "arn:aws:ssm:${region}:${account}:parameter/REPLY_MESSAGE_DEST_ARN",

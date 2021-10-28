@@ -21,8 +21,12 @@ const getRecentMentions = require("./recentMentionsAPI/getRecentMentions")
 const postMessage = require("./facebookMessage/postMessage")
 const getPageAccessToken = require("./facebookSubscribeWebhookAPI/getPageAccessToken")
 const postTwitterKey = require("./twitterKeyAPI/postTwitterKey")
-const postYoutubeClientId = require("./youtubeClientID/postYoutubeClientId")
-const getYoutubeClientId = require("./youtubeClientID/getYoutubeClientId")
+const postYoutubeClientId = require("./youtube/postYoutubeClientId")
+const getYoutubeClientId = require("./youtube/getYoutubeClientId")
+const getYoutubeRedirectUrl = require("./youtube/getYoutubeRedirectUrl")
+const postYoutubeClientSecret = require("./youtube/postYoutubeClientSecret")
+const postYoutubeQuery = require("./youtube/postYoutubeQuery")
+const getYoutubeQuery = require("./youtube/getYoutubeQuery")
 const installApp = require("./facebookSubscribeWebhookAPI/installApp")
 const checkPageAccess = require("./facebookCrawler/checkPageAccess")
 const startFBCrawler = require("./facebookCrawler/startFBCrawler")
@@ -134,6 +138,54 @@ app.get('/settings/:ssn/configuration', function (req, res) {
                 url: req.url,
                 body: err,
                 ssn,
+            })
+        })
+});
+
+app.get('/settings/youtube/youtubeClientId', async function (req, res) {
+    
+    return getYoutubeClientId()
+        .then((ytClientID) => {
+            res.json({
+                url: req.url,
+                body: ytClientID
+            });
+        }).catch((err) => {
+            res.status(500).json({
+                msg: 'Youtube client ID API fetching failed!',
+                body: err
+            })
+        })
+});
+
+app.get('/settings/youtube/youtubeRedirectUrl', async function (req, res) {
+    
+    return getYoutubeRedirectUrl()
+        .then((ytRedirectUrl) => {
+            res.json({
+                url: req.url,
+                body: ytRedirectUrl
+            });
+        }).catch((err) => {
+            res.status(500).json({
+                msg: 'Youtube redirect URL fetching failed!',
+                body: err
+            })
+        })
+});
+
+app.get('/settings/youtube/youtubeQuery', async function (req, res) {
+    
+    return getYoutubeQuery()
+        .then((ytQuery) => {
+            res.json({
+                url: req.url,
+                body: ytQuery
+            });
+        }).catch((err) => {
+            res.status(500).json({
+                msg: 'Youtube query fetching failed!',
+                body: err
             })
         })
 });
@@ -300,17 +352,35 @@ app.post('/settings/youtube/youtubeClientId', async function (req, res) {
         })
 });
 
-app.get('/settings/youtube/youtubeClientId', async function (req, res) {
+app.post('/settings/youtube/youtubeClientSecret', async function (req, res) {
+    const ytClientSecret = req.body.ytClientSecret
     
-    return getYoutubeClientId()
-        .then((ytClientID) => {
+    return postYoutubeClientSecret(ytClientSecret)
+        .then(() => {
             res.json({
                 url: req.url,
-                body: ytClientID
+                body: "Updated client secret for Youtube"
             });
         }).catch((err) => {
             res.status(500).json({
-                msg: 'Youtube client ID API fetching failed!',
+                msg: 'Youtube client secret API update failed!',
+                body: err
+            })
+        })
+});
+
+app.post('/settings/youtube/youtubeClientId', async function (req, res) {
+    const ytQuery = req.body.ytQuery
+    
+    return postYoutubeClientId(ytQuery)
+        .then(() => {
+            res.json({
+                url: req.url,
+                body: "Updated query for Youtube"
+            });
+        }).catch((err) => {
+            res.status(500).json({
+                msg: 'Youtube query API update failed!',
                 body: err
             })
         })

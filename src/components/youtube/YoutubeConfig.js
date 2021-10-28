@@ -8,6 +8,10 @@ import Button from '@material-ui/core/Button';
 import Title from '../common/Title'
 import updateYoutubeClientId from './updateYoutubeClientId'
 import getYoutubeClientId from './getYoutubeClientId'
+import updateYoutubeClientSecret from './updateYoutubeClientSecret'
+import getYoutubeRedirectUrl from './getYoutubeRedirectUrl'
+import updateYoutubeQuery from './updateYoutubeQuery'
+import getYoutubeQuery from './getYoutubeQuery'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -30,21 +34,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function TwitterKey(props) {
+export default function YoutubeConfig(props) {
     const {setNotificationMessage, setIsBackdropShown} = props
     
     const classes = useStyles();
     const [ytClientId, setYtClientId] = React.useState("");
-
-    const handleChange = (e) => {
-        const clientId = e.target.value
- 
-        setYtClientId(clientId)
-    }
+    const [ytClientSecret, setYtClientSecret] = React.useState("");
+    const [ytRedirectUrl, setYtRedirectUrl] = React.useState("");
+    const [ytQuery, setYtQuery] = React.useState("");
     
     const handleYTAuth = (e) => {
         e.preventDefault()
-        var redirectCallbackUri = encodeURIComponent(`https:// + ${(new URL(window.location.href)).hostname}`)
+        var redirectCallbackUri = encodeURIComponent(ytRedirectUrl)
         var redirectString = "https://accounts.google.com/o/oauth2/v2/auth?"
         redirectString += "scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fyoutube.readonly&"
         redirectString += "access_type=offline&"
@@ -54,8 +55,13 @@ export default function TwitterKey(props) {
         redirectString += `client_id=${ytClientId}`
         this.props.history.push(redirectString)
     }
+    
+    const handleClientIdChange = (e) => {
+        const clientId = e.target.value
+        setYtClientId(clientId)
+    }
 
-    const handleSubmit = (e) => {
+    const handleClientIdSubmit = (e) => {
         e.preventDefault()
         setIsBackdropShown(true)
         updateYoutubeClientId(ytClientId)
@@ -70,14 +76,74 @@ export default function TwitterKey(props) {
 
     }
     
+    const handleClientSecretChange = (e) => {
+        const clientSecret = e.target.value
+        setYtClientSecret(clientSecret)
+    }
+
+    const handleClientSecretSubmit = (e) => {
+        e.preventDefault()
+        setIsBackdropShown(true)
+        updateYoutubeClientSecret(ytClientSecret)
+            .then(() => {
+                setIsBackdropShown(false)
+                setNotificationMessage("Value updated")
+            })
+            .catch(() => {
+                setIsBackdropShown(false)
+                setNotificationMessage("Value not updated")
+            })
+
+    }
+    
+    const handleQueryChange = (e) => {
+        const query = e.target.value
+        setYtQuery(query)
+    }
+
+    const handleQuerySubmit = (e) => {
+        e.preventDefault()
+        setIsBackdropShown(true)
+        updateYoutubeQuery(ytQuery)
+            .then(() => {
+                setIsBackdropShown(false)
+                setNotificationMessage("Query updated")
+            })
+            .catch(() => {
+                setIsBackdropShown(false)
+                setNotificationMessage("Query not updated")
+            })
+
+    }
+    
     useEffect(() => {
-        async function fetchData() {
+        async function getClientId() {
             const ytClientId = await getYoutubeClientId()
             console.log(ytClientId)
             setYtClientId(ytClientId)
         }
 
-        fetchData();
+        getClientId();
+    }, [])
+    
+    useEffect(() => {
+        async function getYtRedirectUrl() {
+            const ytRedirectUrl = await getYoutubeRedirectUrl()
+            console.log(ytRedirectUrl)
+            setYtRedirectUrl(ytRedirectUrl)
+        }
+
+        getYtRedirectUrl();
+    }, [])
+    
+     useEffect(() => {
+        async function getQuery() {
+            const ytQuery = await getYoutubeQuery()
+            console.log(ytQuery)
+            setYtQuery(ytQuery)
+        }
+
+        getQuery();
     }, [])
 
     return (
@@ -88,11 +154,11 @@ export default function TwitterKey(props) {
                 </div>
                 <div className={classes.inputTextApiKey}>
                     <FormControl fullWidth variant="filled">
-                        <InputLabel htmlFor="twbearer">YouTube Client ID</InputLabel>
+                        <InputLabel htmlFor="ytclientid">YouTube Client ID</InputLabel>
                         <FilledInput
                             id="ytclientid"
                             value={ytClientId}
-                            onChange={handleChange}
+                            onChange={handleClientIdChange}
                         />
                     </FormControl>
                     <div className={classes.divSubmitBtn}>
@@ -100,11 +166,75 @@ export default function TwitterKey(props) {
                             variant="outlined"
                             color="primary"
                             disabled={ytClientId.length < 5}
-                            onClick={handleSubmit}
+                            onClick={handleClientIdSubmit}
                         >
                             Update
                         </Button>
                     </div>
+                </div>
+            </Paper>
+            <Paper className={classes.paper}>
+                <div className={classes.title}>
+                    <Title> Update YouTube Client Secret </Title>
+                </div>
+                <div className={classes.inputTextApiKey}>
+                    <FormControl fullWidth variant="filled">
+                        <InputLabel htmlFor="ytclientsecret">YouTube Client Secret</InputLabel>
+                        <FilledInput
+                            id="ytclientsecret"
+                            value={ytClientSecret}
+                            onChange={handleClientSecretChange}
+                        />
+                    </FormControl>
+                    <div className={classes.divSubmitBtn}>
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            disabled={ytClientSecret.length < 5}
+                            onClick={handleClientSecretSubmit}
+                        >
+                            Update
+                        </Button>
+                    </div>
+                </div>
+            </Paper>
+            <Paper className={classes.paper}>
+                <div className={classes.title}>
+                    <Title> Update YouTube Search Query </Title>
+                </div>
+                <div className={classes.inputTextApiKey}>
+                    <FormControl fullWidth variant="filled">
+                        <InputLabel htmlFor="ytquery">Terms to search on YouTube videos, channels, or playlists. Use | if multiple</InputLabel>
+                        <FilledInput
+                            id="ytquery"
+                            value={ytQuery}
+                            onChange={handleQueryChange}
+                        />
+                    </FormControl>
+                    <div className={classes.divSubmitBtn}>
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            onClick={handleQuerySubmit}
+                        >
+                            Update
+                        </Button>
+                    </div>
+                </div>
+            </Paper>
+            <Paper className={classes.paper}>
+                <div className={classes.title}>
+                    <Title> Youtube Authorization Redirect URI </Title>
+                </div>
+                <div className={classes.inputTextApiKey}>
+                    <FormControl fullWidth variant="filled">
+                        <InputLabel htmlFor="ytredirecturl">Redirect URI</InputLabel>
+                        <FilledInput
+                            id="ytredirecturl"
+                            value={ytRedirectUrl}
+                            disabled={true}
+                        />
+                    </FormControl>
                 </div>
             </Paper>
             <div className={classes.divSubmitBtn}>
