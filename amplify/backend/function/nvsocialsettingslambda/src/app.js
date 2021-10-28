@@ -30,6 +30,7 @@ const getYoutubeQuery = require("./youtube/getYoutubeQuery")
 const installApp = require("./facebookSubscribeWebhookAPI/installApp")
 const checkPageAccess = require("./facebookCrawler/checkPageAccess")
 const startFBCrawler = require("./facebookCrawler/startFBCrawler")
+const startIGCrawler = require("./instagramCrawler/startIGCrawler")
 const getFbAppCredentials = require("./facebookSubscribeWebhookAPI/getFbAppCredentials")
 const getFbAppId = require("./facebookSubscribeWebhookAPI/getFbAppId")
 const getLongLivedUserAccessToken = require("./facebookSubscribeWebhookAPI/getLongLivedUserAccessToken")
@@ -271,6 +272,46 @@ app.post('/settings/:ssn/subscribeWebhook', function (req, res) {
             console.log(err)
             res.status(500).json({
                 msg: 'Facebook webhook subscription failed!',
+                body: err
+            })
+        })    
+
+});
+
+app.post('/settings/facebook/startIGCrawler', function (req, res) {
+    const userID = req.body.userID;
+    const userAccessToken = req.body.userAccessToken;
+    const getCreds = [getFbAppId(), getFbAppCredentials()]
+    return Promise.all(getCreds)
+        .then((resps) => { 
+            const fbAppId = JSON.parse(resps[0].Parameter.Value).fbAppId
+            const fbAppSecret = resps[1].SecretString
+            return getLongLivedUserAccessToken(fbAppId, fbAppSecret, userAccessToken)
+        })
+        .then((resp) => {
+            const longUserAccessToken = get(resp, 'data.access_token')
+            return getPageAccessToken(userID, longUserAccessToken)
+        })
+        .then((resp) => { 
+            const pages = get(resp, 'data.data');
+            return checkPageAccess(pages)
+        })
+        .then((resp) => {
+            return storeFbPageAccessTokens(resp)
+        })
+        .then((resp) => {
+            return startIGCrawler();
+        })
+        .then((resp) => {
+            res.json({
+                url: req.url,
+                body: "Instagram crawler started"
+            });
+        })
+        .catch((err) => {
+            console.log(err)
+            res.status(500).json({
+                msg: 'Instagram crawler start failed!',
                 body: err
             })
         })    

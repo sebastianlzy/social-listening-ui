@@ -85,6 +85,7 @@
             "RESULT_BUCKET_NAME": "DATA_BUCKET_NAME",
             "MESSAGE_SNS_PARAMETER_STORE": "REPLY_MESSAGE_DEST_ARN",
             "IG_TO_FB_PAGE": "IG_TO_FB_PAGE",
+            "IG_CRAWLER_EVENT_BRIDGE": "IG_CRAWLER_EVENT_BRIDGE_RULE_NAME",
             "YT_CLIENT_ID": "YT_CLIENT_ID",
             "YT_CLIENT_SECRET": "YT_CLIENT_SECRET",
             "YT_REDIRECT_URL": "YT_REDIRECT_URL",
@@ -395,6 +396,19 @@
                 {
                   "Fn::Sub": [
                     "arn:aws:ssm:${region}:${account}:parameter/FB_CRAWLER_EVENT_BRIDGE_RULE_NAME",
+                    {
+                      "region": {
+                        "Ref": "AWS::Region"
+                      },
+                      "account": {
+                        "Ref": "AWS::AccountId"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Fn::Sub": [
+                    "arn:aws:ssm:${region}:${account}:parameter/IG_CRAWLER_EVENT_BRIDGE_RULE_NAME",
                     {
                       "region": {
                         "Ref": "AWS::Region"

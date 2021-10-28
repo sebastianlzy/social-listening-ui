@@ -140,8 +140,6 @@ export default function Facebook() {
     }
     const startFBCrawler = async () => {
         setIsBackdropShown(true)
-        console.log(userID)
-        console.log(accessToken)
         try {
             const startCrawlerResponse = await postStartCrawlerRequestToLambda(userID, accessToken)
             setMessageToDisplay(startCrawlerResponse.data.body)
@@ -149,6 +147,15 @@ export default function Facebook() {
             console.log(e)
         }
         setIsBackdropShown(false)
+    }
+    const startIGCrawler = async () => {
+        setIsBackdropShown(true)
+        try {
+            const startCrawlerResponse = await postStartIGCrawlerRequestToLambda(userID, accessToken)
+            setMessageToDisplay(startCrawlerResponse.data.body)
+        } catch (e) {
+            console.log(e)
+        }
         setIsBackdropShown(false)
     }
     const postUserAccessTokenToLambda = (userID, userAccessToken) => {
@@ -167,6 +174,19 @@ export default function Facebook() {
     const postStartCrawlerRequestToLambda = (fbUserID, fbAccessToken) => {
         const apiName = 'nvsocial';
         const path = '/settings/facebook/startCrawler';
+        const config = {
+            response: true,
+            body: {
+                userID: fbUserID,
+                userAccessToken: fbAccessToken
+            }
+        };
+
+        return API.post(apiName, path, config)
+    }
+     const postStartIGCrawlerRequestToLambda = (fbUserID, fbAccessToken) => {
+        const apiName = 'nvsocial';
+        const path = '/settings/facebook/startIGCrawler';
         const config = {
             response: true,
             body: {
@@ -208,7 +228,13 @@ export default function Facebook() {
                             <span> or </span>
                             <Button 
                                 variant="contained"
-                                onClick={startFBCrawler} >Start crawler
+                                onClick={startFBCrawler} >Start FB crawler
+                            </Button>
+                        </div>
+                        <div className={classes.fbActionButtonContainer}>
+                            <Button 
+                                variant="contained"
+                                onClick={startIGCrawler} >Start IG crawler
                             </Button>
                         </div>
                         <Snackbar
