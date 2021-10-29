@@ -1,9 +1,7 @@
-const { SSMClient, PutParameterCommand } = require("@aws-sdk/client-ssm");
+const { SSMClient, GetParameterCommand } = require("@aws-sdk/client-ssm");
 
 const getFbAppId = () => {
-    const ssmClient = new SSMClient({
-        region: "ap-southeast-1"
-    });
+    const ssmClient = new SSMClient()
     const getSecretValueCommand = new GetParameterCommand({
         Name: process.env.FB_CONFIGURATION
     });

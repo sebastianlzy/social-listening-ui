@@ -342,10 +342,10 @@
             {
               "Effect": "Allow",
               "Action": [
-                "ssm:GetParameter",
+                "ssm:GetParameter"
               ],
               "Resource": [
-                 {
+                {
                   "Fn::Sub": [
                     "arn:aws:ssm:${region}:${account}:parameter/YT_REDIRECT_URL",
                     {
