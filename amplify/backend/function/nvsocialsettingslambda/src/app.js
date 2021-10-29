@@ -260,7 +260,7 @@ app.post('/settings/:ssn/subscribeWebhook', function (req, res) {
         .then((resp) => {
             const igPromise = storeIgToFbPageMapping(resp)
             const fbPromise = storeFbPageAccessTokens(resp)
-            return Promise([igPromise, fbPromise])
+            return Promise.all([igPromise, fbPromise])
         })
         .then((resp) => {
             res.json({
