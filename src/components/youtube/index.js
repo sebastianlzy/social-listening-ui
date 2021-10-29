@@ -7,7 +7,7 @@ import Container from "@material-ui/core/Container";
 
 
 import {useBackdropContext} from "../contextProvider/backdropContextProvider";
-import YoutubeConfig from "YoutubeConfig";
+import YoutubeConfig from "./YoutubeConfig";
 
 const useStyles = makeStyles((theme) => ({
     title: {
