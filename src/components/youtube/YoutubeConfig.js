@@ -255,4 +255,4 @@ function YoutubeConfig(props) {
     );
 }
 
-module.exports = withRouter(YoutubeConfig)
+export default withRouter(YoutubeConfig);
