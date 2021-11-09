@@ -11,4 +11,4 @@ const getYoutubeClientId = async () => {
     return JSON.parse(get(response, "Parameter.Value", {}))
 }
 
-module.exports.getYoutubeClientId = getYoutubeClientId
+module.exports = getYoutubeClientId

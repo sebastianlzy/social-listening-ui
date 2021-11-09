@@ -11,4 +11,4 @@ const getYoutubeRedirectUrl = async () => {
     return JSON.parse(get(response, "Parameter.Value", {}))
 }
 
-module.exports.getYoutubeRedirectUrl = getYoutubeRedirectUrl
+module.exports = getYoutubeRedirectUrl
