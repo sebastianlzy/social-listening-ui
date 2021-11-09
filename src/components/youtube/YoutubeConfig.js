@@ -56,7 +56,7 @@ function YoutubeConfig(props) {
         redirectString += `client_id=${ytClientId}`
         console.log(redirectString)
         console.log(this.props)
-        this.props.history.push(redirectString)
+        props.history.push(redirectString)
     }
     
     const handleClientIdChange = (e) => {
