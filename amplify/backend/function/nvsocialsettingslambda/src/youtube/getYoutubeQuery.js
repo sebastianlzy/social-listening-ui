@@ -11,4 +11,4 @@ const getYoutubeQuery= async () => {
     return JSON.parse(get(response, "Parameter.Value", {}))
 }
 
-module.exports.getMLConfiguration = getYoutubeQuery
+module.exports.getYoutubeQuery = getYoutubeQuery
