@@ -1,12 +1,12 @@
 const { SSMClient, PutParameterCommand } = require("@aws-sdk/client-ssm");
 
-const ssmClient = new SSMClient({ region: "ap-southeast-1" });
+const ssmClient = new SSMClient();
 
 const postYoutubeClientId = async (ytClientId) => {
-    const parameterName = process.env.YT_CLIENT_ID;
-
     const putParameterCommandInput = new PutParameterCommand({
-        Name: parameterName
+        Name: process.env.YT_CLIENT_ID,
+        Value: ytClientId,
+        Overwrite: true
     });
     return ssmClient.send(putParameterCommandInput);
 }

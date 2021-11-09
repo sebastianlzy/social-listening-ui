@@ -1,6 +1,6 @@
 const { SSMClient, GetParameterCommand } = require("@aws-sdk/client-ssm");
 const get = require("lodash/get")
-const client = new SSMClient({region: "ap-southeast-1"});
+const client = new SSMClient();
 
 const getYoutubeClientId = async () => {
     const command = new GetParameterCommand({
@@ -8,7 +8,7 @@ const getYoutubeClientId = async () => {
     });
 
     const response = await client.send(command);
-    return JSON.parse(get(response, "Parameter.Value", {}))
+    return get(response, "Parameter.Value")
 }
 
 module.exports = getYoutubeClientId

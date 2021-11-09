@@ -168,6 +168,7 @@ app.get('/settings/youtube/youtubeRedirectUrl', async function (req, res) {
                 body: ytRedirectUrl
             });
         }).catch((err) => {
+            console.log(err)
             res.status(500).json({
                 msg: 'Youtube redirect URL fetching failed!',
                 body: err
@@ -410,10 +411,10 @@ app.post('/settings/youtube/youtubeClientSecret', async function (req, res) {
         })
 });
 
-app.post('/settings/youtube/youtubeClientId', async function (req, res) {
+app.post('/settings/youtube/youtubeQuery', async function (req, res) {
     const ytQuery = req.body.ytQuery
     
-    return postYoutubeClientId(ytQuery)
+    return postYoutubeQuery(ytQuery)
         .then(() => {
             res.json({
                 url: req.url,

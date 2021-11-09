@@ -3,11 +3,10 @@ const { SecretsManagerClient, PutSecretValueCommand } = require("@aws-sdk/client
 const secretManagerClient = new SecretsManagerClient({ region: "ap-southeast-1" });
 
 const postYoutubeClientSecret = async (ytClientSecret) => {
-    const secretName = process.env.YT_CLIENT_SECRET;
-
     const putSecretValueCommand = new PutSecretValueCommand({
-        SecretId: secretName,
-        SecretString: ytClientSecret
+        SecretId: process.env.YT_CLIENT_SECRET,
+        SecretString: ytClientSecret,
+        Overwrite: true
     });
     return secretManagerClient.send(putSecretValueCommand);
 }

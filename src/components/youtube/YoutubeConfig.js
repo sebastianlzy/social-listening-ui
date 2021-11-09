@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {withRouter} from 'react-router-dom';
 import {makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import FormControl from '@material-ui/core/FormControl';
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function YoutubeConfig(props) {
+function YoutubeConfig(props) {
     const {setNotificationMessage, setIsBackdropShown} = props
     
     const classes = useStyles();
@@ -53,6 +54,8 @@ export default function YoutubeConfig(props) {
         redirectString += `redirect_uri=${redirectCallbackUri}&`
         redirectString += "response_type=code&"
         redirectString += `client_id=${ytClientId}`
+        console.log(redirectString)
+        console.log(this.props)
         this.props.history.push(redirectString)
     }
     
@@ -119,31 +122,32 @@ export default function YoutubeConfig(props) {
     useEffect(() => {
         async function getClientId() {
             const ytClientId = await getYoutubeClientId()
-            console.log(ytClientId)
             setYtClientId(ytClientId)
         }
-
+        setIsBackdropShown(true)
         getClientId();
+        setIsBackdropShown(false)
     }, [])
     
     useEffect(() => {
         async function getYtRedirectUrl() {
             const ytRedirectUrl = await getYoutubeRedirectUrl()
-            console.log(ytRedirectUrl)
             setYtRedirectUrl(ytRedirectUrl)
         }
-
+        setIsBackdropShown(true)
         getYtRedirectUrl();
+        setIsBackdropShown(false)
     }, [])
     
      useEffect(() => {
         async function getQuery() {
             const ytQuery = await getYoutubeQuery()
-            console.log(ytQuery)
             setYtQuery(ytQuery)
+            
         }
-
+        setIsBackdropShown(true)
         getQuery();
+        setIsBackdropShown(false)
     }, [])
 
     return (
@@ -250,3 +254,5 @@ export default function YoutubeConfig(props) {
         </div>
     );
 }
+
+module.exports = withRouter(YoutubeConfig)
