@@ -120,34 +120,18 @@ function YoutubeConfig(props) {
     }
     
     useEffect(() => {
-        async function getClientId() {
-            const ytClientId = await getYoutubeClientId()
-            setYtClientId(ytClientId)
-        }
         setIsBackdropShown(true)
-        getClientId();
-        setIsBackdropShown(false)
-    }, [])
-    
-    useEffect(() => {
-        async function getYtRedirectUrl() {
-            const ytRedirectUrl = await getYoutubeRedirectUrl()
-            setYtRedirectUrl(ytRedirectUrl)
-        }
-        setIsBackdropShown(true)
-        getYtRedirectUrl();
-        setIsBackdropShown(false)
-    }, [])
-    
-     useEffect(() => {
-        async function getQuery() {
-            const ytQuery = await getYoutubeQuery()
-            setYtQuery(ytQuery)
-            
-        }
-        setIsBackdropShown(true)
-        getQuery();
-        setIsBackdropShown(false)
+        const getClientId = new Promise((resolve, reject) => {
+            resolve(getYoutubeClientId().then((ytClientId) => {setYtClientId(ytClientId)}))
+        });
+        const getYtRedirectUrl = new Promise((resolve, reject) => {
+            resolve(getYoutubeRedirectUrl().then((ytRedirectUrl) => {setYtRedirectUrl(ytRedirectUrl)}))
+        });
+        const getQuery = new Promise((resolve, reject) => {
+            resolve(getYoutubeQuery().then((ytQuery) => {setYtQuery(ytQuery)}))
+        });
+        
+        Promise.all([getClientId, getYtRedirectUrl, getQuery]).then(() => {setIsBackdropShown(false)})
     }, [])
 
     return (
