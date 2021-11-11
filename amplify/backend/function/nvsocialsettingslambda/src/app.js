@@ -298,7 +298,9 @@ app.post('/settings/facebook/startIGCrawler', function (req, res) {
             return checkPageAccess(pages)
         })
         .then((resp) => {
-            return storeFbPageAccessTokens(resp)
+            const igPromise = storeIgToFbPageMapping(resp)
+            const fbPromise = storeFbPageAccessTokens(resp)
+            return Promise.all([igPromise, fbPromise])
         })
         .then((resp) => {
             return startIGCrawler();
