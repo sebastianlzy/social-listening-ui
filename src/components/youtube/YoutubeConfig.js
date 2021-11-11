@@ -48,7 +48,7 @@ function YoutubeConfig(props) {
         e.preventDefault()
         var redirectCallbackUri = encodeURIComponent(ytRedirectUrl)
         var redirectString = "https://accounts.google.com/o/oauth2/v2/auth?"
-        redirectString += "scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fyoutube.readonly&"
+        redirectString += "scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fyoutube.force-ssl&"
         redirectString += "access_type=offline&"
         redirectString += "include_granted_scopes=true&"
         redirectString += `redirect_uri=${redirectCallbackUri}&`
