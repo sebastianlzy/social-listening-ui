@@ -54,7 +54,6 @@ function YoutubeConfig(props) {
         redirectString += `redirect_uri=${redirectCallbackUri}&`
         redirectString += "response_type=code&"
         redirectString += "approval_prompt=force&"
-        redirectString += "prompt=consent&"
         redirectString += `client_id=${ytClientId}&`
         redirectString += `state=${encodeURIComponent(window.location)}`
         console.log(redirectString)
