@@ -53,7 +53,7 @@ function YoutubeConfig(props) {
         redirectString += "include_granted_scopes=true&"
         redirectString += `redirect_uri=${redirectCallbackUri}&`
         redirectString += "response_type=code&"
-        redirectString += "approval_prompt=force&"
+        redirectString += "prompt=consent&"
         redirectString += `client_id=${ytClientId}&`
         redirectString += `state=${encodeURIComponent(window.location)}`
         console.log(redirectString)
