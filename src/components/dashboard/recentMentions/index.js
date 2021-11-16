@@ -20,10 +20,12 @@ export default function RecentMentions(props) {
                         <TableCell>#</TableCell>
                         <TableCell>Date</TableCell>
                         <TableCell>Source</TableCell>
+                        <TableCell>Url</TableCell>
                         <TableCell>Text</TableCell>
+                        <TableCell>Reply</TableCell>
                         <TableCell>Language</TableCell>
                         <TableCell>Sentiment</TableCell>
-                        <TableCell>Reply</TableCell>
+                        <TableCell>Score</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -31,11 +33,13 @@ export default function RecentMentions(props) {
                         <TableRow key={`recentMentions-${idx}`}>
                             <TableCell>{idx + 1}</TableCell>
                             <TableCell>{moment(row.created_at).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
-                            <TableCell>{row.source}</TableCell>
+                            <TableCell>{row.data_source}</TableCell>
+                            <TableCell><a href={row.url}>{row.url == "" ? "" : "view"}</a></TableCell>
                             <TableCell>{row.text}</TableCell>
+                            <TableCell><a href={row.reply_link}>{row.reply_link == "" ? "" : "reply"}</a></TableCell>
                             <TableCell>{row.language_code}</TableCell>
                             <TableCell>{row.sentiment}</TableCell>
-                            <TableCell><a href={row.reply_link}>{row.reply_link == "" ? "" : "reply"}</a></TableCell>
+                            <TableCell>{row.score}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
