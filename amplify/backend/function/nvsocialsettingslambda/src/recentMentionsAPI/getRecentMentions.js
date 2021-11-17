@@ -15,7 +15,7 @@ const queryMentionsFromDDB = async (tableName, partitionKey, results, exclusiveS
       ExpressionAttributeValues: {
         ":d": { S: partitionKey }
       },
-      TableName: "sentiments", // TODO: Change to use dynamic naming
+      TableName: tableName, // TODO: Change to use dynamic naming
       Limit: 200,
       ScanIndexForward: false
     };
