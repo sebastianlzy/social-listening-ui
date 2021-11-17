@@ -25,7 +25,7 @@ export default function RecentMentions(props) {
                         <TableCell>Reply</TableCell>
                         <TableCell>Sentiment</TableCell>
                         <TableCell>Score</TableCell>
-                        <TableCell>Language</TableCell>
+                        <TableCell>Lang</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
