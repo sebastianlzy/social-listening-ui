@@ -89,7 +89,8 @@
             "YT_CLIENT_ID": "YT_CLIENT_ID",
             "YT_CLIENT_SECRET": "YT_CLIENT_SECRET",
             "YT_REDIRECT_URL": "YT_REDIRECT_URL",
-            "YT_QUERY": "YT_QUERY"
+            "YT_QUERY": "YT_QUERY",
+            "SENTIMENT_DDB_NAME": "SENTIMENT_DDB_NAME"
           }
         },
         "Role": {
@@ -348,6 +349,19 @@
                 {
                   "Fn::Sub": [
                     "arn:aws:ssm:${region}:${account}:parameter/YT_REDIRECT_URL",
+                    {
+                      "region": {
+                        "Ref": "AWS::Region"
+                      },
+                      "account": {
+                        "Ref": "AWS::AccountId"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Fn::Sub": [
+                    "arn:aws:ssm:${region}:${account}:parameter/SENTIMENT_DDB_NAME",
                     {
                       "region": {
                         "Ref": "AWS::Region"

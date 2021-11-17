@@ -17,29 +17,29 @@ export default function RecentMentions(props) {
             <Table size="small">
                 <TableHead>
                     <TableRow>
-                        <TableCell>#</TableCell>
                         <TableCell>Date</TableCell>
                         <TableCell>Source</TableCell>
                         <TableCell>Url</TableCell>
                         <TableCell>Text</TableCell>
+                        <TableCell>English Text</TableCell>
                         <TableCell>Reply</TableCell>
-                        <TableCell>Language</TableCell>
                         <TableCell>Sentiment</TableCell>
                         <TableCell>Score</TableCell>
+                        <TableCell>Language</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {recentMentions.map((row, idx) => (
                         <TableRow key={`recentMentions-${idx}`}>
-                            <TableCell>{idx + 1}</TableCell>
                             <TableCell>{moment(row.created_at).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
                             <TableCell>{row.data_source}</TableCell>
-                            <TableCell><a href={row.url}>{row.url == "" ? "" : "view"}</a></TableCell>
+                            <TableCell><a href={row.url} target="_blank">{row.url == "" ? "" : "view"}</a></TableCell>
                             <TableCell>{row.text}</TableCell>
-                            <TableCell><a href={row.reply_link}>{row.reply_link == "" ? "" : "reply"}</a></TableCell>
-                            <TableCell>{row.language_code}</TableCell>
+                            <TableCell>{row.english_text}</TableCell>
+                            <TableCell><a href={row.reply_link} target="_blank">{row.reply_link == "" ? "" : "reply"}</a></TableCell>
                             <TableCell>{row.sentiment}</TableCell>
                             <TableCell>{row.score}</TableCell>
+                            <TableCell>{row.language_code}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
