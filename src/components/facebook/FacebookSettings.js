@@ -37,7 +37,7 @@ export default function FacebookSettings(props) {
 
     const {setIsBackdropShown, setNotificationMessage} = useBackdropContext()
     const {appId, fbAppIdCacheKey} = props
-    const [FBAppID, setFBAppID] = React.useState(appId);
+    const [FBAppID, setFBAppID] = React.useState("");
     const [FBAppSecretId, setFBAppSecretId] = React.useState("");
     const [FBAppChallenge, setFBAppChallenge] = React.useState("");
     const [FBWebhookURL, setFBWebhookURL] = React.useState("");
@@ -46,7 +46,6 @@ export default function FacebookSettings(props) {
     useEffect(() => {
         async function fetchData() {
             const fbConfiguration = await getFBConfiguration()
-            console.log(fbConfiguration)
             setFBWebhookURL(get(fbConfiguration, "webhookURL", ""))
             setFBAppID(get(fbConfiguration, "fbAppId", ""))
         }

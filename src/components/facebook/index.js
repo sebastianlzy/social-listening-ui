@@ -35,17 +35,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Facebook() {
-
+    
     const {setIsBackdropShown} = useBackdropContext()
     const [openSnackbar, setOpenSnackbar] = React.useState(false);
     const [messageToDisplay, setMessageToDisplay] = useState([]);
     const [isFBInit, setIsFBInit] = React.useState(false);
     const [userID, setUserID] = React.useState("0");
     const [accessToken, setAccessToken] = React.useState("0");
+    const [appId, setAppId] = React.useState();
     
-
+    
     const fbAppIdCacheKey = "fbAppId"
-    //const fbDefaultAppId = "PLACEHOLDER"
+
     const getAppId = async () => {
         const itemStr = localStorage.getItem(fbAppIdCacheKey)
         if (!itemStr) {
@@ -54,7 +55,6 @@ export default function Facebook() {
             setAppId(freshAppId)
             return freshAppId
         }
-
 
         const item = JSON.parse(itemStr)
         if (moment().isAfter(item.expiry)) {
@@ -72,10 +72,6 @@ export default function Facebook() {
         const response = await getFBConfiguration()
         return get(response, 'fbAppId')
     }
-
-
-    const [appId, setAppId] = React.useState(getAppId());
-    
 
     const FBinit = () => {
         FB.init({
@@ -121,6 +117,16 @@ export default function Facebook() {
     }, [])
 
     useEffect(() => {
+        async function fetchAppId() {
+            const myAppId = await getAppId()
+            setAppId(myAppId)
+        }
+        fetchAppId()
+
+    }, [])
+
+    useEffect(() => {
+        if(appId === undefined) return;
         if (isFBInit) {
             setIsBackdropShown(false)
             return
