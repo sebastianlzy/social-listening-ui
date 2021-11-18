@@ -42,42 +42,42 @@ export default function Facebook() {
     const [isFBInit, setIsFBInit] = React.useState(false);
     const [userID, setUserID] = React.useState("0");
     const [accessToken, setAccessToken] = React.useState("0");
+    
 
     const fbAppIdCacheKey = "fbAppId"
     //const fbDefaultAppId = "PLACEHOLDER"
-    const getAppId = () => {
-        console.log("getAppId")
+    const getAppId = async () => {
         const itemStr = localStorage.getItem(fbAppIdCacheKey)
-        console.log("itemStr")
-        console.log(itemStr)
         if (!itemStr) {
-            return getAppIdFromServer()
+            const freshAppId = await getAppIdFromServer()
+            setIsFBInit(false)
+            setAppId(freshAppId)
+            return freshAppId
         }
 
 
         const item = JSON.parse(itemStr)
-        console.log("item")
-        console.log(item)
         if (moment().isAfter(item.expiry)) {
             localStorage.removeItem(fbAppIdCacheKey)
-            return getAppIdFromServer()
+            const freshAppId = await getAppIdFromServer()
+            setIsFBInit(false)
+            setAppId(freshAppId)
+            return freshAppId
         }
 
         return item.appId
     }
     
-    const getAppIdFromServer = () => {
-        console.log("getAppIdFromServer")
-        console.log(getFBConfiguration())
-        return get(getFBConfiguration(), 'fbAppId')
+    const getAppIdFromServer = async () => {
+        const response = await getFBConfiguration()
+        return get(response, 'fbAppId')
     }
 
-    const [appId] = React.useState(getAppId());
+
+    const [appId, setAppId] = React.useState(getAppId());
     
 
     const FBinit = () => {
-        console.log("FB init")
-        console.log(appId)
         FB.init({
             appId            : appId,
             autoLogAppEvents : true,
@@ -89,7 +89,6 @@ export default function Facebook() {
 
     const FBAsyncInit = () => {
         setIsBackdropShown(true)
-        console.log("fbAsyncInit")
         if (window.FB !== undefined) {
             FBinit()
             setIsFBInit(true)
@@ -109,9 +108,7 @@ export default function Facebook() {
    const setFBCreds = () => {
         FB.getLoginStatus(async function (response) {
             if (response.status === 'connected') {
-                console.log(response.authResponse)
-                setUserID(response.authResponse.userID)
-                setAccessToken(response.authResponse.accessToken)
+                console.log("connected")
             }
         });
    }
@@ -123,9 +120,7 @@ export default function Facebook() {
         }
     }, [])
 
-
     useEffect(() => {
-        console.log("isFBInit: " + isFBInit)
         if (isFBInit) {
             setIsBackdropShown(false)
             return
