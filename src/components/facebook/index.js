@@ -46,13 +46,18 @@ export default function Facebook() {
     const fbAppIdCacheKey = "fbAppId"
     //const fbDefaultAppId = "PLACEHOLDER"
     const getAppId = () => {
+        console.log("getAppId")
         const itemStr = localStorage.getItem(fbAppIdCacheKey)
+        console.log("itemStr")
+        console.log(itemStr)
         if (!itemStr) {
             return getAppIdFromServer()
         }
 
 
         const item = JSON.parse(itemStr)
+        console.log("item")
+        console.log(item)
         if (moment().isAfter(item.expiry)) {
             localStorage.removeItem(fbAppIdCacheKey)
             return getAppIdFromServer()
@@ -62,6 +67,8 @@ export default function Facebook() {
     }
     
     const getAppIdFromServer = () => {
+        console.log("getAppIdFromServer")
+        console.log(getFBConfiguration())
         return get(getFBConfiguration(), 'fbAppId')
     }
 
