@@ -224,10 +224,15 @@ export default function Facebook() {
                             <Title>Login to facebook</Title>
                         </div>
                         <div>
-                            <div className="fb-login-button" data-width="" data-size="large"
+                            {/*<div className="fb-login-button" data-width="" data-size="large"
                                  data-button-type="continue_with" data-onlogin="handleOnFbLogin()"
                                  data-layout="default" data-auto-logout-link="true" data-use-continue-as="false"
                                  data-scope="pages_manage_metadata,pages_manage_engagement,pages_show_list,pages_read_user_content,instagram_manage_comments,instagram_basic"
+                            />*/}
+                            <div className="fb-login-button" data-width="" data-size="large"
+                                 data-button-type="continue_with" data-onlogin="handleOnFbLogin()"
+                                 data-layout="default" data-auto-logout-link="true" data-use-continue-as="false"
+                                 data-scope="pages_manage_metadata,pages_show_list"
                             />
                         </div>
                         <div className={classes.fbActionButtonContainer}>
