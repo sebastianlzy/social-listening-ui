@@ -232,7 +232,7 @@ export default function Facebook() {
                             <div className="fb-login-button" data-width="" data-size="large"
                                  data-button-type="continue_with" data-onlogin="handleOnFbLogin()"
                                  data-layout="default" data-auto-logout-link="true" data-use-continue-as="false"
-                                 data-scope="pages_manage_metadata,pages_show_list"
+                                 data-scope="pages_manage_metadata,pages_show_list,pages_read_user_content"
                             />
                         </div>
                         <div className={classes.fbActionButtonContainer}>
