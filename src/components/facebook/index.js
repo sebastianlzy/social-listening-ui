@@ -105,6 +105,8 @@ export default function Facebook() {
         FB.getLoginStatus(async function (response) {
             if (response.status === 'connected') {
                 console.log("connected")
+                setUserID(response.authResponse.userID)
+                setAccessToken(response.authResponse.accessToken)
             }
         });
    }
