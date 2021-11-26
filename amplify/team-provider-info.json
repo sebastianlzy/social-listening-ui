@@ -18,7 +18,7 @@
       "function": {
         "nvsocialsettingslambda": {
           "deploymentBucketName": "amplify-nvsociallisteningui-dev-143728-deployment",
-          "s3Key": "amplify-builds/nvsocialsettingslambda-482b4248316963525751-build.zip"
+          "s3Key": "amplify-builds/nvsocialsettingslambda-3779555a772f735a5874-build.zip"
         }
       },
       "hosting": {
