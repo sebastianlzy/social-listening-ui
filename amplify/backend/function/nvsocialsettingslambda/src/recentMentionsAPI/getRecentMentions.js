@@ -48,11 +48,22 @@ const getRestOfMentionsThisMonthFromDDB = async (tableName) => {
     var dates = []
     const baseCurrentDate = new Date;
     var firstDayOfWeek = baseCurrentDate.getUTCDate() - baseCurrentDate.getUTCDay() + 1
-    while((firstDayOfWeek - 7) > 0){
-        dates.push(firstDayOfWeek - 7)
-        firstDayOfWeek -= 7
+    if(firstDayOfWeek <= 0) return Promise.resolve([])
+    
+    firstDayOfWeek = firstDayOfWeek - 7 // The current week is already handled by another function. Get the start of the week before
+    if(firstDayOfWeek <= 0 ){ // If the week is the first week, then just add 1
+        dates.push(1)
+    }else{
+        console.log(firstDayOfWeek)
+        while(firstDayOfWeek > 7){
+            dates.push(firstDayOfWeek)
+            firstDayOfWeek = firstDayOfWeek - 7
+        }
+        // firstDayOfWeek is 1 to 7 now
+        dates.push(firstDayOfWeek) // Add the first day of week for week 1
+        if(firstDayOfWeek > 1) dates.push(1) // In case the above is not 1, then add 1 too as week 0
     }
-    if((firstDayOfWeek + 7) != 1) dates.push(1)
+  
     dates = [...new Set(dates)]
     
     const calls = dates.map(function(date) { 
