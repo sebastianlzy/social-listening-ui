@@ -31,36 +31,44 @@ To test lambda function
 > amplify init
 ```
 
-# Setting up in new AWS account 
+# Setting up in new AWS account (Optional)
 
 ```
-
-# Clone repo
-> git clone https://github.com/sebastianlzy/nv-social-listening-ui
-
-
-# Remove existing configuration
+# Remove any existing configuration
 > rm ./amplify/team-provider-info.json
 
-# Update AWS profile
+# Remove AWS profile
 > vim ./amplify/.config/local-aws-info.json
+```
 
-# Initialize a new amplify env
-> amplify init
+# Create backend
+```
+> amplify init --app https://github.com/sebastianlzy/social-listening-ui
+```
 
-# Re-provision backend infrastructure
-> amplify push
 
 # Re-provision hosting
+```
 > amplify add hosting
 
-# On console, connect front-end to repository
+? Select the plugin module to execute Hosting with Amplify Console (Managed hosting with custom domains, Continuous deployment)
+? Choose a type Continuous deployment (Git-based deployments)
 
-# Things to note: 
-#    1. Create a service role for amplify
+//unfortunately, the connection to the github repo will still need to be done using the AWS console. 
+// Follow the instruction to connect to your chosen version control
+```
+
+![Amplify add hosting](./README/amplify-add-hosting.png)
 
 # Setup rewrites and redirect
-# 1. `</^[^.]+$|\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|map|json)$)([^.]+$)/>` --> /index.html
+
+![Amplify add hosting](./README/add-rewrites-and-redirects-1.png)
 
 ```
+Source address: </^[^.]+$|\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|map|json)$)([^.]+$)/>
+Target address: /index.html
+Type: 200(Rewrite)
+```
+
+![Amplify add hosting](./README/add-rewrites-and-redirects-2.png)
 
