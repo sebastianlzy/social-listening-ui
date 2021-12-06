@@ -1,37 +1,12 @@
-# Getting Started 
-
-To run locally
-
-```
-> npm run start
-
-open https://localhost:3000
-```
-
-
-To test lambda function
-```
-> cd amplify/backend/function/nvsocialsettingslambda/src
-
-// List out all the test events
-> cat package.json | jq ".scripts"  
-
-//Run test
-> npm run test:getRecentMentions
-```
-
-
-# Setting up in the same account (i.e. collaboration)
+# Setting up
 
 ```
 # Clone repo
 > git clone https://github.com/sebastianlzy/nv-social-listening-ui
 
-# Setup amplify to sync with upstream changes
-> amplify init
 ```
 
-# Setting up in new AWS account (Optional)
+## Remove account specific files (Optional)
 
 ```
 # Remove any existing configuration
@@ -41,13 +16,13 @@ To test lambda function
 > vim ./amplify/.config/local-aws-info.json
 ```
 
-# Create backend
+## Provision backend resources
 ```
 > amplify init --app https://github.com/sebastianlzy/social-listening-ui
 ```
 
 
-# Re-provision hosting
+## Provision hosting
 ```
 > amplify add hosting
 
@@ -60,7 +35,7 @@ To test lambda function
 
 ![Amplify add hosting](./README/amplify-add-hosting.png)
 
-# Setup rewrites and redirect
+## Setup rewrites and redirect
 
 <details>
   <summary>Using AWS CLI</summary>
@@ -88,3 +63,47 @@ Type: 200(Rewrite)
 
 </details>
 
+
+
+# Getting started
+
+To run locally
+
+```
+> npm run start
+
+open https://localhost:3000
+```
+
+# Test
+
+## Mock lambda function
+```
+> cd amplify/backend/function/nvsocialsettingslambda/src
+
+// List out all the test events
+> cat package.json | jq ".scripts"  
+
+//Run test
+> npm run test:getRecentMentions
+```
+
+## Run test
+```
+> npm run test
+
+Watch Usage: Press w to show more.
+ PASS  src/components/dashboard/chart/index.test.js
+  ✓ test creation of data for dashboard (3 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        3.867 s
+Ran all test suites related to changed files.
+
+Watch Usage: Press w to show more.
+
+
+
+```

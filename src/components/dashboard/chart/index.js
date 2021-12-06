@@ -8,7 +8,7 @@ import moment from 'moment'
 import set from 'lodash/set'
 import get from 'lodash/get'
 
-function createData(time, amount) {
+export function createData(time, amount) {
     return { time, amount };
 }
 
