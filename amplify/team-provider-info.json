@@ -1,0 +1,33 @@
+{
+  "sampledev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-nvsociallisteningui-sampledev-123300-authRole",
+      "UnauthRoleArn": "arn:aws:iam::134800022762:role/amplify-nvsociallisteningui-sampledev-123300-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::134800022762:role/amplify-nvsociallisteningui-sampledev-123300-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-nvsociallisteningui-sampledev-123300-deployment",
+      "UnauthRoleName": "amplify-nvsociallisteningui-sampledev-123300-unauthRole",
+      "StackName": "amplify-nvsociallisteningui-sampledev-123300",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:134800022762:stack/amplify-nvsociallisteningui-sampledev-123300/9ab29c70-564d-11ec-a29c-06bb258d373a",
+      "AmplifyAppId": "drcw77897sxjc",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-nvsociallisteningui-sampledev-123300-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+    },
+    "categories": {
+      "function": {
+        "nvsocialsettingslambda": {
+          "deploymentBucketName": "amplify-nvsociallisteningui-sampledev-123300-deployment",
+          "s3Key": "amplify-builds/nvsocialsettingslambda-2f644641624c34614849-build.zip"
+        }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "drcw77897sxjc",
+          "type": "cicd"
+        }
+      },
+      "auth": {
+        "nvsociallisteninguia7866996": {}
+      }
+    }
+  }
+}
