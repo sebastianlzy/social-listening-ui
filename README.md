@@ -62,6 +62,20 @@ To test lambda function
 
 # Setup rewrites and redirect
 
+<details>
+  <summary>Using AWS CLI</summary>
+
+   ```
+    > export APP_ID=$(aws amplify list-apps --query 'apps[?name==`nvsociallisteningui`].appId' --output text)
+    > echo '[{"source": "</^[^.]+$|\\\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|map|json)$)([^.]+$)/>","target": "/index.html","status": "200"}]' > custom-rules.json 
+    > aws amplify update-app --app-id $APP_ID --custom-rules file://custom-rules.json
+   
+   ```
+</details>
+
+<details>
+  <summary>Using AWS Console</summary>
+
 ![Amplify add hosting](./README/add-rewrites-and-redirects-1.png)
 
 ```
@@ -71,4 +85,6 @@ Type: 200(Rewrite)
 ```
 
 ![Amplify add hosting](./README/add-rewrites-and-redirects-2.png)
+
+</details>
 
