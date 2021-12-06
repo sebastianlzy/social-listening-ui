@@ -29,5 +29,32 @@
         "nvsociallisteninguia7866996": {}
       }
     }
+  },
+  "preprod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-nvsociallisteningui-preprod-150414-authRole",
+      "UnauthRoleArn": "arn:aws:iam::134800022762:role/amplify-nvsociallisteningui-preprod-150414-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::134800022762:role/amplify-nvsociallisteningui-preprod-150414-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-nvsociallisteningui-preprod-150414-deployment",
+      "UnauthRoleName": "amplify-nvsociallisteningui-preprod-150414-unauthRole",
+      "StackName": "amplify-nvsociallisteningui-preprod-150414",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:134800022762:stack/amplify-nvsociallisteningui-preprod-150414/b9706f60-5662-11ec-bc63-02666b4f429e",
+      "AmplifyAppId": "drcw77897sxjc"
+    },
+    "categories": {
+      "function": {
+        "nvsocialsettingslambda": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "drcw77897sxjc",
+          "type": "cicd"
+        }
+      },
+      "auth": {
+        "nvsociallisteninguia7866996": {}
+      }
+    }
   }
 }
